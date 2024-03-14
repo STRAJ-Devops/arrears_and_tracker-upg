@@ -1,0 +1,77 @@
+$(document).ready(function () {
+
+    $("#comments-table").DataTable({
+        processing: true,
+        serverSide: false,
+        drawCallback: function () {
+            $("#content").show();
+            $("#spinner").hide();
+          },
+        //export buttons
+        dom: "Bfrtip",
+        //style the buttons
+        buttons: [
+            {
+                extend: "csv",
+                className: "btn btn-warning btn-small",
+                messageTop: "Comments about Arrears",
+            },
+            {
+                extend: "excel",
+                className: "btn btn-warning btn-small",
+                messageTop: "Comments about Arrears",
+            },
+            {
+                extend: "pdf",
+                className: "btn btn-warning btn-small",
+                messageTop: "Comments about Arrears",
+            },
+            {
+                extend: "print",
+                className: "btn btn-warning btn-small",
+                messageTop: "Comments about Arrears",
+            },
+        ],
+        ajax: {
+            // Use template literals (preferred)
+            url: "/get-all-comments",
+            // Alternatively, use string concatenation
+            // const commentsRoute = '{{ route('allComments') }}';
+            // url: commentsRoute,
+            type: "GET",
+            dataSrc: "comments",
+        },
+        columns: [
+            {
+                data: "id",
+            },
+            {
+                data: "customer.id",
+            },
+            {
+                data: "customer.names",
+            },
+            {
+                data: "comment",
+            },
+            {
+                // Define a custom render function for the date column
+                data: "created_at",
+                render: function (data, type, row) {
+                    return formatDate(data);
+                },
+            },
+        ],
+    });
+
+    // Function to format the date (place it outside the $(document).ready)
+    function formatDate(dateString) {
+        const dateObj = new Date(dateString);
+        const options = {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        };
+        return new Intl.DateTimeFormat("en", options).format(dateObj);
+    }
+});
