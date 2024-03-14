@@ -35,7 +35,7 @@
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
+                      <button type="submit" class="btn bg-warning w-100 mt-4 mb-0">Sign in</button>
                     </div>
                   </form>
                 </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-6">
               <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/curved-images/curved6.jpg')"></div>
+                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('../assets/img/vulnerable.jpg')"></div>
               </div>
             </div>
           </div>

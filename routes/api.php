@@ -25,6 +25,7 @@ Route::post('upload-product-targets', [ProductTargetController::class, 'import']
 Route::get('process-csv-sales', [SaleController::class, 'process_csv_for_sales'])->name('process-csv-sales');
 Route::get('process-csv-arrears', [SaleController::class, 'process_csv_for_arrears'])->name('process-csv-arrears');
 Route::post('arrears-group-by', [ArrearController::class, 'group_by'])->name('arrears-group-by');
+Route::get('sales-group-by', [SaleController::class, 'group_by'])->name('sales-group-by');
 Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
 
 

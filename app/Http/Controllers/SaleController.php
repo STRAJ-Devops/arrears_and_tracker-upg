@@ -37,6 +37,7 @@ class SaleController extends Controller
                     $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
                     $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
                     $total_disbursement_amount = $sale->sum('disbursement_amount');
+                    $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
                     //balance
                     $balance = $target_amount - $total_disbursement_amount;
                     //%centage score
@@ -51,7 +52,7 @@ class SaleController extends Controller
                         'target_amount' => $target_amount,
                         'balance' => $balance,
                         'target_clients' => $target_clients,
-                        'actual_clients' => $sale->count(),
+                        'actual_clients' => $actual_clients,
                         'score' => round($percentage, 0),
                     ];
                 }
@@ -61,9 +62,10 @@ class SaleController extends Controller
                 foreach ($sales as $key => $sale) {
                     $branch_name = $sale->first()->branch->branch_name;
                     $product_name = $sale->first()->product->product_name;
-                    $target_amount = $sale->first()->product->productTarget->target_amount ?? 0;
-                    $target_clients = $sale->first()->product->productTarget->target_numbers ?? 0;
+                    $target_amount = $sale->first()->product->productTarget->target_amount;
+                    $target_clients = 0;
                     $total_disbursement_amount = $sale->sum('disbursement_amount');
+                    $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
                     $balance = $target_amount - $total_disbursement_amount;
                     if ($target_amount == 0)
                         $percentage = 0;
@@ -76,7 +78,7 @@ class SaleController extends Controller
                         'target_amount' => $target_amount,
                         'balance' => $balance,
                         'target_clients' => $target_clients,
-                        'actual_clients' => $sale->count(),
+                        'actual_clients' => $actual_clients,
                         'score' => round($percentage, 0),
                     ];
                 }

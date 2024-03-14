@@ -29,7 +29,7 @@
                         <h4 class="mb-0">Forgot your password? Enter your email here</h4>
                     </div>
                     <div class="card-body">
-                    
+
                         <form action="/forgot-password" method="POST" role="form text-left">
                             @csrf
                             <div>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Recover your password</button>
+                                <button type="submit" class="btn bg-warning w-100 mt-4 mb-0">Recover your password</button>
                             </div>
                         </form>
                     </div>

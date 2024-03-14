@@ -23,9 +23,11 @@
                                         <option value="gender">Gender</option>
                                         <option value="district">District</option>
                                         <option value="sub_county">Sub County</option>
-                                        <option value="village">Village</option>
                                         <option value="age">Age</option>
+                                        @if (Auth::user()->user_type == 2)
+                                        <option value="village">Village</option>
                                         <option value="client">Client</option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>

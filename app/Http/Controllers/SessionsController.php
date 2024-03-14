@@ -22,7 +22,7 @@ class SessionsController extends Controller
 
         if (Auth::guard('officer')->attempt($attributes)) {
             session()->regenerate();
-            return redirect('dashboard')->with(['success' => 'You are logged in.']);
+            return redirect('dashboard');
         }
         else{
 

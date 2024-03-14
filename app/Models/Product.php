@@ -23,4 +23,10 @@ class Product extends Model
     {
         return $this->hasOne(ProductTarget::class, 'product_id', 'product_id');
     }
+
+    //each product belongs to 0 or more Arrears
+    public function arrears()
+    {
+        return $this->hasMany(Arrear::class, 'product_id', 'product_id');
+    }
 }
