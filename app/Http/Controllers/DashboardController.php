@@ -46,8 +46,8 @@ class DashboardController extends Controller
             'number_of_female_borrowers' => $number_of_female_borrowers,
             'number_of_children' => $number_of_children,
             'total_disbursements' => $total_disbursements_this_month,
-            'par_30_days' => round($par_30_per),
-            'par_1_days' => round($par_1_per),
+            'par_30_days' => number_format(round($par_30_per, 2), 2),
+            'par_1_days' => number_format(round($par_1_per, 2), 2),
             'pie_array' => $pie_data,
         ];
 
