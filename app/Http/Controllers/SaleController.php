@@ -11,6 +11,7 @@ use App\Models\Sale;
 use App\Models\Sub_County;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class SaleController extends Controller
 {
@@ -137,6 +138,8 @@ class SaleController extends Controller
             // Return JSON response with data and success message
             return response()->json(['data' => $data, 'message' => 'success'], 200);
         } catch (\Exception $e) {
+            Log::error($e);
+
             return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 400);
         }
     }
