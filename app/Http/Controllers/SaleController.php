@@ -137,7 +137,7 @@ class SaleController extends Controller
             // Return JSON response with data and success message
             return response()->json(['data' => $data, 'message' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 400);
+            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 500);
         }
     }
 
