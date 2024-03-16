@@ -96,8 +96,8 @@ $(document).ready(function () {
                 });
 
                 // Stop the spinner and display content
-                $("#content").show();
-                $("#spinner").hide();
+                // $("#content").show();
+                // $("#spinner").hide();
             },
             error: function (xhr, status, error) {
                 console.log(xhr);

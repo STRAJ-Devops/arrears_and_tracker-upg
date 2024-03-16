@@ -1,9 +1,9 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div id="spinner" class="spinner-overlay">
+    {{-- <div id="spinner" class="spinner-overlay">
         <div class="spinner"></div>
-    </div>
+    </div> --}}
     <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg">
         <div class="container-fluid py-4">
             <div class="row">
