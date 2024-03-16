@@ -100,9 +100,11 @@ $(document).ready(function () {
                 $("#spinner").hide();
             },
             error: function (xhr, status, error) {
-                console.log(xhr);
                 console.log(status);
                 console.log(error);
+                //get the error message from the response and display it
+                var errorMessage = xhr.responseJSON.message;
+                console.log(errorMessage);
             }
         });
     }
