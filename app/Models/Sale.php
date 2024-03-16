@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use EllGreen\LaravelLoadFile\Laravel\Traits\LoadsFiles;
@@ -46,6 +47,11 @@ class Sale extends Model
     public function totalDisbursedAmount()
     {
         return $this->whereMonth('disbursement_date', date('m'))->sum('disbursement_amount');
+    }
+
+    public function getDisbursementDateAttribute($value)
+    {
+        return Carbon::parse($value)->toDateString();
     }
 
 }

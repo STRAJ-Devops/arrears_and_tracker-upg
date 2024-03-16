@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Arrear;
 use App\Models\Sale;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,9 +22,13 @@ class DashboardController extends Controller
 
         $number_of_children = $logged_user==1?Sale::sum('number_of_children'): Sale::where('staff_id', $staff_id)->sum('number_of_children');
 
-        $total_disbursements_this_month = $logged_user==1?Sale::whereMonth('disbursement_date', date('m'))->sum('disbursement_amount'): Sale::where('staff_id', $staff_id)->whereMonth('disbursement_date', date('m'))->sum('disbursement_amount');
+        $currentMonthYear = date_create()->format('M-y'); // Get the current month abbreviation like "Mar"
 
-        //get par 30 days that is sum of par for all arrears that are more than 30 days late
+        $total_disbursements_this_month = $logged_user == 1
+        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount')
+        : Sale::where('staff_id', $staff_id)
+               ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+               ->sum('disbursement_amount');       //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user==1?Arrear::where('number_of_days_late', '>', 30)->sum('par'): Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
 
         $par_30_per = $outstanding_principal == 0 ? 0 : (($par_30_days / $outstanding_principal) * 100);
