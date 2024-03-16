@@ -39,7 +39,7 @@ class SaleController extends Controller
                         $target_amount = 0;
                         $target_clients = 0;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
-                        $actual_clients = 0;
+                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members')??0;
                         //balance
                         $balance = $target_amount - $total_disbursement_amount;
                         //%centage score
