@@ -22,8 +22,8 @@ class SaleController extends Controller
     public function group_by(Request $request)
     {
         try {
-            $logged_user = auth()->user()->user_type;
-            $staff_id = auth()->user()->staff_id;
+            $logged_user = 1;
+            $staff_id = 1106;
             if ($request->has('group')) {
                 if ($request->group == 'branches') {
                     //sales categorized by branches
@@ -137,7 +137,7 @@ class SaleController extends Controller
             // Return JSON response with data and success message
             return response()->json(['data' => $data, 'message' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 400);
         }
     }
 
