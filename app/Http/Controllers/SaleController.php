@@ -29,7 +29,6 @@ class SaleController extends Controller
                 if ($request->group == 'branches') {
                     //sales categorized by branches
                     $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
-                    return response()->json(['data' => $sales, 'message' => 'success'], 200);
                     //process the sales data and return the view
                     $data = [];
                     foreach ($sales as $key => $sale) {
@@ -61,6 +60,7 @@ class SaleController extends Controller
                             'score' => round($percentage, 0),
                         ];
                     }
+                    return response()->json(['data' => $data, 'message' => 'success'], 200);
                 } else if ($request->group == 'products') {
                     $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
                     $data = [];
