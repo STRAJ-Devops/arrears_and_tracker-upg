@@ -29,6 +29,7 @@ class SaleController extends Controller
                 if ($request->group == 'branches') {
                     //sales categorized by branches
                     $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                    return response()->json(['data' => $sales, 'message' => 'success'], 200);
                     //process the sales data and return the view
                     $data = [];
                     foreach ($sales as $key => $sale) {
