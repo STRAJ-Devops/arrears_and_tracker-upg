@@ -33,6 +33,26 @@ class DashboardController extends Controller
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('number_of_group_members');
+
+        $number_of_groups = $logged_user == 1
+        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('number_of_group_members', '>', 1)
+            ->sum('number_of_group_members')
+        : Sale::where('staff_id', $staff_id)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('number_of_group_members', '>', 1)
+            ->count();
+
+        $number_of_individuals = $logged_user == 1
+        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('number_of_group_members', '=', 1)
+            ->sum('number_of_group_members')
+        : Sale::where('staff_id', $staff_id)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('number_of_group_members', '=', 1)
+            ->count();
+
+
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
 
@@ -60,6 +80,8 @@ class DashboardController extends Controller
             'par_1_days' => number_format(round($par_1_per, 2), 2),
             'pie_array' => $pie_data,
             'number_of_clients' => $number_of_clients,
+            'number_of_groups' => $number_of_groups,
+            'number_of_individuals' => $number_of_individuals,
         ];
 
         return view('dashboard', compact('data'));
