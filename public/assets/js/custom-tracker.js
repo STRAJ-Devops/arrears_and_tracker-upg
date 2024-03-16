@@ -103,7 +103,7 @@ $(document).ready(function () {
                 console.log(status);
                 console.log(error);
                 //get the error message from the response and display it
-                var errorMessage = xhr.responseJSON.message;
+                var errorMessage = xhr.responseJSON;
                 console.log(errorMessage);
             }
         });
