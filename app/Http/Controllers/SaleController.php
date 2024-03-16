@@ -265,6 +265,7 @@ class SaleController extends Controller
                         $sale->branch_id = $branch_id;
                         $sale->gender = $csv[$i][19];
                         $sale->number_of_children = $csv[$i][45];
+                        $sale->number_of_group_members = $csv[$i][47];
                         $sale->save();
 
                         $arrear = new Arrear();

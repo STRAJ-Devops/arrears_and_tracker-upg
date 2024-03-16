@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('disbursement_date')->nullable();
 
             $table->bigInteger('disbursement_amount');
+            $table->integer('number_of_group_members')->nullable();
 
             $table->integer('region_id');
             $table->foreign('region_id')->references('region_id')->on('regions');
