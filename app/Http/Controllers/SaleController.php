@@ -140,7 +140,7 @@ class SaleController extends Controller
         } catch (\Exception $e) {
             Log::error($e);
 
-            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 400);
+            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 500);
         }
     }
 
