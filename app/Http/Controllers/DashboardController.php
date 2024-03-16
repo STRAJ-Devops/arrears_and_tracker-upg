@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arrear;
+use App\Models\Branch;
+use App\Models\Product;
 use App\Models\Sale;
 
 class DashboardController extends Controller
@@ -52,7 +54,6 @@ class DashboardController extends Controller
             ->where('number_of_group_members', '=', 1)
             ->count();
 
-
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
 
@@ -69,6 +70,50 @@ class DashboardController extends Controller
             'outstanding_principal' => $outstanding_principal,
         ];
 
+        // Get product labels and targets
+        $productData = Product::with('productTarget')->get();
+        $brachData = Branch::with('branchTarget')->get();
+        $productLabels = $productData->pluck('product_name', 'product_id')->toArray();
+        $branchLabels = $brachData->pluck('branch_name', 'branch_id')->toArray();
+        $productTargets = $productData->pluck('productTarget.target_amount', 'product_id')->toArray();
+        $branchTargets = $brachData->pluck('branchTarget.target_amount', 'branch_id')->toArray();
+        // Get product actuals for this month
+        $productActuals = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->selectRaw('product_id, sum(disbursement_amount) as total_disbursements')
+            ->groupBy('product_id')
+            ->pluck('total_disbursements', 'product_id')
+            ->toArray();
+      $branchActuals = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->selectRaw('branch_id, sum(disbursement_amount) as total_disbursements')
+            ->groupBy('branch_id')
+            ->pluck('total_disbursements', 'branch_id')
+            ->toArray();
+
+        // Initialize arrays to store labels, targets, and sales
+        $labels = [];
+        $targets = [];
+        $sales = [];
+
+        // Loop through product labels and align targets and sales data
+        foreach ($productLabels as $productId => $productName) {
+            $labels[] = $productName;
+            $targets[] = $productTargets[$productId] ?? 0; // Use null coalescing operator
+            $sales[] = $productActuals[$productId] ?? 0; // Use null coalescing operator
+        }
+
+        $branchLabelsList = [];
+        $branchTargetsList = [];
+        $branchSalesList = [];
+
+        // Loop through branch labels and align targets and sales data
+        foreach ($branchLabels as $branchId => $branchName) {
+            $branchLabelsList[] = $branchName;
+            $branchTargetsList[] = $branchTargets[$branchId] ?? 0; // Use null coalescing operator
+            $branchSalesList[] = $branchActuals[$branchId] ?? 0; // Use null coalescing operator
+        }
+
+        // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
+
         $data = [
             'outstanding_principal' => $outstanding_principal,
             'outstanding_interest' => $outstanding_interest,
@@ -82,6 +127,12 @@ class DashboardController extends Controller
             'number_of_clients' => $number_of_clients,
             'number_of_groups' => $number_of_groups,
             'number_of_individuals' => $number_of_individuals,
+            'product_labels' => $labels,
+            'product_targets' => $targets,
+            'product_sales' => $sales,
+            'branch_labels' => $branchLabelsList,
+            'branch_targets' => $branchTargetsList,
+            'branch_sales' => $branchSalesList,
         ];
 
         return view('dashboard', compact('data'));

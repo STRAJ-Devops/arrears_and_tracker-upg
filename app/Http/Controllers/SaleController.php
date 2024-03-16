@@ -22,13 +22,15 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
+        $currentMonthYear = date_create()->format('M-y'); // Get the current month abbreviation like "Mar"
+        $logged_user = auth()->user()->user_type;
+        $staff_id = auth()->user()->staff_id;
         try {
-            $logged_user = auth()->user()->user_type;
-            $staff_id = auth()->user()->staff_id;
+
             if ($request->has('group')) {
                 if ($request->group == 'branches') {
                     //sales categorized by branches
-                    $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
                     //process the sales data and return the view
                     $data = [];
                     foreach ($sales as $key => $sale) {
@@ -61,7 +63,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'products') {
-                    $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
+                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('product_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('product_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $branch_name = $sale->first()->branch->branch_name??"unkown";
@@ -89,7 +91,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'officers') {
-                    $sales = $logged_user == 1 ? Sale::get()->groupBy('staff_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('staff_id');
+                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('staff_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('staff_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $staff_name = $sale->first()->officer->names;
@@ -105,7 +107,7 @@ class SaleController extends Controller
                 }
             } else {
                 //sales categorized by branches
-                $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
                 //process the sales data and return the view
                 $data = [];
                 foreach ($sales as $key => $sale) {

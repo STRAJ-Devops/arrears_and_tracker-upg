@@ -1,5 +1,4 @@
 @extends('layouts.user_type.auth')
-
 @section('content')
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -246,31 +245,42 @@
         </div>
     </div>
 
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                    <canvas id="product-sales-targets" width="600" height="300"></canvas>
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                    <canvas id="branch-sales-targets" width="600" height="300"></canvas>
+                </div>
+              </div>
+        </div>
+    </div>
+
     @push('dashboard')
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-            google.charts.load("current", {
-                packages: ["corechart"]
-            });
-            google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-                var pie_data = <?php echo json_encode($data['pie_array']); ?>;
-
-                var data = google.visualization.arrayToDataTable([
-                    ['Task', 'Hours per Day'],
-                    ['Principal Arrears', pie_data.principal_arrears],
-                    ['Outstanding Principal', pie_data.outstanding_principal]
-                ]);
-
-                var options = {
-                    title: 'Outstanding and Principal Arrears',
-                    is3D: true,
-                };
-
-                var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-                chart.draw(data, options);
-            }
-        </script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js" ></script>
+    <script>
+        var productLabels = {!! json_encode($data['product_labels']) !!};
+        var productSales = {!! json_encode($data['product_sales']) !!};
+        var productTargets = {!! json_encode($data['product_targets']) !!};
+        var branchLabels = {!! json_encode($data['branch_labels']) !!};
+        var branchSales = {!! json_encode($data['branch_sales']) !!};
+        var branchTargets = {!! json_encode($data['branch_targets']) !!};
+        console.log("product labels", productLabels);
+        console.log("product sales", productSales);
+        console.log("product targets", productTargets);
+        console.log("branch labels", branchLabels);
+        console.log("branch sales", branchSales);
+        console.log("branch targets", branchTargets);
+    </script>
+    <script src="{{ asset('assets/js/custom-dashboard.js') }}"></script>
     @endpush
 @endsection

@@ -54,7 +54,7 @@
 </head>
 
 <body
-    class="g-sidenav-show  bg-gray-100 {{ \Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '') }} ">
+    class="g-sidenav-show  bg-gray-200 {{ \Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '') }} ">
     @auth
         @yield('auth')
     @endauth
@@ -94,7 +94,6 @@
 <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
     <!--   JQuery   -->
-    @stack('rtl')
     @stack('dashboard')
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
