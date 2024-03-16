@@ -66,7 +66,7 @@ class SaleController extends Controller
                     foreach ($sales as $key => $sale) {
                         $branch_name = $sale->first()->branch->branch_name;
                         $product_name = $sale->first()->product->product_name;
-                        $target_amount = $sale->first()->product->productTarget->target_amount;
+                        $target_amount = $sale->first()->product->productTarget->target_amount??0;
                         $target_clients = 0;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
                         $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
