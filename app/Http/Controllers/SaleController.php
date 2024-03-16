@@ -33,13 +33,13 @@ class SaleController extends Controller
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         //i want region_name, branch_name, and the total disbursement_amount
-                        $region_name = $sale->first()->region->region_name;
-                        $branch_name = $sale->first()->branch->branch_name;
+                        $region_name = $sale->first()->region->region_name??'unknown';
+                        $branch_name = $sale->first()->branch->branch_name??'unknown';
                         //target_amount
                         $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
                         $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
-                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
+                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members')??0;
                         //balance
                         $balance = $target_amount - $total_disbursement_amount;
                         //%centage score
@@ -64,12 +64,12 @@ class SaleController extends Controller
                     $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
-                        $branch_name = $sale->first()->branch->branch_name;
-                        $product_name = $sale->first()->product->product_name;
+                        $branch_name = $sale->first()->branch->branch_name??"unkown";
+                        $product_name = $sale->first()->product->product_name??'unknown';
                         $target_amount = $sale->first()->product->productTarget->target_amount??0;
                         $target_clients = 0;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
-                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
+                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members')??0;
                         $balance = $target_amount - $total_disbursement_amount;
                         if ($target_amount == 0) {
                             $percentage = 0;
