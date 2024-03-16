@@ -21,10 +21,88 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $logged_user = auth()->user()->user_type;
-        $staff_id = auth()->user()->staff_id;
-        if ($request->has('group')) {
-            if ($request->group == 'branches') {
+        try {
+            $logged_user = auth()->user()->user_type;
+            $staff_id = auth()->user()->staff_id;
+            if ($request->has('group')) {
+                if ($request->group == 'branches') {
+                    //sales categorized by branches
+                    $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                    //process the sales data and return the view
+                    $data = [];
+                    foreach ($sales as $key => $sale) {
+                        //i want region_name, branch_name, and the total disbursement_amount
+                        $region_name = $sale->first()->region->region_name;
+                        $branch_name = $sale->first()->branch->branch_name;
+                        //target_amount
+                        $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
+                        $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
+                        $total_disbursement_amount = $sale->sum('disbursement_amount');
+                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
+                        //balance
+                        $balance = $target_amount - $total_disbursement_amount;
+                        //%centage score
+                        if ($target_amount == 0) {
+                            $percentage = 0;
+                        } else {
+                            $percentage = ($total_disbursement_amount / $target_amount) * 100;
+                        }
+
+                        $data[] = [
+                            'region_name' => $region_name,
+                            'branch_name' => $branch_name,
+                            'total_disbursement_amount' => $total_disbursement_amount,
+                            'target_amount' => $target_amount,
+                            'balance' => $balance,
+                            'target_clients' => $target_clients,
+                            'actual_clients' => $actual_clients,
+                            'score' => round($percentage, 0),
+                        ];
+                    }
+                } else if ($request->group == 'products') {
+                    $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
+                    $data = [];
+                    foreach ($sales as $key => $sale) {
+                        $branch_name = $sale->first()->branch->branch_name;
+                        $product_name = $sale->first()->product->product_name;
+                        $target_amount = $sale->first()->product->productTarget->target_amount;
+                        $target_clients = 0;
+                        $total_disbursement_amount = $sale->sum('disbursement_amount');
+                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
+                        $balance = $target_amount - $total_disbursement_amount;
+                        if ($target_amount == 0) {
+                            $percentage = 0;
+                        } else {
+                            $percentage = ($total_disbursement_amount / $target_amount) * 100;
+                        }
+
+                        $data[] = [
+                            'branch_name' => $branch_name,
+                            'product_name' => $product_name,
+                            'total_disbursement_amount' => $total_disbursement_amount,
+                            'target_amount' => $target_amount,
+                            'balance' => $balance,
+                            'target_clients' => $target_clients,
+                            'actual_clients' => $actual_clients,
+                            'score' => round($percentage, 0),
+                        ];
+                    }
+                } else if ($request->group == 'officers') {
+                    $sales = $logged_user == 1 ? Sale::get()->groupBy('staff_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('staff_id');
+                    $data = [];
+                    foreach ($sales as $key => $sale) {
+                        $staff_name = $sale->first()->officer->names;
+                        $total_disbursement_amount = $sale->sum('disbursement_amount');
+                        $number_of_clients = $sale->count();
+                        $data[] = [
+                            'staff_id' => $key,
+                            'names' => $staff_name,
+                            'total_disbursement_amount' => $total_disbursement_amount,
+                            'number_of_clients' => $number_of_clients,
+                        ];
+                    }
+                }
+            } else {
                 //sales categorized by branches
                 $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
                 //process the sales data and return the view
@@ -35,100 +113,32 @@ class SaleController extends Controller
                     $branch_name = $sale->first()->branch->branch_name;
                     //target_amount
                     $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
-                    $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
                     $total_disbursement_amount = $sale->sum('disbursement_amount');
-                    $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
                     //balance
                     $balance = $target_amount - $total_disbursement_amount;
                     //%centage score
-                    if ($target_amount == 0)
+                    if ($target_amount == 0) {
                         $percentage = 0;
-                    else
+                    } else {
                         $percentage = ($total_disbursement_amount / $target_amount) * 100;
+                    }
+
                     $data[] = [
                         'region_name' => $region_name,
                         'branch_name' => $branch_name,
                         'total_disbursement_amount' => $total_disbursement_amount,
                         'target_amount' => $target_amount,
                         'balance' => $balance,
-                        'target_clients' => $target_clients,
-                        'actual_clients' => $actual_clients,
                         'score' => round($percentage, 0),
                     ];
                 }
-            } else if ($request->group == 'products') {
-                $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
-                $data = [];
-                foreach ($sales as $key => $sale) {
-                    $branch_name = $sale->first()->branch->branch_name;
-                    $product_name = $sale->first()->product->product_name;
-                    $target_amount = $sale->first()->product->productTarget->target_amount;
-                    $target_clients = 0;
-                    $total_disbursement_amount = $sale->sum('disbursement_amount');
-                    $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members');
-                    $balance = $target_amount - $total_disbursement_amount;
-                    if ($target_amount == 0)
-                        $percentage = 0;
-                    else
-                        $percentage = ($total_disbursement_amount / $target_amount) * 100;
-                    $data[] = [
-                        'branch_name' => $branch_name,
-                        'product_name' => $product_name,
-                        'total_disbursement_amount' => $total_disbursement_amount,
-                        'target_amount' => $target_amount,
-                        'balance' => $balance,
-                        'target_clients' => $target_clients,
-                        'actual_clients' => $actual_clients,
-                        'score' => round($percentage, 0),
-                    ];
-                }
-            } else if ($request->group == 'officers') {
-                $sales = $logged_user == 1 ? Sale::get()->groupBy('staff_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('staff_id');
-                $data = [];
-                foreach ($sales as $key => $sale) {
-                    $staff_name = $sale->first()->officer->names;
-                    $total_disbursement_amount = $sale->sum('disbursement_amount');
-                    $number_of_clients = $sale->count();
-                    $data[] = [
-                        'staff_id' => $key,
-                        'names' => $staff_name,
-                        'total_disbursement_amount' => $total_disbursement_amount,
-                        'number_of_clients' => $number_of_clients,
-                    ];
-                }
             }
-        } else {
-            //sales categorized by branches
-            $sales = $logged_user == 1 ? Sale::get()->groupBy('branch_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('branch_id');
-            //process the sales data and return the view
-            $data = [];
-            foreach ($sales as $key => $sale) {
-                //i want region_name, branch_name, and the total disbursement_amount
-                $region_name = $sale->first()->region->region_name;
-                $branch_name = $sale->first()->branch->branch_name;
-                //target_amount
-                $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
-                $total_disbursement_amount = $sale->sum('disbursement_amount');
-                //balance
-                $balance = $target_amount - $total_disbursement_amount;
-                //%centage score
-                if ($target_amount == 0)
-                    $percentage = 0;
-                else
-                    $percentage = ($total_disbursement_amount / $target_amount) * 100;
-                $data[] = [
-                    'region_name' => $region_name,
-                    'branch_name' => $branch_name,
-                    'total_disbursement_amount' => $total_disbursement_amount,
-                    'target_amount' => $target_amount,
-                    'balance' => $balance,
-                    'score' => round($percentage, 0),
-                ];
-            }
-        }
 
-        // Return JSON response with data and success message
-        return response()->json(['data' => $data, 'message' => 'success'], 200);
+            // Return JSON response with data and success message
+            return response()->json(['data' => $data, 'message' => 'success'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to process request. Please try again.', 'exception' => $e->getMessage()], 400);
+        }
     }
 
     public function import(Request $request)
@@ -137,10 +147,10 @@ class SaleController extends Controller
         ini_set('memory_limit', '-1');
         // Validate the uploaded file
         $request->validate([
-            'upload_template_file' => 'required|mimes:xlsx,xls,csv'
+            'upload_template_file' => 'required|mimes:xlsx,xls,csv',
         ], [
             'upload_template_file.required' => 'Please upload a file.',
-            'upload_template_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.'
+            'upload_template_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
         ]);
 
         //save the file to the server
