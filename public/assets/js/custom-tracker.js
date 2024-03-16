@@ -100,12 +100,9 @@ $(document).ready(function () {
                 $("#spinner").hide();
             },
             error: function (xhr, status, error) {
-                    // Parse the JSON response to get the error message
-    var jsonResponse = JSON.parse(xhr.responseText);
-    var errorMessage = jsonResponse.error;
-
-    // Log the error message
-    console.log(errorMessage);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
             }
         });
     }
