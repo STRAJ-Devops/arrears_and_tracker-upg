@@ -21,8 +21,8 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $logged_user = auth()->user()->user_type;
-        $staff_id = auth()->user()->staff_id;
+        $logged_user = 1;
+        $staff_id = 1;
         if ($request->has('group')) {
             if ($request->group == 'branches') {
                 //sales categorized by branches
