@@ -36,8 +36,8 @@ class SaleController extends Controller
                         $region_name = $sale->first()->region->region_name??'unknown';
                         $branch_name = $sale->first()->branch->branch_name??'unknown';
                         //target_amount
-                        $target_amount = 0;
-                        $target_clients = 0;
+                        $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
+                        $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
                         $actual_clients = $sale->sum('number_of_group_members');
                         //balance
@@ -60,7 +60,6 @@ class SaleController extends Controller
                             'score' => round($percentage, 0),
                         ];
                     }
-                    return response()->json(['data' => $data, 'message' => 'success'], 200);
                 } else if ($request->group == 'products') {
                     $sales = $logged_user == 1 ? Sale::get()->groupBy('product_id') : Sale::where('staff_id', $staff_id)->get()->groupBy('product_id');
                     $data = [];
