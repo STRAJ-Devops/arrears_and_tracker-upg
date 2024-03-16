@@ -36,10 +36,10 @@ class SaleController extends Controller
                         $region_name = $sale->first()->region->region_name??'unknown';
                         $branch_name = $sale->first()->branch->branch_name??'unknown';
                         //target_amount
-                        $target_amount = $sale->first()->branch->branchTarget->target_amount ?? 0;
-                        $target_clients = $sale->first()->branch->branchTarget->target_numbers ?? 0;
-                        $total_disbursement_amount = $sale->sum('disbursement_amount');
-                        $actual_clients = $sale->first()->product->arrears->sum('number_of_group_members')??0;
+                        $target_amount = 0;
+                        $target_clients = 0;
+                        $total_disbursement_amount = 0;
+                        $actual_clients = 0;
                         //balance
                         $balance = $target_amount - $total_disbursement_amount;
                         //%centage score
