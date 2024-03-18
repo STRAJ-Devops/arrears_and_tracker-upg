@@ -100,7 +100,7 @@ $(document).ready(function () {
                 $("#spinner").hide();
             },
             error: function (xhr, status, error) {
-                
+
             }
         });
     }

@@ -14,11 +14,12 @@
                                 <div class="row card-header pb-0 d-flex justify-content-between">
                                     <div class="col-md-9">
                                         <div class="form-group d-flex">
-                                            <label for="group-by" class="mr-2">Group By</label>
+                                            <label for="group-by" class="mr-2">Group By:</label>
                                             <select class="form-control" id="group-by">
-                                                <option value="branches">Branches</option>
-                                                <option value="officers">Officers</option>
-                                                <option value="products">Products</option>
+                                                <option value="branches">Branch</option>
+                                                <option value="officers">Officer</option>
+                                                <option value="products">Product</option>
+                                                <option value="regions">Region</option>
                                             </select>
                                         </div>
                                     </div>

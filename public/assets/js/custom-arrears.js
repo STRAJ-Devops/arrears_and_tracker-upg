@@ -15,6 +15,7 @@ $(document).ready(function () {
         fetchData(selectedGroup);
     });
 
+    
     // Function to populate table headers
     function populateTableHeaders(group) {
         var headers = {

@@ -15,7 +15,7 @@
                             <div class="col-md-9">
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
-                                    <select class="form-control" id="staff">
+                                    <select class="form-control staff" id="staff">
                                         <option value="staff_id">Officer</option>
                                         <option value="branch_id">Branch</option>
                                         <option value="region_id">Region</option>

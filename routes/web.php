@@ -81,6 +81,9 @@ Route::group(['middleware' => 'auth:officer'], function () {
     })->name('sign-up');
 });
 
+Route::get('get-all-regions', [RegionController::class, 'getAllRegions'])->name('allRegions');
+
+
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
