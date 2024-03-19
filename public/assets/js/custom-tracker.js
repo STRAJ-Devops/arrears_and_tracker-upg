@@ -72,7 +72,7 @@ $(document).ready(function () {
                             item.score.toLocaleString(),
                             ''
                         ];
-                        table.columns([7]).visible(false);
+                        table.columns([1, 7]).visible(false);
                     } else if (group === 'branches-loans') {
                         table.order([5, 'desc']);
                         var row = [
