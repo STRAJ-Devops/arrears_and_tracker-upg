@@ -106,8 +106,10 @@ class ExpectedController extends Controller
                         return '91-120';
                     } elseif ($age >= 121 && $age <= 150) {
                         return '121-150';
-                    } else {
-                        return 'Above 150';
+                    }    elseif ($age >= 151 && $age <= 180) {
+                        return '151-180';
+                    }  else {
+                        return '180+';
                     }
                 });
                 $groupKey = 'age';
