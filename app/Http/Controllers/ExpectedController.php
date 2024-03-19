@@ -138,7 +138,7 @@ class ExpectedController extends Controller
         // Iterate through grouped arrears and calculate totals
         foreach ($arrears as $key => $arrear) {
             $total_principle_arrears = $arrear->sum('principal_arrears');
-            $total_interest_arrears = $arrear->sum('interest_in_arrears');
+            $total_interest_arrears = $arrear->sum('outstanding_interest');
             $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
             $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
             $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;

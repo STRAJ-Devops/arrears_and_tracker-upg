@@ -120,7 +120,7 @@ class ArrearController extends Controller
         // Iterate through grouped arrears and calculate totals
         foreach ($arrears as $key => $arrear) {
             $total_principle_arrears = $arrear->sum('principal_arrears');
-            $total_interest_arrears = $arrear->sum('interest_in_arrears');
+            $total_interest_arrears = $arrear->sum('outstanding_interest');
             $total_arrears = $total_principle_arrears + $total_interest_arrears;
             $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->count();
             $total_clients = $arrear->sum('number_of_group_members');
