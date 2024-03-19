@@ -24,7 +24,7 @@ $(document).ready(function () {
         var headers = {
             "branches-loans": ["Branch", "Region", "Actual Volume","Target Volume", "Variance", "%score"],
             "branches-clients": ["Branch", "Region", "Actual Clients", "Target Clients", "Variance", "%score"],
-            "products": ["Product", "Branch", "Actual Clients", "Actual Volume", "Target Volume", "Variance", "%score"],
+            "products": ["Product", "Actual Clients", "Actual Volume", "Target Volume", "Variance", "%score"],
             "regions-loans": ["Region ID", "Region Name", "Actual Volume", "Target Volume", "Variance", "%score"],
             "regions-clients": ["Region ID", "Region Name", "Actual Clients", "Target Clients", "Variance", "%score"],
             "officers": ["Officer ID", "Names", "Volume Disbursed", "Number Of Clients"],
@@ -64,15 +64,15 @@ $(document).ready(function () {
                         table.order([6, 'desc']);
                         var row = [
                             item.product_name,
-                            item.branch_name,
                             item.actual_clients.toLocaleString(),
                             item.total_disbursement_amount.toLocaleString(),
                             item.target_amount.toLocaleString(),
                             item.balance.toLocaleString(),
                             item.score.toLocaleString(),
+                            '',
                             ''
                         ];
-                        table.columns([1, 7]).visible(false);
+                        table.columns([6, 7]).visible(false);
                     } else if (group === 'branches-loans') {
                         table.order([5, 'desc']);
                         var row = [
