@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                        <table id="arrears" class="display responsive" style="width:100%">
+                        <table id="expected-repayments-table" class="display responsive" style="width:100%">
                             <tbody>
                             <tfoot align="right">
                                 <tr>
@@ -61,58 +61,9 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <!-- Comment Modal -->
-    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="commentModalLabel">Add Comment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Hidden input field to store the customer_id value -->
-                    <input type="hidden" id="customer_id" name="customer_id">
-                    <!-- Add your comment form fields here -->
-                    <!-- For example, a textarea for entering the comment -->
-                    <div class="form-group">
-                        <label for="comment">Comment</label>
-                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <!-- Add a button to submit the form -->
-                    <button type="button" class="btn btn-primary" id="submitComment">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <!-- Modal -->
-    <!-- Comment Modal -->
-    <div class="modal fade" id="viewCommentsModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="commentModalLabel">Comments</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="comments-container">
-                        <!-- Comments will be dynamically added here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     @push('dashboard')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-        <script src="{{ asset('assets/js/custom-arrears.js') }}"></script>
+        <script src="{{ asset('assets/js/custom-expected-repayments.js') }}"></script>
     @endpush
 @endsection

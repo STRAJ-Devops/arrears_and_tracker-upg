@@ -62,6 +62,14 @@
         </a>
       </li>
       <li class="nav-item pb-2">
+        <a class="nav-link {{ (Request::is('expected-repayments') ? 'active' : '') }}" href="{{ url('expected-repayments') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i style="font-size: 1rem;" class="fas fa-lg fa-phone ps-2 pe-2 text-center text-dark {{ (Request::is('expected-repayments') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Expected Repayments</span>
+        </a>
+      </li>
+      <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('show-all-comments') ? 'active' : '') }}" href="{{ url('show-all-comments') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i style="font-size: 1rem;" class="fas fa-lg fa-comments ps-2 pe-2 text-center text-dark {{ (Request::is('show-all-comments') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>

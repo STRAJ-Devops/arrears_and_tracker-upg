@@ -2,65 +2,84 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ArrearsImport;
 use App\Models\Arrear;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
-class ArrearController extends Controller
+class ExpectedController extends Controller
 {
     public function index()
     {
-        //get the logged in officer
-        return view('arrears');
+
+        return view('expected-repayments');
     }
+
+    public function getAllExpectedRepayments()
+    {
+        $arrears = Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get();
+
+        // Loop through each arrear to calculate expected principal and interest
+        foreach ($arrears as $arrear) {
+            // Assuming $this->next_repayment_principal and $this->next_repayment_interest are properties of the Arrear model
+            $expectedPrincipal = $arrear->principal_in_arrears + $arrear->next_repayment_principal;
+            $expectedInterest = $arrear->interest_in_arrears + $arrear->next_repayment_interest;
+            $expected_total = $expectedPrincipal + $expectedInterest;
+
+            // Assign the calculated values back to the arrear object
+            $arrear->expected_principal = $expectedPrincipal;
+            $arrear->expected_interest = $expectedInterest;
+            $arrear->expected_total = $expected_total;
+        }
+
+        return response()->json(['arrears' => $arrears], 200);
+    }
+
 
     public function group_by(Request $request)
     {
         // Check if request has group as parameter
         if ($request->has('group')) {
             if ($request->group == 'staff_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('staff_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('staff_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('staff_id');
                 $groupKey = 'staff_id';
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             } else if ($request->group == 'branch_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('branch_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('branch_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('branch_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('branch_id');
                 $groupKey = 'branch_id';
                 $nameField = 'branch';
                 $nameAttribute = 'branch_name';
             } else if ($request->group == 'region_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('region_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('region_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('region_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('region_id');
                 $groupKey = 'region_id';
                 $nameField = 'region';
                 $nameAttribute = 'region_name';
             } else if ($request->group == 'loan_product') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('product_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('product_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('product_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('product_id');
                 $groupKey = 'product_id';
                 $nameField = 'product';
                 $nameAttribute = 'product_name';
             } else if ($request->group == 'gender') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('gender') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('gender');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('gender') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('gender');
                 $groupKey = 'gender';
                 $nameField = 'gender';
                 $nameAttribute = "None";
             } else if ($request->group == 'district') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('district_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('district_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('district_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('district_id');
                 $groupKey = 'district_id';
                 $nameField = 'district';
                 $nameAttribute = 'district_name';
             } else if ($request->group == 'sub_county') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('subcounty_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('subcounty_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('subcounty_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('subcounty_id');
                 $groupKey = 'subcounty_id';
                 $nameField = 'sub_county';
                 $nameAttribute = 'subcounty_name';
             } else if ($request->group == 'village') {
-                $arrears = auth()->user()->user_type == 1?Arrear::all()->groupBy('village_id'): Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('village_id');
+                $arrears = auth()->user()->user_type == 1?Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('village_id'): Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('village_id');
                 $groupKey = 'village_id';
                 $nameField = 'village';
                 $nameAttribute = 'village_name';
             } else if ($request->group == 'age') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy(function ($arrear) {
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -75,7 +94,7 @@ class ArrearController extends Controller
                     } else {
                         return 'Above 150';
                     }
-                }) : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy(function ($arrear) {
+                }) : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where("staff_id", auth()->user()->staff_id)->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -95,21 +114,20 @@ class ArrearController extends Controller
                 $nameField = null;
                 $nameAttribute = null;
             } else if ($request->group == 'client') {
-                // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('customer_id') : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy('customer_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('customer_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('customer_id');
                 $groupKey = 'client_id';
                 $nameField = 'customer';
                 $nameAttribute = 'names';
             } else {
                 // Default to group by staff_id
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
                 $groupKey = 'staff_id';
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             }
         } else {
             // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
+            $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears = 0')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
             $groupKey = 'staff_id';
             $nameField = 'officer';
         }
@@ -121,11 +139,15 @@ class ArrearController extends Controller
         foreach ($arrears as $key => $arrear) {
             $total_principle_arrears = $arrear->sum('principal_arrears');
             $total_interest_arrears = $arrear->sum('interest_in_arrears');
-            $total_arrears = $total_principle_arrears + $total_interest_arrears;
+            $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
+            $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
+            $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;
+            $expectedInterest = $total_interest_arrears + $total_next_repayment_interest;
+            $expected_total = $expectedPrincipal + $expectedInterest;
             $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->count();
             $total_clients = $arrear->sum('number_of_group_members');
             $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
-            $total_par = $arrear->sum('par');
+            $next_repayment_date = $arrear->first()->next_repayment_date;
             $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
             $number_of_comments = $arrear->first()->customer->comments->count();
             $amount_disbursed = $arrear->sum('amount_disbursed');
@@ -133,13 +155,13 @@ class ArrearController extends Controller
                 'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
                 'customer_id' => $arrear->first()->customer->customer_id, // Fetch customer id for the first record in the group
                 'group_key' => $key,
-                'total_principle_arrears' => $total_principle_arrears,
-                'total_interest_arrears' => $total_interest_arrears,
-                'total_arrears' => $total_arrears,
+                'expected_principal' => $expectedPrincipal,
+                'expected_interest' => $expectedInterest,
+                'expected_total' => $expected_total??0,
                 'clients_in_arrears' => $clients_in_arrears,
                 'total_clients' => $total_clients,
                 'names' => $names,
-                'total_par' => $total_par,
+                'next_repayment_date' => $next_repayment_date,
                 'phone_number' => $phone_number,
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed
@@ -149,4 +171,5 @@ class ArrearController extends Controller
         // Return JSON response with data and success message
         return response()->json(['data' => $data, 'message' => 'success'], 200);
     }
+
 }

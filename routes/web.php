@@ -8,6 +8,7 @@ use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\ExpectedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\InfoUserController;
@@ -54,7 +55,16 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('arrears', [ArrearController::class, 'index'])->name('arrears');
 
     Route::get('branch-targets-uploader', [BranchTargetController::class, 'index'])->name('branch-targets-uploader');
+    Route::get('upload-branch-targets', [BranchTargetController::class, 'uploadBranchTargets']);
+    Route::get('delete-branch-targets', [BranchTargetController::class, 'deleteBranchTargets']);
+
+
     Route::get('product-targets-uploader', [ProductTargetController::class, 'index'])->name('product-targets-uploader');
+    Route::get('upload-product-targets', [ProductTargetController::class, 'uploadProductTargets']);
+    Route::get('delete-product-targets', [ProductTargetController::class, 'deleteProductTargets']);
+
+    Route::get('expected-repayments', [ExpectedController::class, 'index'])->name('expected-repayments');
+    Route::post('get-expected-repayments', [ExpectedController::class, 'group_by']);
 
     Route::get('incentives', [IncentiveController::class, 'index'])->name('incentives');
 
@@ -72,7 +82,6 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('upload-sales-targets', [SaleController::class, 'import'])->name('upload-sales-targets');
 
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
-    Route::get('comments', [CommentController::class, 'index'])->name('comments');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
 
@@ -85,6 +94,8 @@ Route::get('get-all-regions', [RegionController::class, 'getAllRegions'])->name(
 
 
 Route::group(['middleware' => 'guest'], function () {
+    Route::get('comments', [CommentController::class, 'index'])->name('comments');
+
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);

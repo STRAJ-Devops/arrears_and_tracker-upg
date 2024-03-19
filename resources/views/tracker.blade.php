@@ -16,10 +16,12 @@
                                         <div class="form-group d-flex">
                                             <label for="group-by" class="mr-2">Group By:</label>
                                             <select class="form-control" id="group-by">
-                                                <option value="branches">Branch</option>
-                                                <option value="officers">Officer</option>
                                                 <option value="products">Product</option>
-                                                <option value="regions">Region</option>
+                                                <option value="branches-loans">Branch->Loan Disbursed</option>
+                                                <option value="branches-clients">Branch->Clients</option>
+                                                <option value="officers">Officer</option>
+                                                <option value="regions-loans">Region->Loan Disbursed</option>
+                                                <option value="regions-clients">Region->Clients</option>
                                             </select>
                                         </div>
                                     </div>

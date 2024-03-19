@@ -35,9 +35,6 @@ $(document).ready(function () {
         ajax: {
             // Use template literals (preferred)
             url: "/get-all-comments",
-            // Alternatively, use string concatenation
-            // const commentsRoute = '{{ route('allComments') }}';
-            // url: commentsRoute,
             type: "GET",
             dataSrc: "comments",
         },
@@ -46,7 +43,7 @@ $(document).ready(function () {
                 data: "id",
             },
             {
-                data: "customer.id",
+                data: "customer.customer_id",
             },
             {
                 data: "customer.names",

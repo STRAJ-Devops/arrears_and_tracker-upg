@@ -20,19 +20,16 @@ $(document).ready(function () {
     function populateTableHeaders(group) {
         var headers = {
             // define headers that belong to the institution
-            "staff_id": ["Officer ID", "Names", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "branch_id": ["Branch", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "region_id": ["Region", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "loan_product": ["Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "gender": ["Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "district": ["District", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "sub_county": ["Sub County", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "village": ["Village", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            //define headers that belong to the officer
-            // "client": ["Client ID", "Names", "Phone", "comments", "comments", "Amount Disbursed", "Principle arrears", "Interest Arrears", "Days Late", "Comment"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Principle arrears", "Interest Arrears", "Total Arrears", "actions"],
-
-            "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
+            "staff_id": ["Officer ID", "Names", "Clients", "Expected Principal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "branch_id": ["Branch", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "region_id": ["Region", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "loan_product": ["Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "gender": ["Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "district": ["District", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "sub_county": ["Sub County", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "village": ["Village", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
+            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Expected PRincipal", "Expected Interest", "Expected Total", "actions"],
+            "age": ["Age Bracket", "Number of clients", "Expected PRincipal", "Expected Interest", "Expected Total"],
         };
 
         // Get the corresponding headers for the selected group
@@ -50,7 +47,7 @@ $(document).ready(function () {
     function fetchData(group) {
         // Fetch data based on the selected group
         $.ajax({
-            url: "/arrears-group-by",
+            url: "/get-expected-repayments",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -74,9 +71,9 @@ $(document).ready(function () {
                         var row = [
                             item.group_key,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
                             ''
@@ -88,9 +85,9 @@ $(document).ready(function () {
                         var row = [
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
                             ''
@@ -102,10 +99,10 @@ $(document).ready(function () {
                         var row = [
                             item.group_key,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_par.toLocaleString(),
+                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_date,
                             '',
                             ''
                         ];
@@ -120,9 +117,9 @@ $(document).ready(function () {
                             item.phone_number,
                             numberOfCommentsHtml,
                             item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
                         ];
                     } else {
@@ -130,11 +127,11 @@ $(document).ready(function () {
                             item.group_key,
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_par.toLocaleString()
+                            item.next_repayment_date
                         ];
                     }
                     table.row.add(row).draw();
@@ -155,28 +152,28 @@ $(document).ready(function () {
         var messageTop = "Exported from the Arrears Report";
         switch (group) {
             case "staff_id":
-                messageTop = "Exported from the Arrears Report by Staff";
+                messageTop = "Exported from the Expected Payments Report by Staff";
                 break;
             case "branch_id":
-                messageTop = "Exported from the Arrears Report by Branch";
+                messageTop = "Exported from the Expected Payments Report by Branch";
                 break;
             case "region_id":
-                messageTop = "Exported from the Arrears Report by Region";
+                messageTop = "Exported from the Expected Payments Report by Region";
                 break;
             case "loan_product":
-                messageTop = "Exported from the Arrears Report by Loan Product";
+                messageTop = "Exported from the Expected Payments Report by Loan Product";
                 break;
             case "gender":
-                messageTop = "Exported from the Arrears Report by Gender";
+                messageTop = "Exported from the Expected Payments Report by Gender";
                 break;
             case "district":
-                messageTop = "Exported from the Arrears Report by District";
+                messageTop = "Exported from the Expected Payments Report by District";
                 break;
             case "sub_county":
-                messageTop = "Exported from the Arrears Report by Sub County";
+                messageTop = "Exported from the Expected Payments Report by Sub County";
                 break;
             case "village":
-                messageTop = "Exported from the Arrears Report by Village";
+                messageTop = "Exported from the Expected Payments Report by Village";
                 break;
         }
         return messageTop;
@@ -184,7 +181,7 @@ $(document).ready(function () {
 
     function drawTable() {
         // Initialize DataTable
-        var table = $('#arrears').DataTable({
+        var table = $('#expected-repayments-table').DataTable({
             responsive: true,
             columns: [
                 { title: "" },
@@ -217,9 +214,9 @@ $(document).ready(function () {
 
                 // Calculate total for each column
                 //check if group is client
-                $(api.column(2).footer()).html(sum(api.column(2).data())); // Principle Arrears
-                $(api.column(3).footer()).html(sum(api.column(3).data())); // Interest Arrears
-                $(api.column(4).footer()).html(sum(api.column(4).data())); // Total Arrears
+                $(api.column(2).footer()).html(sum(api.column(2).data())); // Expected PRincipal
+                $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
+                $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
                 $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
                 $(api.column(6).footer()).html(sum(api.column(6).data())); // Par
                 $(api.column(7).footer()).html(sum(api.column(7).data())); // Total

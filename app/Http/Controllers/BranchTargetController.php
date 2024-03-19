@@ -3,18 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Imports\BranchTargetsImport;
+use App\Models\BranchTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BranchTargetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('branch-targets-uploader');
+        $keyword = $request->get('search');
+        $perPage = 25;
+        if (!empty($keyword)) {
+            $targets = BranchTarget::with('branch')
+                ->whereHas('branch', function ($query) use ($keyword) {
+                    $query->where('branch_name', 'LIKE', "%$keyword%");
+                })
+                ->orWhere('branch_id', 'LIKE', "%$keyword%")
+                ->paginate($perPage);
+        } else {
+            $targets = BranchTarget::with('branch')->paginate($perPage);
+        }
+
+        return view('branch-targets-uploader', compact('targets'));
     }
+
+    public function uploadBranchTargets()
+    {
+        return view('upload-branch-targets');
+    }
+
+    public function deleteBranchTargets()
+    {
+        //empty the BranchTarget table
+        $delete = BranchTarget::truncate();
+        if (!$delete) {
+            return response()->json(['error' => 'Failed to delete branch targets. Please try again.'], 400);
+        }
+        return redirect()->back()->with('success', 'Branch targets deleted successfully.');
+    }
+
 
     public function import(Request $request)
     {
+        //truncate the BranchTarget table
+        BranchTarget::truncate();
+        //check if BranchTarget table is empty
+        if (BranchTarget::count() > 0) {
+            return response()->json(['error' => 'Branch targets already exist. Please delete existing targets before uploading new ones.'], 400);
+        }
         // Validate the uploaded file
         $request->validate([
             'branch_targets_file' => 'required|mimes:xlsx,xls,csv'

@@ -10,7 +10,7 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Outstanding Principal</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['outstanding_principal'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+55%</span>
+
                                 </h5>
                             </div>
                         </div>
@@ -32,7 +32,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">New Loans</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['total_disbursements'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+3%</span>
                                 </h5>
                             </div>
                         </div>
@@ -54,7 +53,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Principal In Arrears</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['principal_arrears'], 0, '.', ',') }}
-                                    <span class="text-danger text-sm font-weight-bolder">-2%</span>
                                 </h5>
                             </div>
                         </div>
@@ -76,7 +74,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Women</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_female_borrowers'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -98,7 +95,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Children</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_children'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -120,7 +116,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Clients</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_clients'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -142,7 +137,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Groups</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_groups'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -164,7 +158,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Members</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -185,8 +178,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">SGL</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    0
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
+                                    {{ number_format($data['sgl'], 0, '.', ',') }}
                                 </h5>
                             </div>
                         </div>
@@ -208,7 +200,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>1DAY</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ $data['par_1_days'] }}%
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -230,7 +221,6 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>30DAYS</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ $data['par_30_days'] }}%
-                                    <span class="text-success text-sm font-weight-bolder">+5%</span>
                                 </h5>
                             </div>
                         </div>
@@ -245,42 +235,48 @@
         </div>
     </div>
 
-    <div class="container m-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
-                    <canvas id="product-sales-targets" width="600" height="300"></canvas>
-                </div>
-              </div>
+    <div class="row">
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="arrears-chart" width="300" height="150"></canvas>
+            </div>
+        </div>
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="targets-sales-chart" width="300" height="150"></canvas>
+            </div>
         </div>
     </div>
 
-    <div class="container m-5">
-        <div class="row">
-            <div class="col-12">
-                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
-                    <canvas id="branch-sales-targets" width="600" height="300"></canvas>
-                </div>
-              </div>
+    <div class="row">
+        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="product-sales-targets" width="600" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="branch-sales-targets" width="600" height="300"></canvas>
+            </div>
         </div>
     </div>
 
     @push('dashboard')
-    <script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js" ></script>
-    <script>
-        var productLabels = {!! json_encode($data['product_labels']) !!};
-        var productSales = {!! json_encode($data['product_sales']) !!};
-        var productTargets = {!! json_encode($data['product_targets']) !!};
-        var branchLabels = {!! json_encode($data['branch_labels']) !!};
-        var branchSales = {!! json_encode($data['branch_sales']) !!};
-        var branchTargets = {!! json_encode($data['branch_targets']) !!};
-        console.log("product labels", productLabels);
-        console.log("product sales", productSales);
-        console.log("product targets", productTargets);
-        console.log("branch labels", branchLabels);
-        console.log("branch sales", branchSales);
-        console.log("branch targets", branchTargets);
-    </script>
-    <script src="{{ asset('assets/js/custom-dashboard.js') }}"></script>
+        <script>
+            var productLabels = {!! json_encode($data['product_labels']) !!};
+            var productSales = {!! json_encode($data['product_sales']) !!};
+            var productTargets = {!! json_encode($data['product_targets']) !!};
+            var branchLabels = {!! json_encode($data['branch_labels']) !!};
+            var branchSales = {!! json_encode($data['branch_sales']) !!};
+            var branchTargets = {!! json_encode($data['branch_targets']) !!};
+            var withArrears = {!! json_encode($data['withArrears']) !!};
+            var withoutArrears = {!! json_encode($data['withOutArrears']) !!};
+            var totalTargets = {!! json_encode($data['total_targets']) !!};
+            var totalSales = {!! json_encode($data['total_disbursements']) !!};
+        </script>
+        <script src="{{ asset('assets/js/custom-dashboard.js') }}"></script>
     @endpush
 @endsection

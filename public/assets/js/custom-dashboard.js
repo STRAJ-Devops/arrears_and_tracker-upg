@@ -38,10 +38,6 @@ var config = {
             },
         }
     },
-    title: {
-        display: true,
-        text: 'Sales and Targets'
-    },
 };
 
 
@@ -72,7 +68,7 @@ var config = {
     options: {
         responsive: true,
         scales: {
-  
+
         },
         plugins: {
             title: {
@@ -81,11 +77,65 @@ var config = {
             },
         }
     },
-    title: {
-        display: true,
-        text: 'Sales and Targets'
-    },
 };
 
 
 new Chart(document.getElementById('branch-sales-targets'), config);
+
+//pie chart for arrears
+var data = {
+    labels: ['Arrears', 'No Arrears'],
+    datasets: [
+        {
+            label: 'Arrears',
+            backgroundColor: ['rgba(255, 193, 7, 0.9)', 'rgba(0, 123, 255, 0.9)'],
+            borderColor: ['rgba(255, 193, 7, 1)', 'rgba(0, 123, 255, 1)'],
+            data: [withArrears, withoutArrears]
+        }
+    ]
+}
+
+var config = {
+    type: 'pie',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Loans Disbursed with Arrears and Without Arrears'
+            },
+        }
+    },
+};
+
+new Chart(document.getElementById('arrears-chart'), config);
+
+//pie chart for arrears
+var data = {
+    labels: ['Targets', 'Actuals'],
+    datasets: [
+        {
+            label: 'Targets vs Actuals',
+            backgroundColor: ['rgba(255, 193, 7, 0.9)', 'rgba(0, 123, 255, 0.9)'],
+            borderColor: ['rgba(255, 193, 7, 1)', 'rgba(0, 123, 255, 1)'],
+            data: [totalTargets, totalSales]
+        }
+    ]
+}
+
+var config = {
+    type: 'pie',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Total Sales vs Total Targets'
+            },
+        }
+    },
+};
+
+new Chart(document.getElementById('targets-sales-chart'), config);

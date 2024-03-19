@@ -22,10 +22,14 @@ class Arrear extends Model
         'number_of_days_late',
         'number_of_group_members',
         'lending_type',
+        'interest_in_arrears',
         'par',
         'gender',
         'customer_id',
-        'amount_disbursed'
+        'amount_disbursed',
+        'next_repayment_principal',
+        'next_repayment_interest',
+        'next_repayment_date',
     ];
 
     //an arrear belongs to an Officer
@@ -75,15 +79,8 @@ class Arrear extends Model
     //an arrear belongs to a Customer
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
-
-    //an arrear can have many comments
-    public function comments()
-    {
-        return $this->hasMany(Comment::class, 'arrear_id', 'id');
-    }
-
     //count the number of comments related to an arrear
     public function countComments()
     {

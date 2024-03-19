@@ -48,6 +48,8 @@ return new class extends Migration
 
             $table->bigInteger('principal_arrears');
 
+            $table->bigInteger('interest_in_arrears');
+
             $table->bigInteger('number_of_days_late');
 
             $table->integer('number_of_group_members');
@@ -60,8 +62,14 @@ return new class extends Migration
 
             $table->bigInteger('par');
 
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->string('customer_id');
+            $table->foreign('customer_id')->references('customer_id')->on('customers');
+
+            $table->bigInteger('next_repayment_principal')->nullable();
+
+            $table->bigInteger('next_repayment_interest')->nullable();
+
+            $table->string('next_repayment_date')->nullable();
 
             $table->timestamps();
         });

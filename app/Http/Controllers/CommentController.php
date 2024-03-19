@@ -10,8 +10,8 @@ class CommentController extends Controller
     //get all comments
     public function index()
     {
-        //get comments where request arrear_id
-        $comments = Comment::where('arrear_id', request()->arrear_id)->get();
+        //get comments where request customer_id
+        $comments = Comment::where('customer_id', request()->customer_id)->get();
 
         return response()->json(['comments' => $comments], 200);
     }
@@ -31,7 +31,7 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $comment->comment = $request->comment;
-        $comment->arrear_id = $request->arrear_id;
+        $comment->customer_id = $request->customer_id;
         $comment->staff_id = auth()->user()->staff_id;
         $comment->save();
 
@@ -41,8 +41,8 @@ class CommentController extends Controller
     //get all comments
     public function getComments()
     {
-        $logged_user = auth()->user()->user_type;
-        $staff_id = auth()->user()->staff_id;
+        $logged_user = 1;
+        $staff_id = 1106;
         //get all comments with customer
         $comments = $logged_user==1?Comment::with('customer')->get():Comment::where('staff_id', $staff_id)->with('customer')->get();
         return response()->json(['comments' => $comments], 200);

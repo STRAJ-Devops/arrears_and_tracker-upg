@@ -11,15 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('expecteds', function (Blueprint $table) {
             $table->id();
-            $table->integer('staff_id');
-            $table->foreign('staff_id')->references('staff_id')->on('officers');
-
-            $table->string('customer_id');
-            $table->foreign('customer_id')->references('customer_id')->on('customers');
-
-            $table->text('comment');
             $table->timestamps();
         });
     }
@@ -29,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('expecteds');
     }
 };

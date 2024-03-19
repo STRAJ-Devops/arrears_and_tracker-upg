@@ -35,4 +35,10 @@ class Region extends Model
     {
         return $this->sales->sum('disbursement_amount');
     }
+    //get regionTarget ad the sum of branch target amount in a region
+    public function targetNumbers()
+    {
+        return $this->branches->sum('branchTarget.target_numbers');
+    }
+
 }

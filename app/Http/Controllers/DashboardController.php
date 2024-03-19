@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Arrear;
 use App\Models\Branch;
+use App\Models\BranchTarget;
 use App\Models\Product;
 use App\Models\Sale;
 
@@ -19,6 +20,21 @@ class DashboardController extends Controller
 
         $principal_arrears = $logged_user == 1 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
 
+        $withOuthArrears = $logged_user == 1 ? Arrear::where('principal_arrears', 0)->where('interest_in_arrears', 0)->count() : Arrear::where('staff_id', $staff_id)->where('principal_arrears', 0)->where('interest_in_arrears', 0)->count();
+
+        $withArrears = $logged_user == 1 ? Arrear::where(function ($query) {
+            $query->where('principal_arrears', '<>', 0)
+                ->orWhere('interest_in_arrears', '<>', 0);})
+            ->count() : Arrear::where('staff_id', $staff_id)
+            ->where(function ($query) {
+                $query->where('principal_arrears', '<>', 0)
+                    ->orWhere('interest_in_arrears', '<>', 0);
+            })
+            ->count();
+
+        //get the sgl by counting number_of_group_members where product_code is 21070
+        $sgl = $logged_user == 1?Arrear::where('product_id', 21070)->sum('number_of_group_members'):Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
+
         $number_of_female_borrowers = $logged_user == 1 ? Sale::where('gender', 'female')->count() : Sale::where('gender', 'female')->where('staff_id', $staff_id)->count();
 
         $number_of_children = $logged_user == 1 ? Sale::sum('number_of_children') : Sale::where('staff_id', $staff_id)->sum('number_of_children');
@@ -30,6 +46,7 @@ class DashboardController extends Controller
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('disbursement_amount');
+        $total_targets = BranchTarget::sum('target_amount');
         $number_of_clients = $logged_user == 1
         ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
@@ -64,12 +81,6 @@ class DashboardController extends Controller
 
         $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
 
-        //create an array called pie_array for principal arrears and outstanding principal
-        $pie_data = [
-            'principal_arrears' => $principal_arrears,
-            'outstanding_principal' => $outstanding_principal,
-        ];
-
         // Get product labels and targets
         $productData = Product::with('productTarget')->get();
         $brachData = Branch::with('branchTarget')->get();
@@ -83,7 +94,7 @@ class DashboardController extends Controller
             ->groupBy('product_id')
             ->pluck('total_disbursements', 'product_id')
             ->toArray();
-      $branchActuals = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+        $branchActuals = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->selectRaw('branch_id, sum(disbursement_amount) as total_disbursements')
             ->groupBy('branch_id')
             ->pluck('total_disbursements', 'branch_id')
@@ -123,7 +134,6 @@ class DashboardController extends Controller
             'total_disbursements' => $total_disbursements_this_month,
             'par_30_days' => number_format(round($par_30_per, 2), 2),
             'par_1_days' => number_format(round($par_1_per, 2), 2),
-            'pie_array' => $pie_data,
             'number_of_clients' => $number_of_clients,
             'number_of_groups' => $number_of_groups,
             'number_of_individuals' => $number_of_individuals,
@@ -133,6 +143,10 @@ class DashboardController extends Controller
             'branch_labels' => $branchLabelsList,
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
+            'withArrears' => $withArrears,
+            'withOutArrears' => $withOuthArrears,
+            'total_targets' => $total_targets,
+            'sgl' => $sgl,
         ];
 
         return view('dashboard', compact('data'));

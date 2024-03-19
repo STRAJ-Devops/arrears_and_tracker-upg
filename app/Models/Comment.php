@@ -9,11 +9,11 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["staff_id", "arrear_id", "comment"];
+    protected $fillable = ["staff_id", "customer_id", "comment"];
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'staff_id', 'id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
 }

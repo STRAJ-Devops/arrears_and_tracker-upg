@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     // Initialize DataTable
     table = drawTable($('#group-by').val());
+    console.log($('#group-by').val());
     // Populate initial table headers
     var initialGroup = $('#group-by').val();
     populateTableHeaders(initialGroup);
@@ -21,8 +22,11 @@ $(document).ready(function () {
     // Function to populate table headers
     function populateTableHeaders(group) {
         var headers = {
-            "branches": ["Region", "Branch", "Actual Volume", "Actual Clients", "Target Volume", "Target Clients", "Variance", "%score"],
-            "products": ["Branch", "Product", "Actual Volume", "Actual Clients", "Target Volume", "Target Clients", "Variance", "%score"],
+            "branches-loans": ["Branch", "Region", "Actual Volume","Target Volume", "Variance", "%score"],
+            "branches-clients": ["Branch", "Region", "Actual Clients", "Target Clients", "Variance", "%score"],
+            "products": ["Product", "Branch", "Actual Clients", "Actual Volume", "Target Volume", "Variance", "%score"],
+            "regions-loans": ["Region ID", "Region Name", "Actual Volume", "Target Volume", "Variance", "%score"],
+            "regions-clients": ["Region ID", "Region Name", "Actual Clients", "Target Clients", "Variance", "%score"],
             "officers": ["Officer ID", "Names", "Volume Disbursed", "Number Of Clients"],
         };
 
@@ -52,33 +56,79 @@ $(document).ready(function () {
             },
             success: function (response) {
                 var data = response.data;
-                console.log(data);
-                table.columns().visible( [true, true, true, true, true, true, true, true]);
+                table.columns().visible([true, true, true, true, true, true, true, true]);
                 table.clear().draw(); // Clear existing data before populating and redraw
+                //set the order to descending based on the score
                 $.each(data, function (index, item) {
                     if (group === 'products') {
+                        table.order([6, 'desc']);
                         var row = [
-                            item.branch_name,
                             item.product_name,
-                            item.total_disbursement_amount.toLocaleString(),
-                            item.actual_clients.toLocaleString(),
-                            item.target_amount.toLocaleString(),
-                            item.target_clients.toLocaleString(),
-                            item.balance.toLocaleString(),
-                            item.score.toLocaleString()
-                        ];
-                    } else if (group === 'branches') {
-                        var row = [
-                            item.region_name,
                             item.branch_name,
-                            item.total_disbursement_amount.toLocaleString(),
                             item.actual_clients.toLocaleString(),
+                            item.total_disbursement_amount.toLocaleString(),
                             item.target_amount.toLocaleString(),
+                            item.balance.toLocaleString(),
+                            item.score.toLocaleString(),
+                            ''
+                        ];
+                        table.columns([7]).visible(false);
+                    } else if (group === 'branches-loans') {
+                        table.order([5, 'desc']);
+                        var row = [
+                            item.branch_name,
+                            item.region_name,
+                            item.total_disbursement_amount.toLocaleString(),
+                            item.target_amount.toLocaleString(),
+                            item.balance.toLocaleString(),
+                            item.score.toLocaleString(),
+                            '',
+                            ''
+                        ];
+                        table.columns([6, 7]).visible(false);
+                    }else if (group === 'branches-clients') {
+                        table.order([5, 'desc']);
+                        var row = [
+                            item.branch_name,
+                            item.region_name,
+                            item.actual_clients.toLocaleString(),
                             item.target_clients.toLocaleString(),
                             item.balance.toLocaleString(),
-                            item.score.toLocaleString()
+                            item.score.toLocaleString(),
+                            '',
+                            ''
                         ];
+                        table.columns([6, 7]).visible(false);
+
+                    } else if (group === 'regions-loans') {
+                        table.order([5, 'desc']);
+                        var row = [
+                            item.region_id,
+                            item.region_name,
+                            item.total_disbursement_amount.toLocaleString(),
+                            item.target_amount.toLocaleString(),
+                            item.balance.toLocaleString(),
+                            item.score.toLocaleString(),
+                            '',
+                            ''
+                        ];
+                        table.columns([6, 7]).visible(false);
+                    }else if (group === 'regions-clients') {
+                        table.order([5, 'desc']);
+                        var row = [
+                            item.region_id,
+                            item.region_name,
+                            item.actual_clients.toLocaleString(),
+                            item.target_clients.toLocaleString(),
+                            item.balance.toLocaleString(),
+                            item.score.toLocaleString(),
+                            '',
+                            ''
+                        ];
+                        table.columns([6, 7]).visible(false);
+
                     } else {
+                        table.order([3, 'desc']);
                         var row = [
                             item.staff_id,
                             item.names,
@@ -90,7 +140,6 @@ $(document).ready(function () {
                             ''
                         ];
                         table.columns([4, 5, 6, 7]).visible(false);
-
                     }
                     table.row.add(row).draw();
                 });
@@ -109,8 +158,20 @@ $(document).ready(function () {
     function generateMessageTop(group) {
         var messageTop = "Exported from the Arrears Report";
         switch (group) {
-            case "branches":
-                messageTop = "Performance Report by Branch";
+            case "branches-loans":
+                messageTop = "Performance Report by Branch Loans";
+                break;
+            case "branches-clients":
+                messageTop = "Performance Report by Branch Clients";
+                break;
+            case "regions-loans":
+                messageTop = "Performance Report by Region Loans";
+                break;
+            case "regions-clients":
+                messageTop = "Performance Report by Region Clients";
+                break;
+            case "officers":
+                messageTop = "Performance Report by Officer";
                 break;
             case "products":
                 messageTop = "Performance Report by Product";
@@ -153,6 +214,7 @@ $(document).ready(function () {
             //define
             responsive: true,
             columns: columns,
+            order: [[6, 'desc']],
             //show sortable headers with arrows
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api();
@@ -167,16 +229,21 @@ $(document).ready(function () {
                     }, 0);
                     return total.toLocaleString(); // Format total with commas
                 };
-                if (groupedby === 'branches' || groupedby === 'products') {
+                if (groupedby === 'branches-loans' || groupedby === 'branches-clients' || groupedby === 'regions-loans' || groupedby === 'regions-clients') {
+                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Actual Volume
+                    $(api.column(3).footer()).html(sum(api.column(3).data())); // Actual Clients
+                    $(api.column(4).footer()).html(sum(api.column(4).data())); // Target Volume
+                    $(api.column(5).footer()).html(sum(api.column(5).data())); // Target Clients
+                } else if (groupedby === 'officers') {
+                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Volume Disbursed
+                    $(api.column(3).footer()).html(sum(api.column(3).data())); // Number of Clients
+                }else if (groupedby === 'products') {
                     $(api.column(2).footer()).html(sum(api.column(2).data())); // Actual Volume
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Actual Clients
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Target Volume
                     $(api.column(5).footer()).html(sum(api.column(5).data())); // Target Clients
                     $(api.column(6).footer()).html(sum(api.column(6).data())); // Balance
                     $(api.column(7).footer()).html(sum(api.column(7).data())); // %Score
-                } else if (groupedby === 'officers') {
-                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Volume Disbursed
-                    $(api.column(3).footer()).html(sum(api.column(3).data())); // Number of Clients
                 }
 
             },
