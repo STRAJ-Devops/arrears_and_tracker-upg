@@ -97,7 +97,7 @@ var data = {
     datasets: [
         {
             label: 'Arrears',
-            backgroundColor: ['rgba(255, 193, 7, 0.9)', 'rgba(0, 123, 255, 0.9)'],
+            backgroundColor: ['red', 'green'],
             borderColor: ['rgba(255, 193, 7, 1)', 'rgba(0, 123, 255, 1)'],
             data: [withArrears, withoutArrears]
         }
