@@ -33,7 +33,7 @@ class DashboardController extends Controller
             ->count();
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $logged_user == 1?Arrear::where('product_id', 21070)->sum('number_of_group_members'):Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = $logged_user == 1 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
 
         $number_of_female_borrowers = $logged_user == 1 ? Sale::where('gender', 'female')->count() : Sale::where('gender', 'female')->where('staff_id', $staff_id)->count();
 
@@ -55,21 +55,17 @@ class DashboardController extends Controller
 
         $number_of_groups = $logged_user == 1
         ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('number_of_group_members', '>', 1)
-            ->sum('number_of_group_members')
-        : Sale::where('staff_id', $staff_id)
+            ->where('product_id', 21070)->orWhereNotNull('group_id')
+            ->groupBy('group_id')
+            ->count() : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('number_of_group_members', '>', 1)
+            ->where('product_id', 21070)->orWhereNotNull('group_id')
+            ->groupBy('group_id')
             ->count();
 
         $number_of_individuals = $logged_user == 1
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('number_of_group_members', '=', 1)
-            ->sum('number_of_group_members')
-        : Sale::where('staff_id', $staff_id)
-            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('number_of_group_members', '=', 1)
-            ->count();
+        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members')
+        : Sale::where('staff_id', $staff_id)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members');
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');

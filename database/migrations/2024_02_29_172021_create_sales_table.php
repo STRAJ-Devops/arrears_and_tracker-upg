@@ -37,6 +37,8 @@ return new class extends Migration
             $table->bigInteger('branch_id');
             $table->foreign('branch_id')->references('branch_id')->on('branches');
 
+            $table->string('group_id')->nullable();
+
             $table->timestamps();
         });
     }

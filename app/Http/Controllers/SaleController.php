@@ -343,6 +343,7 @@ class SaleController extends Controller
                         $sale->gender = $csv[$i][19];
                         $sale->number_of_children = $csv[$i][45];
                         $sale->number_of_group_members = $csv[$i][47];
+                        $sale->group_id = $csv[$i][4];
                         $sale->save();
 
                         $arrear = new Arrear();
