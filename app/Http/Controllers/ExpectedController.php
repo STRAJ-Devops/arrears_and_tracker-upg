@@ -41,47 +41,47 @@ class ExpectedController extends Controller
         // Check if request has group as parameter
         if ($request->has('group')) {
             if ($request->group == 'staff_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('staff_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('staff_id');
                 $groupKey = 'staff_id';
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             } else if ($request->group == 'branch_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('branch_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('branch_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('branch_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('branch_id');
                 $groupKey = 'branch_id';
                 $nameField = 'branch';
                 $nameAttribute = 'branch_name';
             } else if ($request->group == 'region_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('region_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('region_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('region_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('region_id');
                 $groupKey = 'region_id';
                 $nameField = 'region';
                 $nameAttribute = 'region_name';
             } else if ($request->group == 'loan_product') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('product_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('product_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('product_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('product_id');
                 $groupKey = 'product_id';
                 $nameField = 'product';
                 $nameAttribute = 'product_name';
             } else if ($request->group == 'gender') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('gender') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('gender');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('gender') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('gender');
                 $groupKey = 'gender';
                 $nameField = 'gender';
                 $nameAttribute = "None";
             } else if ($request->group == 'district') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('district_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('district_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('district_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('district_id');
                 $groupKey = 'district_id';
                 $nameField = 'district';
                 $nameAttribute = 'district_name';
             } else if ($request->group == 'sub_county') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('subcounty_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('subcounty_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('subcounty_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('subcounty_id');
                 $groupKey = 'subcounty_id';
                 $nameField = 'sub_county';
                 $nameAttribute = 'subcounty_name';
             } else if ($request->group == 'village') {
-                $arrears = auth()->user()->user_type == 1?Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('village_id'): Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('village_id');
+                $arrears = auth()->user()->user_type == 1?Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('village_id'): Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where('staff_id', auth()->user()->staff_id)->get()->groupBy('village_id');
                 $groupKey = 'village_id';
                 $nameField = 'village';
                 $nameAttribute = 'village_name';
             } else if ($request->group == 'age') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy(function ($arrear) {
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -98,7 +98,7 @@ class ExpectedController extends Controller
                     }  else {
                         return '180+';
                     }
-                }) : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy(function ($arrear) {
+                }) : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -120,20 +120,20 @@ class ExpectedController extends Controller
                 $nameField = null;
                 $nameAttribute = null;
             } else if ($request->group == 'client') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('customer_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('customer_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('customer_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('customer_id');
                 $groupKey = 'client_id';
                 $nameField = 'customer';
                 $nameAttribute = 'names';
             } else {
                 // Default to group by staff_id
-                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
                 $groupKey = 'staff_id';
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             }
         } else {
             // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('principal_arrears + interest_in_arrears !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
+            $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id') : Arrear::whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->where("staff_id", auth()->user()->staff_id)->get()->groupBy('staff_id');
             $groupKey = 'staff_id';
             $nameField = 'officer';
         }
