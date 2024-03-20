@@ -38,11 +38,10 @@ var config = {
             },
 
             datalabels: {
-                lables: {
-                    value: {
-
-                    }
-                }
+                color: 'white',
+                formatter: function (value, context) {
+                    return "";
+                },
             }
         }
     },
@@ -83,6 +82,12 @@ var config = {
                 display: true,
                 text: 'Branch Sales and Targets'
             },
+            datalabels: {
+                color: 'white',
+                formatter: function (value, context) {
+                    return "";
+                },
+            }
         }
     },
 };
