@@ -117,9 +117,10 @@ var config = {
             datalabels: {
                 color: 'white',
                 // display percentage with two decimal points
-                formatter: function(value, context) {
+                formatter: function (value, context) {
                     //return the percentage and append the percentage sign
-                    return value;
+                    const percentage = (value/(withArrears + withoutArrears)) * 100;
+                    return percentage.toFixed(2) + '%';
                 },
                 font: {
                     weight: 'bold',
@@ -158,8 +159,11 @@ var config = {
             },
             datalabels: {
                 color: 'white',
-                formatter: function(value, context) {
-                    console.log(context.chart.data.datasets[0].data[1]);
+                formatter: function (value, context) {
+                    console.log(value, totalTargets, totalSales);
+                    const percentage = (value/(Number(totalTargets) + Number(totalSales))) * 100;
+                    console.log(percentage);
+                    return percentage.toFixed(2) + '%';
                 },
                 font: {
                     weight: 'bold',
