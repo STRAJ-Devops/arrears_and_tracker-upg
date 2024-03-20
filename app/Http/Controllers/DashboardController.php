@@ -48,7 +48,7 @@ class DashboardController extends Controller
             ->sum('disbursement_amount');
         $total_targets = BranchTarget::sum('target_amount');
         $number_of_clients = $logged_user == 1
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('number_of_group_members')
+        ? Sale::sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('number_of_group_members');
