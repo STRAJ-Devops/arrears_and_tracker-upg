@@ -28,7 +28,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "sub_county": ["Sub County", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "village": ["Village", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Expected PRincipal", "Expected Interest", "Expected Total", "actions"],
+            "client": ["Customer ID","Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Payment Amount", "Next Repayment Date", "Number of Days in Arrears"],
             "age": ["Age Bracket", "Number of clients", "Expected PRincipal", "Expected Interest", "Expected Total"],
         };
 
@@ -58,13 +58,8 @@ $(document).ready(function () {
             success: function (response) {
                 var data = response.data;
                 var tbody = $('#arrears tbody');
-                table.columns().visible([true, true, true, true, true, true, true, true]);
+                table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true]);
                 table.clear().draw(); // Clear existing data before populating and redraw
-
-                if (group === 'age') {
-                    //delete the last 4 columns from the table not visibility
-                    // table.columns([1]).visible(false);
-                }
 
                 $.each(data, function (index, item) {
                     if (group === 'age') {
@@ -76,11 +71,15 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
+                            '',
+                            '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7]).visible(false);
+                        table.columns([5, 6, 7, 8, 9, 10, 11]).visible(false);
                     } else if (group === 'loan_product') {
                         var row = [
                             item.names,
@@ -90,11 +89,15 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
+                            '',
+                            '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7]).visible(false);
+                        table.columns([5, 6, 7, 8, 9, 10, 11]).visible(false);
                     } else if (group === 'gender') {
                         var row = [
                             item.group_key,
@@ -104,23 +107,32 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.next_repayment_date,
                             '',
+                            '',
+                            '',
+                            '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([6, 7]).visible(false);
+                        table.columns([6, 7, 8, 9, 10, 11]).visible(false);
                     } else if (group === 'client') {
-                        var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
                         var row = [
-                            //item.custome_id,
+                            item.customer_id,
                             item.names,
                             item.phone_number,
-                            numberOfCommentsHtml,
+
                             item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
-                            item.expected_principal.toLocaleString(), // Pad with comma after every three digits
-                            item.expected_interest.toLocaleString(), // Pad with comma after every three digits
-                            item.expected_total.toLocaleString(), // Pad with comma after every three digits
-                            '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
+
+                            item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
+
+                            item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_date,
+                            item.number_of_days_late.toLocaleString(), // Pad with comma after every three digits
                         ];
                     } else {
                         var row = [
@@ -131,8 +143,15 @@ $(document).ready(function () {
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.next_repayment_date
+                            item.next_repayment_date,
+                            '',
+                            '',
+                            '',
+                            ''
                         ];
+
+                        //hide the last 3 columns
+                        table.columns([8, 9, 10, 11]).visible(false);
                     }
                     table.row.add(row).draw();
                 });
@@ -191,7 +210,11 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
-                { title: "" }
+                { title: "" },
+                { title: "" },
+                { title: "" },
+                { title: "" },
+                { title: "" },
             ],
             //show sortable headers with arrows
             "footerCallback": function (row, data, start, end, display) {
@@ -224,7 +247,7 @@ $(document).ready(function () {
         });
 
         // Set initial visibility for columns
-        var initialColumnsVisibility = [true, true, true, true, true, true, true, true];
+        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true, true, true];
         table.columns().visible(initialColumnsVisibility);
 
         new $.fn.dataTable.Buttons(table, {
