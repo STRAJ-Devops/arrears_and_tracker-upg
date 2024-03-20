@@ -48,14 +48,13 @@ class DashboardController extends Controller
             ->sum('disbursement_amount');
         $total_targets = BranchTarget::sum('target_amount');
         $number_of_clients = $logged_user == 1
-        ? Sale::sum('number_of_group_members')
+        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('number_of_group_members');
 
         $number_of_groups = $logged_user == 1
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('product_id', 21070)->orWhereNotNull('group_id')
+        ? Sale::where('product_id', 21070)->orWhereNotNull('group_id')
             ->groupBy('group_id')
             ->count() : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
@@ -64,8 +63,8 @@ class DashboardController extends Controller
             ->count();
 
         $number_of_individuals = $logged_user == 1
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members')
-        : Sale::where('staff_id', $staff_id)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members');
+        ? Sale::where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members')
+        : Sale::where('staff_id', $staff_id)->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members');
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
