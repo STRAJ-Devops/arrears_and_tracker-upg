@@ -131,7 +131,7 @@ class ArrearController extends Controller
             $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->count();
             $total_clients = $arrear->sum('number_of_group_members');
             $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
-            $total_par = $arrear->sum('par');
+            $total_par = $total_outstanding_principal!=0?(($arrear->sum('par')/$total_outstanding_principal)*100):0;
             $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
             $number_of_comments = $arrear->first()->customer->comments->count();
             $amount_disbursed = $arrear->sum('amount_disbursed');
@@ -145,7 +145,7 @@ class ArrearController extends Controller
                 'clients_in_arrears' => $clients_in_arrears,
                 'total_clients' => $total_clients,
                 'names' => $names,
-                'total_par' => $total_par,
+                'total_par' => number_format(round($total_par,1),1),
                 'phone_number' => $phone_number,
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed,
