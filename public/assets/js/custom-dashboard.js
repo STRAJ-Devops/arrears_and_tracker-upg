@@ -98,7 +98,7 @@ var data = {
         {
             label: 'Arrears',
             backgroundColor: ['red', 'green'],
-            borderColor: ['rgba(255, 193, 7, 1)', 'rgba(0, 123, 255, 1)'],
+            borderColor: ['red', 'green'],
             data: [withArrears, withoutArrears]
         }
     ]
