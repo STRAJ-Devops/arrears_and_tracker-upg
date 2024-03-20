@@ -5,14 +5,14 @@ var data = {
     datasets: [
         {
             label: 'Sales',
-            backgroundColor: 'rgba(0, 123, 255, 0.9)',
-            borderColor: 'rgba(0, 123, 255, 1)',
+            backgroundColor: 'green',
+            borderColor: 'green',
             data: productSales
         },
         {
             label: 'Target',
-            backgroundColor: 'rgba(255, 193, 7, 0.9)',
-            borderColor: 'rgba(255, 193, 7, 1)',
+            backgroundColor: 'red',
+            borderColor: 'red',
             data: productTargets
         }
     ]
@@ -56,14 +56,14 @@ var data = {
     datasets: [
         {
             label: 'Sales',
-            backgroundColor: 'rgba(0, 123, 255, 0.9)',
-            borderColor: 'rgba(0, 123, 255, 1)',
+            backgroundColor: 'green',
+            borderColor: 'green',
             data: branchSales
         },
         {
             label: 'Target',
-            backgroundColor: 'rgba(255, 193, 7, 0.9)',
-            borderColor: 'rgba(255, 193, 7, 1)',
+            backgroundColor: 'red',
+            borderColor: 'red',
             data: branchTargets
         }
     ]
@@ -124,7 +124,7 @@ var config = {
                 // display percentage with two decimal points
                 formatter: function (value, context) {
                     //return the percentage and append the percentage sign
-                    const percentage = (value/(withArrears + withoutArrears)) * 100;
+                    const percentage = (value / (withArrears + withoutArrears)) * 100;
                     return percentage.toFixed(2) + '%';
                 },
                 font: {
@@ -145,8 +145,8 @@ var data = {
     datasets: [
         {
             label: 'Targets vs Actuals',
-            backgroundColor: ['rgba(255, 193, 7, 0.9)', 'rgba(0, 123, 255, 0.9)'],
-            borderColor: ['rgba(255, 193, 7, 1)', 'rgba(0, 123, 255, 1)'],
+            backgroundColor: ['red', 'green'],
+            borderColor: ['red', 'green'],
             data: [totalTargets, totalSales]
         }
     ]
@@ -166,7 +166,7 @@ var config = {
                 color: 'white',
                 formatter: function (value, context) {
                     console.log(value, totalTargets, totalSales);
-                    const percentage = (value/(Number(totalTargets) + Number(totalSales))) * 100;
+                    const percentage = (value / (Number(totalTargets) + Number(totalSales))) * 100;
                     console.log(percentage);
                     return percentage.toFixed(2) + '%';
                 },
