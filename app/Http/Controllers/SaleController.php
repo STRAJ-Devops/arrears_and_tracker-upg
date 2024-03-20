@@ -253,10 +253,18 @@ class SaleController extends Controller
                         //extracting staff_id from $csv[$i][2]
                         $staffData = explode('-', $csv[$i][2]);
                         $staff_id = $staffData[0];
-
+                        $full_name = count($staffData) > 2 ? $staffData[2] : $staffData[1];
+                        
                         $found = Officer::where('staff_id', $staff_id)->first();
-                        if (!$found) {
-                            //staffName is the rest of the string after the first hyphen
+                        if ($found) {
+                            // Staff found, check if names match
+                            if ($found->names !== $full_name) {
+                                // Names don't match, update name
+                                $found->names = $full_name;
+                                $found->save();
+                            }
+                        } else {
+                            // Staff not found, create new
                             $staffName = count($staffData) > 2 ? $staffData[2] : $staffData[1];
                             $staff = new Officer();
                             $staff->staff_id = $staff_id;
@@ -268,6 +276,7 @@ class SaleController extends Controller
 
                             $staff_id = $staff->staff_id;
                         }
+
 
                         $product_id = $csv[$i][17];
                         $found = Product::where('product_id', $product_id)->first();
