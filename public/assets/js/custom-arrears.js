@@ -20,18 +20,15 @@ $(document).ready(function () {
     function populateTableHeaders(group) {
         var headers = {
             // define headers that belong to the institution
-            "staff_id": ["Officer ID", "Names", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "branch_id": ["Branch", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "region_id": ["Region", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "loan_product": ["Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "gender": ["Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "district": ["District", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "sub_county": ["Sub County", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            "village": ["Village", "Name", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
-            //define headers that belong to the officer
-            // "client": ["Client ID", "Names", "Phone", "comments", "comments", "Amount Disbursed", "Principle arrears", "Interest Arrears", "Days Late", "Comment"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Principle arrears", "Interest Arrears", "Total Arrears", "actions"],
-
+            "staff_id": ["Officer ID", "Names", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "branch_id": ["Branch", "Name", "Outstanding Principal", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "region_id": ["Region", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "loan_product": ["Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "gender": ["Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "district": ["District", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "sub_county": ["Sub County", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "village": ["Village", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par"],
+            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "actions"],
             "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
         };
 
@@ -74,6 +71,7 @@ $(document).ready(function () {
                         var row = [
                             item.group_key,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
@@ -88,6 +86,7 @@ $(document).ready(function () {
                         var row = [
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
@@ -102,6 +101,7 @@ $(document).ready(function () {
                         var row = [
                             item.group_key,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
@@ -120,6 +120,7 @@ $(document).ready(function () {
                             item.phone_number,
                             numberOfCommentsHtml,
                             item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
@@ -130,6 +131,7 @@ $(document).ready(function () {
                             item.group_key,
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
@@ -194,6 +196,7 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
+                { title: "" },
                 { title: "" }
             ],
             //show sortable headers with arrows
@@ -223,6 +226,7 @@ $(document).ready(function () {
                 $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
                 $(api.column(6).footer()).html(sum(api.column(6).data())); // Par
                 $(api.column(7).footer()).html(sum(api.column(7).data())); // Total
+                $(api.column(8).footer()).html(sum(api.column(8).data())); // Total
             },
         });
 
