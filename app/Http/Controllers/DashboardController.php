@@ -48,7 +48,7 @@ class DashboardController extends Controller
             ->sum('disbursement_amount');
         $total_targets = BranchTarget::sum('target_amount');
         $number_of_clients = $logged_user == 1
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('number_of_group_members')
+        ? Sale::sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('number_of_group_members');
@@ -77,7 +77,7 @@ class DashboardController extends Controller
         $par_30_per = $outstanding_principal == 0 ? 0 : (($par_30_days / $outstanding_principal) * 100);
 
         //get pa 1 day that is sum of par for all arrears that are more than 1 day late
-        $par_1_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 1)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 1)->sum('par');
+        $par_1_days = $logged_user == 1 ? Arrear::sum('par') : Arrear::where('staff_id', $staff_id)->sum('par');
 
         $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
 

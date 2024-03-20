@@ -155,7 +155,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Members</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Group Members</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
                                 </h5>
@@ -265,7 +265,11 @@
     </div>
 
     @push('dashboard')
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+
         <script>
+            Chart.register(ChartDataLabels);
+
             var productLabels = {!! json_encode($data['product_labels']) !!};
             var productSales = {!! json_encode($data['product_sales']) !!};
             var productTargets = {!! json_encode($data['product_targets']) !!};

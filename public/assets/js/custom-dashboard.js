@@ -82,6 +82,7 @@ var config = {
 
 new Chart(document.getElementById('branch-sales-targets'), config);
 
+
 //pie chart for arrears
 var data = {
     labels: ['Arrears', 'No Arrears'],
@@ -109,6 +110,7 @@ var config = {
     },
 };
 
+
 new Chart(document.getElementById('arrears-chart'), config);
 
 //pie chart for arrears
@@ -134,8 +136,19 @@ var config = {
                 display: true,
                 text: 'Total Sales vs Total Targets'
             },
+            // datalabels: {
+            //     color: 'white',
+            //     formatter: function(value, context) {
+            //         console.log(context.chart.data.datasets[0].data[1]);
+            //     },
+            //     font: {
+            //         weight: 'bold',
+            //         size: 25,
+            //     }
+            // }
         }
     },
 };
+
 
 new Chart(document.getElementById('targets-sales-chart'), config);
