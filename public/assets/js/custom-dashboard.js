@@ -36,6 +36,14 @@ var config = {
                 display: true,
                 text: 'Product Sales and Targets'
             },
+
+            datalabels: {
+                lables: {
+                    value: {
+
+                    }
+                }
+            }
         }
     },
 };
@@ -106,6 +114,18 @@ var config = {
                 display: true,
                 text: 'Loans Disbursed with Arrears and Without Arrears'
             },
+            datalabels: {
+                color: 'white',
+                // display percentage with two decimal points
+                formatter: function(value, context) {
+                    //return the percentage and append the percentage sign
+                    return value;
+                },
+                font: {
+                    weight: 'bold',
+                    size: 25,
+                }
+            }
         }
     },
 };
@@ -136,16 +156,16 @@ var config = {
                 display: true,
                 text: 'Total Sales vs Total Targets'
             },
-            // datalabels: {
-            //     color: 'white',
-            //     formatter: function(value, context) {
-            //         console.log(context.chart.data.datasets[0].data[1]);
-            //     },
-            //     font: {
-            //         weight: 'bold',
-            //         size: 25,
-            //     }
-            // }
+            datalabels: {
+                color: 'white',
+                formatter: function(value, context) {
+                    console.log(context.chart.data.datasets[0].data[1]);
+                },
+                font: {
+                    weight: 'bold',
+                    size: 25,
+                }
+            }
         }
     },
 };

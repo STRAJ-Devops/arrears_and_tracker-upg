@@ -8,7 +8,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Outstanding Principal</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['outstanding_principal'], 0, '.', ',') }}
 
                                 </h5>
@@ -30,7 +30,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">New Loans</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['total_disbursements'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -51,7 +51,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Principal In Arrears</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['principal_arrears'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -72,7 +72,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Women</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_female_borrowers'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -93,7 +93,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Children</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_children'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -114,7 +114,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Clients</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_clients'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -135,7 +135,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Groups</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_groups'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -156,7 +156,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Group Members</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -177,7 +177,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">SGL</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['sgl'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -198,7 +198,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>1DAY</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ $data['par_1_days'] }}%
                                 </h5>
                             </div>
@@ -219,7 +219,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>30DAYS</p>
-                                <h5 class="font-weight-bolder mb-0">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ $data['par_30_days'] }}%
                                 </h5>
                             </div>
@@ -265,10 +265,10 @@
     </div>
 
     @push('dashboard')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
-            // Chart.register(ChartDataLabels);
+            Chart.register(ChartDataLabels);
 
             var productLabels = {!! json_encode($data['product_labels']) !!};
             var productSales = {!! json_encode($data['product_sales']) !!};
