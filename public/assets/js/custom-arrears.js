@@ -21,7 +21,7 @@ $(document).ready(function () {
         var headers = {
             // define headers that belong to the institution
             "staff_id": ["Officer ID", "Names", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
-            "branch_id": ["Branch", "Name", "Outstanding Principal", "Clients", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
+            "branch_id": ["Branch", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "region_id": ["Region", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "loan_product": ["Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "gender": ["Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
