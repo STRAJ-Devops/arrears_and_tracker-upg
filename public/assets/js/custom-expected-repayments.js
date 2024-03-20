@@ -28,7 +28,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "sub_county": ["Sub County", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "village": ["Village", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "client": ["Customer ID","Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Payment Amount", "Next Repayment Date", "Number of Days in Arrears"],
+            "client": ["Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Payment Amount", "Next Repayment Date", "Number of Days in Arrears"],
             "age": ["Age Bracket", "Number of clients", "Expected PRincipal", "Expected Interest", "Expected Total"],
         };
 
@@ -237,7 +237,9 @@ $(document).ready(function () {
 
                 // Calculate total for each column
                 //check if group is client
-                $(api.column(2).footer()).html(sum(api.column(2).data())); // Expected PRincipal
+                if ($('#staff').val() != 'client') {
+                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Expected PRincipal
+                }
                 $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
                 $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
                 $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
@@ -304,47 +306,47 @@ $(document).ready(function () {
         function fetchComments(customerId) {
             // Make a GET request to fetch comments
             $.ajax({
-              url: "/comments", // Replace with your server endpoint
-              type: "GET",
-              data: {
-                customer_id: customerId
-              },
-              success: function (response) {
-                var comments = response.comments;
-                var commentsContainer = $('#comments-container');
-                commentsContainer.empty(); // Clear existing comments
+                url: "/comments", // Replace with your server endpoint
+                type: "GET",
+                data: {
+                    customer_id: customerId
+                },
+                success: function (response) {
+                    var comments = response.comments;
+                    var commentsContainer = $('#comments-container');
+                    commentsContainer.empty(); // Clear existing comments
 
-                // Loop through comments and append them to the container with styling
-                comments.forEach(function (comment) {
-                  var commentBox = $('<div class="comment-box mb-3 p-3 rounded shadow-sm"></div>');
+                    // Loop through comments and append them to the container with styling
+                    comments.forEach(function (comment) {
+                        var commentBox = $('<div class="comment-box mb-3 p-3 rounded shadow-sm"></div>');
 
-                  // Add comment content with styling
-                  var commentContent = $('<p class="comment-text mb-0"></p>')
-                    .text(comment.comment)
-                    .css({
-                      fontSize: '16px', // Adjust font size as desired
-                      lineHeight: '1.5', // Set line spacing for readability
-                      fontFamily: 'sans-serif', // Use a user-friendly font
-                      color: '#333' // Set text color for clarity
+                        // Add comment content with styling
+                        var commentContent = $('<p class="comment-text mb-0"></p>')
+                            .text(comment.comment)
+                            .css({
+                                fontSize: '16px', // Adjust font size as desired
+                                lineHeight: '1.5', // Set line spacing for readability
+                                fontFamily: 'sans-serif', // Use a user-friendly font
+                                color: '#333' // Set text color for clarity
+                            });
+
+                        // Optional: Add user information (if available)
+                        if (comment.created_at) {
+                            var userSpan = $('<span class="user-info mr-2"></span>')
+                                .text(formatDate(comment.created_at) + ': ');
+                            commentBox.prepend(userSpan);
+                        }
+
+                        commentBox.append(commentContent);
+                        commentsContainer.append(commentBox);
                     });
-
-                  // Optional: Add user information (if available)
-                  if (comment.created_at) {
-                    var userSpan = $('<span class="user-info mr-2"></span>')
-                      .text(formatDate(comment.created_at) + ': ');
-                    commentBox.prepend(userSpan);
-                  }
-
-                  commentBox.append(commentContent);
-                  commentsContainer.append(commentBox);
-                });
-              },
-              error: function (xhr, status, error) {
-                // Handle error
-                console.error("Error fetching comments:", xhr.responseText);
-              }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error("Error fetching comments:", xhr.responseText);
+                }
             });
-          }
+        }
 
 
         // Attach click event handler to view comments
