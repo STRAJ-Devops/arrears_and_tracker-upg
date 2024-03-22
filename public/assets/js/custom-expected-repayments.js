@@ -33,7 +33,7 @@ $(document).ready(function () {
     });
 
     $('#all').click(function() {
-        table.column(10).search('').draw(); // Remove date filter and redraw
+        table.column(11).search('').draw(); // Remove date filter and redraw
     });
 
     // Function to filter the DataTable by date
@@ -45,7 +45,7 @@ $(document).ready(function () {
             year: '2-digit'
         }).replace(/ /g, '-');
 
-        table.column(10).search(formattedDate).draw(); // Assuming next repayment date is in column index 10
+        table.column(11).search(formattedDate).draw(); // Assuming next repayment date is in column index 10
     }
 
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "sub_county": ["Sub County", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
             "village": ["Village", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "client": ["Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Payment Amount", "Next Repayment Date", "Number of Days in Arrears"],
+            "client": ["Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "DDA", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Expected Amount", "Next Repayment Date", "Number of Days in Arrears"],
             "age": ["Age Bracket", "Number of clients", "Expected PRincipal", "Expected Interest", "Expected Total"],
         };
 
@@ -93,7 +93,7 @@ $(document).ready(function () {
             success: function (response) {
                 var data = response.data;
                 var tbody = $('#arrears tbody');
-                table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true]);
+                table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true, true]);
                 table.clear().draw(); // Clear existing data before populating and redraw
 
                 $.each(data, function (index, item) {
@@ -110,11 +110,12 @@ $(document).ready(function () {
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7, 8, 9, 10, 11]).visible(false);
+                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
                     } else if (group === 'loan_product') {
                         var row = [
                             item.names,
@@ -128,11 +129,12 @@ $(document).ready(function () {
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7, 8, 9, 10, 11]).visible(false);
+                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
                     } else if (group === 'gender') {
                         var row = [
                             item.group_key,
@@ -146,11 +148,12 @@ $(document).ready(function () {
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([6, 7, 8, 9, 10, 11]).visible(false);
+                        table.columns([6, 7, 8, 9, 10, 11, 12]).visible(false);
                     } else if (group === 'client') {
                         var row = [
                             item.customer_id,
@@ -159,6 +162,7 @@ $(document).ready(function () {
 
                             item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
                             item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.add_per_customer.toLocaleString(), // Pad with comma after every three digits
                             item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
 
                             item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
@@ -166,7 +170,7 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
 
                             item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
-                            //put today's date if next repayment date is empty
+
                             item.next_repayment_date ? item.next_repayment_date : new Date().toISOString().slice(0, 10),
                             item.number_of_days_late.toLocaleString(), // Pad with comma after every three digits
                         ];
@@ -183,11 +187,12 @@ $(document).ready(function () {
                             '',
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([8, 9, 10, 11]).visible(false);
+                        table.columns([8, 9, 10, 11, 12]).visible(false);
                     }
                     table.row.add(row).draw();
                 });
@@ -251,6 +256,7 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
+                { title: "" }
             ],
             //show sortable headers with arrows
             "footerCallback": function (row, data, start, end, display) {
@@ -272,7 +278,7 @@ $(document).ready(function () {
 
 
 
-                if ($('#staff').val() === 'client') {
+                if (($('#staff').val()? $('#staff').val() : 'client') === 'client') {
                     $(api.column(2).footer()).html(""); // Expected PRincipal
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
@@ -282,7 +288,7 @@ $(document).ready(function () {
                     $(api.column(8).footer()).html(sum(api.column(8).data())); // Total
                     $(api.column(9).footer()).html(sum(api.column(9).data())); // Total
                     $(api.column(10).footer()).html(sum(api.column(10).data())); // Total
-                    $(api.column(11).footer()).html(sum(api.column(11).data())); // Total
+                    $(api.column(12).footer()).html(sum(api.column(12).data())); // Total
                 } else {
                     // Calculate total for each column
                     //check if group is client
@@ -297,7 +303,7 @@ $(document).ready(function () {
         });
 
         // Set initial visibility for columns
-        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true, true, true];
+        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true, true, true, true];
         table.columns().visible(initialColumnsVisibility);
 
         new $.fn.dataTable.Buttons(table, {
@@ -320,12 +326,14 @@ $(document).ready(function () {
                         {
                             extend: 'pdf',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#staff').val())
+                            messageTop: generateMessageTop($('#staff').val()),
+                            orientation: 'landscape',
                         },
                         {
                             extend: 'print',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#staff').val())
+                            messageTop: generateMessageTop($('#staff').val()),
+                            orientation: 'landscape',
                         }
                     ], // List of buttons in the dropdown
                     className: 'btn btn-warning dropdown-toggle btn-lg' // Bootstrap button classes

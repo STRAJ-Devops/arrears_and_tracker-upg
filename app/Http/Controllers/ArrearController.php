@@ -125,6 +125,7 @@ class ArrearController extends Controller
         foreach ($arrears as $key => $arrear) {
             $total_principle_arrears = $arrear->sum('principal_arrears');
             $total_outstanding_principal = $arrear->sum('outsanding_principal');
+            //remember that interest in arrears is stored as outstanding_interest
             $total_interest_arrears = $arrear->sum('outstanding_interest');
             $total_arrears = $total_principle_arrears + $total_interest_arrears;
             $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->count();
@@ -148,7 +149,7 @@ class ArrearController extends Controller
                 'phone_number' => $phone_number,
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed,
-                'total_outstanding_principal' => $total_outstanding_principal
+                'total_outstanding_principal' => $total_outstanding_principal,
             ];
         }
 

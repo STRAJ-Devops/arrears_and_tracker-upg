@@ -44,10 +44,12 @@ return new class extends Migration
 
             $table->bigInteger('outsanding_principal');
 
+            //this is interest in arrears
             $table->bigInteger('outstanding_interest');
 
             $table->bigInteger('principal_arrears');
 
+            //this is add column
             $table->bigInteger('interest_in_arrears');
 
             $table->bigInteger('number_of_days_late');

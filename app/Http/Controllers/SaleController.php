@@ -254,7 +254,7 @@ class SaleController extends Controller
                         $staffData = explode('-', $csv[$i][2]);
                         $staff_id = $staffData[0];
                         $full_name = count($staffData) > 2 ? $staffData[2] : $staffData[1];
-                        
+
                         $found = Officer::where('staff_id', $staff_id)->first();
                         if ($found) {
                             // Staff found, check if names match
@@ -364,7 +364,9 @@ class SaleController extends Controller
                         $arrear->subcounty_id = $subcounty_id;
                         $arrear->village_id = $village_id;
                         $arrear->outsanding_principal = $csv[$i][35];
+                        //this is is the interest in arrears
                         $arrear->outstanding_interest = $csv[$i][40];
+                        //this is add column to the arrears table
                         $arrear->interest_in_arrears = $csv[$i][44] ?? 0;
                         $arrear->principal_arrears = $csv[$i][39];
                         $arrear->number_of_days_late = $csv[$i][41];

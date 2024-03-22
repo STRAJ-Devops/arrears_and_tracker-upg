@@ -151,6 +151,8 @@ class ExpectedController extends Controller
             $total_principle_arrears = $arrear->sum('principal_arrears');
             $total_interest_arrears = $arrear->sum('outstanding_interest');
             $total_outstanding_principal = $arrear->sum('outsanding_principal');
+            //remember that add column is named as interest_in_arrears
+            $add = $arrear->sum('interest_in_arrears');
             $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
             $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
             $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $total_principle_arrears + $total_interest_arrears;
@@ -185,6 +187,7 @@ class ExpectedController extends Controller
                 'total_interest_arrears' => $total_interest_arrears,
                 'total_payment_amount' => $total_payment_amount,
                 'number_of_days_late' => $arrear->first()->number_of_days_late,
+                'add_per_customer' => $add,
             ];
         }
 
