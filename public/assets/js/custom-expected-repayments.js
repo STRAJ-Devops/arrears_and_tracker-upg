@@ -242,7 +242,7 @@ $(document).ready(function () {
     function drawTable() {
         // Initialize DataTable
         var table = $('#expected-repayments-table').DataTable({
-            responsive: true,
+            responsive: false,
             columns: [
                 { title: "" },
                 { title: "" },
