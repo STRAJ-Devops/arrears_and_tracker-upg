@@ -144,7 +144,7 @@ var data = {
     labels: ['Targets', 'Actuals'],
     datasets: [
         {
-            label: 'Targets vs Actuals',
+            label: 'Arrears',
             backgroundColor: ['red', 'green'],
             borderColor: ['red', 'green'],
             data: [totalTargets, totalSales]
@@ -156,7 +156,7 @@ var config = {
     type: 'pie',
     data: data,
     options: {
-        responsive: false,
+        responsive: true,
         plugins: {
             title: {
                 display: true,
@@ -164,6 +164,7 @@ var config = {
             },
             datalabels: {
                 color: 'white',
+                // display percentage with two decimal points
                 formatter: function (value, context) {
                     console.log(value, totalTargets, totalSales);
                     const percentage = (value / (Number(totalTargets) + Number(totalSales))) * 100;
