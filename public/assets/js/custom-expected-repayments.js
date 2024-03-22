@@ -2,9 +2,13 @@ $(document).ready(function () {
     var table;
     table = drawTable();
     // Populate initial table headers
-    var initialGroup = $('#staff').val();
+    var initialGroup = $('#staff').val()? $('#staff').val() : 'client';
     populateTableHeaders(initialGroup);
     fetchData(initialGroup);
+    if(initialGroup === 'client'){
+        //select all search for next repayment date
+        table.column(10).search('').draw(); // Remove date filter and redraw
+    }
     // Handle change event for the select input
     $('#staff').change(function () {
         // Hide content and display spinner
@@ -14,6 +18,37 @@ $(document).ready(function () {
         populateTableHeaders(selectedGroup);
         fetchData(selectedGroup);
     });
+
+    // Event handler for "Today" button
+    $('#today').click(function() {
+        var today = new Date();
+        filterByDate(today);
+    });
+
+    // Event handler for "Tomorrow" button
+    $('#tomorrow').click(function() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        filterByDate(tomorrow);
+    });
+
+    $('#all').click(function() {
+        table.column(10).search('').draw(); // Remove date filter and redraw
+    });
+
+    // Function to filter the DataTable by date
+    function filterByDate(date) {
+        //change date to "10-Mar-24" format
+        var formattedDate = date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: '2-digit'
+        }).replace(/ /g, '-');
+
+        table.column(10).search(formattedDate).draw(); // Assuming next repayment date is in column index 10
+    }
+
+
 
 
     // Function to populate table headers
@@ -131,7 +166,8 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
 
                             item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
-                            item.next_repayment_date,
+                            //put today's date if next repayment date is empty
+                            item.next_repayment_date ? item.next_repayment_date : new Date().toISOString().slice(0, 10),
                             item.number_of_days_late.toLocaleString(), // Pad with comma after every three digits
                         ];
                     } else {

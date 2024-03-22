@@ -12,25 +12,40 @@
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <div class="row card-header pb-0 d-flex justify-content-between">
-                            <div class="col-md-9">
-                                <div class="form-group d-flex">
-                                    <label for="staff" class="mr-2">Group By</label>
-                                    <select class="form-control staff" id="staff">
-                                        <option value="staff_id">Officer</option>
-                                        <option value="branch_id">Branch</option>
-                                        <option value="region_id">Region</option>
-                                        <option value="loan_product">Loan Product</option>
-                                        <option value="gender">Gender</option>
-                                        <option value="district">District</option>
-                                        <option value="sub_county">Sub County</option>
-                                        <option value="age">Age</option>
-                                        @if (Auth::user()->user_type == 2)
-                                        <option value="village">Village</option>
-                                        <option value="client">Client</option>
-                                        @endif
-                                    </select>
+                            @if (Auth::user()->user_type == 1)
+                                <div class="col-md-9">
+                                    <div class="form-group d-flex">
+                                        <label for="staff" class="mr-2">Group By</label>
+                                        <select class="form-control staff" id="staff">
+                                            <option value="staff_id">Officer</option>
+                                            <option value="branch_id">Branch</option>
+                                            <option value="region_id">Region</option>
+                                            <option value="loan_product">Loan Product</option>
+                                            <option value="gender">Gender</option>
+                                            <option value="district">District</option>
+                                            <option value="sub_county">Sub County</option>
+                                            <option value="age">Age</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
+
+                            @if (Auth::user()->user_type == 2)
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label for="date-filter"></label>
+                                        <div class="btn-group" role="group" aria-label="Date Filter">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                id="all">All</button>
+                                            <button type="button" class="btn btn-outline-primary"
+                                                id="today">Today</button>
+                                            <button type="button" class="btn btn-outline-primary"
+                                                id="tomorrow">Tomorrow</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="col-md-3 text-center"> <!-- Added text-center class -->
                                 <div class="form-group">
                                     <div class="d-flex justify-content-center">
