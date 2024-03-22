@@ -2,12 +2,15 @@ $(document).ready(function () {
     var table;
     table = drawTable();
     // Populate initial table headers
-    var initialGroup = $('#staff').val()? $('#staff').val() : 'client';
+    var initialGroup = $('#staff').val() ? $('#staff').val() : 'client';
+    console.log($('#staff').val() );
     populateTableHeaders(initialGroup);
     fetchData(initialGroup);
-    if(initialGroup === 'client'){
-        //select all search for next repayment date
-        table.column(10).search('').draw(); // Remove date filter and redraw
+    if ($('#staff').val()  === undefined) {
+        var today = new Date();
+        filterByDate(today);
+        $('#today').addClass('active'); // Highlight the "Today" button
+
     }
     // Handle change event for the select input
     $('#staff').change(function () {
@@ -20,20 +23,31 @@ $(document).ready(function () {
     });
 
     // Event handler for "Today" button
-    $('#today').click(function() {
+    $('#today').click(function () {
         var today = new Date();
         filterByDate(today);
+        $('#today').addClass('active'); // Highlight the "Today" button
+        //remove active class from other buttons
+        $('#tomorrow, #all').removeClass('active');
+
     });
 
     // Event handler for "Tomorrow" button
-    $('#tomorrow').click(function() {
+    $('#tomorrow').click(function () {
         var tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         filterByDate(tomorrow);
+        $('#tomorrow').addClass('active'); // Highlight the "Tomorrow" button
+        //remove active class from other buttons
+        $('#today, #all').removeClass('active');
     });
 
-    $('#all').click(function() {
+    $('#all').click(function () {
         table.column(11).search('').draw(); // Remove date filter and redraw
+        $('#today, #tomorrow').removeClass('active'); // Remove active class from all buttons
+        $('#all').addClass('active'); // Highlight the "All" button
+        //remove active class from other buttons
+        $('#today, #tomorrow').removeClass('active');
     });
 
     // Function to filter the DataTable by date
@@ -278,7 +292,7 @@ $(document).ready(function () {
 
 
 
-                if (($('#staff').val()? $('#staff').val() : 'client') === 'client') {
+                if (($('#staff').val() ? $('#staff').val() : 'client') === 'client') {
                     $(api.column(2).footer()).html(""); // Expected PRincipal
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
