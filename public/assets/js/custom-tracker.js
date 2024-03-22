@@ -212,7 +212,7 @@ $(document).ready(function () {
         // Initialize DataTable
         var table = $('#branch-performance').DataTable({
             //define
-            responsive: true,
+            responsive: false,
             columns: columns,
             order: [[6, 'desc']],
             //show sortable headers with arrows

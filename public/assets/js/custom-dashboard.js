@@ -156,7 +156,7 @@ var config = {
     type: 'pie',
     data: data,
     options: {
-        responsive: true,
+        responsive: false,
         plugins: {
             title: {
                 display: true,

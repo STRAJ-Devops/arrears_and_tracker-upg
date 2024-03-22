@@ -187,7 +187,7 @@ $(document).ready(function () {
     function drawTable() {
         // Initialize DataTable
         var table = $('#arrears').DataTable({
-            responsive: true,
+            responsive: false,
             columns: [
                 { title: "" },
                 { title: "" },
