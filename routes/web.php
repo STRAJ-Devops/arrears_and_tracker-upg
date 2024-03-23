@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('get-expected-repayments', [ExpectedController::class, 'group_by']);
 
     Route::get('incentives', [IncentiveController::class, 'index'])->name('incentives');
+    Route::get('get-incentives', [IncentiveController::class, 'getAllTheIncentives']);
+
 
     Route::get('tracker', [SaleController::class, 'index'])->name('tracker');
 

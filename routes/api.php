@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArrearController;
 use App\Http\Controllers\BranchTargetController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\ProductTargetController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Http\Request;
@@ -27,6 +28,8 @@ Route::get('process-csv-sales', [SaleController::class, 'process_csv_for_sales']
 Route::get('process-csv-arrears', [SaleController::class, 'process_csv_for_arrears'])->name('process-csv-arrears');
 Route::post('arrears-group-by', [ArrearController::class, 'group_by'])->name('arrears-group-by');
 Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
+
+Route::get('incentives', [IncentiveController::class, 'calculateIncentives']);
 
 
 

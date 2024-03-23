@@ -20,17 +20,6 @@ class DashboardController extends Controller
 
         $principal_arrears = $logged_user == 1 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
 
-        // $withOuthArrears = $logged_user == 1 ? Arrear::where('principal_arrears', 0)->where('interest_in_arrears', 0)->count() : Arrear::where('staff_id', $staff_id)->where('principal_arrears', 0)->where('interest_in_arrears', 0)->count();
-
-        // $withArrears = $logged_user == 1 ? Arrear::where(function ($query) {
-        //     $query->where('principal_arrears', '<>', 0)
-        //         ->orWhere('interest_in_arrears', '<>', 0);})
-        //     ->count() : Arrear::where('staff_id', $staff_id)
-        //     ->where(function ($query) {
-        //         $query->where('principal_arrears', '<>', 0)
-        //             ->orWhere('interest_in_arrears', '<>', 0);
-        //     })
-        //     ->count();
 
         //get the sgl by counting number_of_group_members where product_code is 21070
         $sgl = $logged_user == 1 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
