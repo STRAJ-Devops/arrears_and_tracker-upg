@@ -33,15 +33,8 @@
                             @if (Auth::user()->user_type == 2)
                                 <div class="col-md-9">
                                     <div class="form-group">
-                                        <label for="date-filter"></label>
-                                        <div class="btn-group" role="group" aria-label="Date Filter">
-                                            <button type="button" class="btn btn-outline-primary"
-                                                id="all">All</button>
-                                            <button type="button" class="btn btn-outline-primary"
-                                                id="today">Today</button>
-                                            <button type="button" class="btn btn-outline-primary"
-                                                id="tomorrow">Tomorrow</button>
-                                        </div>
+                                        <label for="date-filter">Select Date</label>
+                                        <input type="text" class="form-control" id="date-filter">
                                     </div>
                                 </div>
                             @endif
@@ -83,7 +76,8 @@
 
     @push('dashboard')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script> <!-- Include jQuery UI -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- jQuery UI CSS -->
         <script src="{{ asset('assets/js/custom-expected-repayments.js') }}"></script>
     @endpush
 @endsection

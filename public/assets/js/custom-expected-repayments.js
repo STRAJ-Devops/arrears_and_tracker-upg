@@ -1,12 +1,27 @@
 $(document).ready(function () {
+    // Initialize datepicker
+    $('#date-filter').datepicker({
+        dateFormat: 'dd-M-y',
+        onSelect: function (dateText, inst) {
+        table.column(11).search(dateText).draw(); // Assuming next repayment date is in column index 10
+        }
+    });
+    //set the initial date to today
+    $('#date-filter').datepicker('setDate', new Date());
+
+    //show the calendar
+    $('#date-filter').datepicker('show');
+
+
     var table;
     table = drawTable();
     // Populate initial table headers
     var initialGroup = $('#staff').val() ? $('#staff').val() : 'client';
-    console.log($('#staff').val() );
+    console.log($('#staff').val());
     populateTableHeaders(initialGroup);
     fetchData(initialGroup);
-    if ($('#staff').val()  === undefined) {
+
+    if ($('#staff').val() === undefined) {
         var today = new Date();
         filterByDate(today);
         $('#today').addClass('active'); // Highlight the "Today" button
@@ -22,43 +37,11 @@ $(document).ready(function () {
         fetchData(selectedGroup);
     });
 
-    // Event handler for "Today" button
-    $('#today').click(function () {
-        var today = new Date();
-        filterByDate(today);
-        $('#today').addClass('active'); // Highlight the "Today" button
-        //remove active class from other buttons
-        $('#tomorrow, #all').removeClass('active');
-
-    });
-
-    // Event handler for "Tomorrow" button
-    $('#tomorrow').click(function () {
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        filterByDate(tomorrow);
-        $('#tomorrow').addClass('active'); // Highlight the "Tomorrow" button
-        //remove active class from other buttons
-        $('#today, #all').removeClass('active');
-    });
-
-    $('#all').click(function () {
-        table.column(11).search('').draw(); // Remove date filter and redraw
-        $('#today, #tomorrow').removeClass('active'); // Remove active class from all buttons
-        $('#all').addClass('active'); // Highlight the "All" button
-        //remove active class from other buttons
-        $('#today, #tomorrow').removeClass('active');
-    });
 
     // Function to filter the DataTable by date
     function filterByDate(date) {
-        //change date to "10-Mar-24" format
-        var formattedDate = date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: '2-digit'
-        }).replace(/ /g, '-');
-
+        //convert the date to the format "10-Mar-24"
+        var formattedDate = $.datepicker.formatDate("dd-M-y", date);
         table.column(11).search(formattedDate).draw(); // Assuming next repayment date is in column index 10
     }
 

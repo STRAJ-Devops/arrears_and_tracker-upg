@@ -73,6 +73,8 @@ return new class extends Migration
 
             $table->string('next_repayment_date')->nullable();
 
+            $table->string('group_id')->nullable();
+
             $table->timestamps();
         });
     }

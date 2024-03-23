@@ -134,7 +134,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Groups</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Groups</p>
                                 <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_groups'], 0, '.', ',') }}
                                 </h5>
@@ -155,7 +155,7 @@
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Group Members</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Members</p>
                                 <h5 class="font-weight-bolder mb-0 text-nowrap">
                                     {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
                                 </h5>
@@ -276,8 +276,8 @@
             var branchLabels = {!! json_encode($data['branch_labels']) !!};
             var branchSales = {!! json_encode($data['branch_sales']) !!};
             var branchTargets = {!! json_encode($data['branch_targets']) !!};
-            var withArrears = {!! json_encode($data['withArrears']) !!};
-            var withoutArrears = {!! json_encode($data['withOutArrears']) !!};
+            var outstandingPrincipal = {!! json_encode($data['outstanding_principal']) !!};
+            var PrincipalInArrears = {!! json_encode($data['principal_arrears']) !!};
             var totalTargets = {!! json_encode($data['total_targets']) !!};
             var totalSales = {!! json_encode($data['total_disbursements']) !!};
         </script>

@@ -16,17 +16,21 @@
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
                                     <select class="form-control staff" id="staff">
-                                        <option value="staff_id">Officer</option>
-                                        <option value="branch_id">Branch</option>
-                                        <option value="region_id">Region</option>
-                                        <option value="loan_product">Loan Product</option>
-                                        <option value="gender">Gender</option>
-                                        <option value="district">District</option>
-                                        <option value="sub_county">Sub County</option>
-                                        <option value="age">Age</option>
-                                        @if (Auth::user()->user_type == 2)
-                                        <option value="village">Village</option>
-                                        <option value="client">Client</option>
+                                        @if (Auth::user()->user_type == 1)
+                                            <option value="staff_id">Officer</option>
+                                            <option value="branch_id">Branch</option>
+                                            <option value="region_id">Region</option>
+                                            <option value="loan_product">Loan Product</option>
+                                            <option value="gender">Gender</option>
+                                            <option value="district">District</option>
+                                            <option value="sub_county">Sub County</option>
+                                            <option value="age">Age</option>
+                                            <option value="village">Village</option>
+                                            <option value="client">Client</option>
+                                        @elseif (Auth::user()->user_type == 2)
+                                            <option value="staff_id">Officer</option>
+                                            <option value="branch_id">Branch</option>
+                                            <option value="client">Client</option>
                                         @endif
                                     </select>
                                 </div>
@@ -91,7 +95,7 @@
         </div>
     </div>
 
-        <!-- Modal -->
+    <!-- Modal -->
     <!-- Comment Modal -->
     <div class="modal fade" id="viewCommentsModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
         aria-hidden="true">

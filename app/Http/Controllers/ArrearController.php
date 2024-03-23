@@ -25,7 +25,9 @@ class ArrearController extends Controller
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             } else if ($request->group == 'branch_id') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('branch_id') : Arrear::where('staff_id', auth()->user()->staff_id)->get()->groupBy('branch_id');
+                //get the branch where the officer is assigned by getting the first record from a8   and get the branch_id
+                $branch_id  = auth()->user()->user_type == 1 ? 10000 : Arrear::where('staff_id', auth()->user()->staff_id)->first()->branch_id;
+                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('branch_id') : Arrear::where('branch_id', $branch_id )->get()->groupBy('branch_id');
                 $groupKey = 'branch_id';
                 $nameField = 'branch';
                 $nameAttribute = 'branch_name';
@@ -100,7 +102,7 @@ class ArrearController extends Controller
                 $nameAttribute = null;
             } else if ($request->group == 'client') {
                 // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy('customer_id') : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy('customer_id');
+                $arrears = auth()->user()->user_type == 1 ? Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id') : Arrear::where("staff_id", auth()->user()->staff_id)->whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
                 $groupKey = 'client_id';
                 $nameField = 'customer';
                 $nameAttribute = 'names';

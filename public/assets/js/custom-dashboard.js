@@ -98,13 +98,13 @@ new Chart(document.getElementById('branch-sales-targets'), config);
 
 //pie chart for arrears
 var data = {
-    labels: ['Arrears', 'No Arrears'],
+    labels: ['Outstanding Principal', 'Principal in Arrears'],
     datasets: [
         {
             label: 'Arrears',
-            backgroundColor: ['red', 'green'],
-            borderColor: ['red', 'green'],
-            data: [withArrears, withoutArrears]
+            backgroundColor: ['green', 'red'],
+            borderColor: ['green','red'],
+            data: [outstandingPrincipal, PrincipalInArrears]
         }
     ]
 }
@@ -117,14 +117,14 @@ var config = {
         plugins: {
             title: {
                 display: true,
-                text: 'Loans Disbursed with Arrears and Without Arrears'
+                text: 'A pie chart showing the outstanding principal and principal in arrears'
             },
             datalabels: {
                 color: 'white',
                 // display percentage with two decimal points
                 formatter: function (value, context) {
                     //return the percentage and append the percentage sign
-                    const percentage = (value / (withArrears + withoutArrears)) * 100;
+                    const percentage = (value / (Number(outstandingPrincipal) + Number(PrincipalInArrears))) * 100;
                     return percentage.toFixed(2) + '%';
                 },
                 font: {

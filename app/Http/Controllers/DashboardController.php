@@ -20,17 +20,17 @@ class DashboardController extends Controller
 
         $principal_arrears = $logged_user == 1 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
 
-        $withOuthArrears = $logged_user == 1 ? Arrear::where('principal_arrears', 0)->where('interest_in_arrears', 0)->count() : Arrear::where('staff_id', $staff_id)->where('principal_arrears', 0)->where('interest_in_arrears', 0)->count();
+        // $withOuthArrears = $logged_user == 1 ? Arrear::where('principal_arrears', 0)->where('interest_in_arrears', 0)->count() : Arrear::where('staff_id', $staff_id)->where('principal_arrears', 0)->where('interest_in_arrears', 0)->count();
 
-        $withArrears = $logged_user == 1 ? Arrear::where(function ($query) {
-            $query->where('principal_arrears', '<>', 0)
-                ->orWhere('interest_in_arrears', '<>', 0);})
-            ->count() : Arrear::where('staff_id', $staff_id)
-            ->where(function ($query) {
-                $query->where('principal_arrears', '<>', 0)
-                    ->orWhere('interest_in_arrears', '<>', 0);
-            })
-            ->count();
+        // $withArrears = $logged_user == 1 ? Arrear::where(function ($query) {
+        //     $query->where('principal_arrears', '<>', 0)
+        //         ->orWhere('interest_in_arrears', '<>', 0);})
+        //     ->count() : Arrear::where('staff_id', $staff_id)
+        //     ->where(function ($query) {
+        //         $query->where('principal_arrears', '<>', 0)
+        //             ->orWhere('interest_in_arrears', '<>', 0);
+        //     })
+        //     ->count();
 
         //get the sgl by counting number_of_group_members where product_code is 21070
         $sgl = $logged_user == 1 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
@@ -50,21 +50,15 @@ class DashboardController extends Controller
         $number_of_clients = $logged_user == 1
         ? Sale::sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
-            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('number_of_group_members');
 
         $number_of_groups = $logged_user == 1
-        ? Sale::where('product_id', 21070)->orWhereNotNull('group_id')
-            ->groupBy('group_id')
-            ->count() : Sale::where('staff_id', $staff_id)
-            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->where('product_id', 21070)->orWhereNotNull('group_id')
-            ->groupBy('group_id')
+        ? Arrear::where('lending_type', 'Group')->groupBy('group_id')->count() : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->groupBy('group_id')
             ->count();
 
         $number_of_individuals = $logged_user == 1
-        ? Sale::where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members')
-        : Sale::where('staff_id', $staff_id)->where('product_id', 21070)->orWhereNotNull('group_id')->sum('number_of_group_members');
+        ? Arrear::where('lending_type', 'Group')->sum('number_of_group_members') : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->sum('number_of_group_members');
+
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
@@ -138,8 +132,8 @@ class DashboardController extends Controller
             'branch_labels' => $branchLabelsList,
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
-            'withArrears' => $withArrears,
-            'withOutArrears' => $withOuthArrears,
+            // 'withArrears' => $withArrears,
+            // 'withOutArrears' => $withOuthArrears,
             'total_targets' => $total_targets,
             'sgl' => $sgl,
         ];
