@@ -5,7 +5,6 @@ $(document).ready(function () {
         // Initialize DataTable
         var table = $('#Incentives').DataTable({
             dom: "Bfrtip",
-            orientation: "landscape",
             //style the buttons
             buttons: [
                 {
@@ -22,11 +21,13 @@ $(document).ready(function () {
                     extend: "pdf",
                     className: "btn btn-warning btn-small",
                     messageTop: "Officer Incentives",
+                    orientation: "landscape",
                 },
                 {
                     extend: "print",
                     className: "btn btn-warning btn-small",
                     messageTop: "Officer Incentives",
+                    orientation: "landscape",
                 },
             ],
         });
