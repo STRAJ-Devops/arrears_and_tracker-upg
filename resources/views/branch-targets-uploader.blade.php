@@ -12,11 +12,6 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
                     </div>
-                    <div class="col">
-                        <a href="{{ url('delete-branch-targets') }}" class="btn btn-danger btn-sm" title="Add New assignment">
-                            <i class="fa fa-trash" aria-hidden="true"></i> delete
-                        </a>
-                    </div>
                 </div>
 
 
