@@ -46,7 +46,7 @@ class BranchTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the BranchTarget table
-        BranchTarget::truncate();
+        DB::statement('TRUNCATE TABLE branch_targets');
 
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {

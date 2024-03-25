@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductTargetsImport;
-use App\Models\Product;
 use App\Models\ProductTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductTargetController extends Controller
 {
@@ -45,7 +46,7 @@ class ProductTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the ProductTarget table
-        ProductTarget::truncate();
+        DB::statement('TRUNCATE TABLE product_targets');
         // Validate the uploaded file
         $request->validate([
             'product_targets_file' => 'required|mimes:xlsx,xls,csv'
