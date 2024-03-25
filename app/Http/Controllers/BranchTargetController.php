@@ -6,7 +6,7 @@ use App\Imports\BranchTargetsImport;
 use App\Models\BranchTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\DB;
 class BranchTargetController extends Controller
 {
     public function index(Request $request)
@@ -46,7 +46,8 @@ class BranchTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the BranchTarget table
-        BranchTarget::truncate();
+        DB::table('branch_targets')->truncate();
+
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {
             return response()->json(['error' => 'Branch targets already exist. Please delete existing targets before uploading new ones.'], 400);

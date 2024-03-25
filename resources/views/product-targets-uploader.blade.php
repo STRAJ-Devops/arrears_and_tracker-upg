@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-primary text-light">Branch Targets</div>
+                <div class="card-header bg-primary text-light">Product Targets</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
@@ -12,7 +12,14 @@
                                 <i class="fa fa-plus" aria-hidden="true"></i> Add New
                             </a>
                         </div>
-                     
+
+                        <div class="col">
+                            <a href="{{ url('delete-product-targets') }}" class="btn btn-danger btn-sm" title="Add New assignment">
+                                <i class="fa fa-trash" aria-hidden="true"></i> delete
+                            </a>
+                        </div>
+
+
                     </div>
 
 
