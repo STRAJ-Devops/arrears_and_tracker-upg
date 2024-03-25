@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Imports\BranchTargetsImport;
 use App\Models\BranchTarget;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
 class BranchTargetController extends Controller
 {
     public function index(Request $request)
@@ -42,21 +43,24 @@ class BranchTargetController extends Controller
         return redirect()->back()->with('success', 'Branch targets deleted successfully.');
     }
 
-
     public function import(Request $request)
     {
         //truncate the BranchTarget table
-        BranchTarget::query()->delete();
+        BranchTarget::truncate();
+
+        DB::statement("SET foreign_key_checks=0");
+        BranchTarget::truncate();
+        DB::statement("SET foreign_key_checks=1");
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {
             return response()->json(['error' => 'Branch targets already exist. Please delete existing targets before uploading new ones.'], 400);
         }
         // Validate the uploaded file
         $request->validate([
-            'branch_targets_file' => 'required|mimes:xlsx,xls,csv'
+            'branch_targets_file' => 'required|mimes:xlsx,xls,csv',
         ], [
             'branch_targets_file.required' => 'Please upload a file.',
-            'branch_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.'
+            'branch_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
         ]);
 
         try {
@@ -64,7 +68,7 @@ class BranchTargetController extends Controller
             Excel::import(new BranchTargetsImport, $request->file('branch_targets_file'));
         } catch (\Exception $e) {
             // Return an error message if import fails
-            return response()->json(['error' => 'Failed to import branch targets. Please ensure the file format is correct.', 'exception'=>$e], 400);
+            return response()->json(['error' => 'Failed to import branch targets. Please ensure the file format is correct.', 'exception' => $e], 400);
         }
 
         // Return a success message upon successful import

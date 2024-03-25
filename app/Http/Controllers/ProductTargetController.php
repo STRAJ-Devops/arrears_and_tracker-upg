@@ -44,9 +44,9 @@ class ProductTargetController extends Controller
 
     public function import(Request $request)
     {
-        //truncate the ProductTarget table
-        ProductTarget::query()->delete();
-        //iterate as you are
+        DB::statement("SET foreign_key_checks=0");
+        ProductTarget::truncate();
+        DB::statement("SET foreign_key_checks=1");
         // Validate the uploaded file
         $request->validate([
             'product_targets_file' => 'required|mimes:xlsx,xls,csv'
