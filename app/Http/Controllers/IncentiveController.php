@@ -65,6 +65,18 @@ class IncentiveController extends Controller
                     $incentive['monthly_loan_loss_rate'] = Arrear::where('staff_id', $staffId)->where('product_id', '!=', '21070')->sum('number_of_days_late');
                     $incentive['sgl_records'] = Arrear::where('staff_id', $staffId)->where('product_id', '21070')->count('customer_id');
 
+                    //incentive amount for PAR
+                    $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+
+                    //incentive amount for Net Portfolio Growth
+                    $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['outstanding_principal_individual']);
+
+                    //incentive amount for Net Client Growth
+                    $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['unique_customer_id_individual']);
+
+                    //total incentive amount
+                    $incentive['total_incentive_amount'] = $incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'];
+
                     // Combine the officer details with the incentives
                     $incentivesWithDetails[$staffId] = [
                         'incentive' => $incentive,

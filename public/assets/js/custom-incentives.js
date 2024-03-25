@@ -122,17 +122,17 @@ $(document).ready(function () {
                         <div class="card-body text-left">
                             <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names}</h5>
                             <hr>
-                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual)).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group)).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Unique customer ID (Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Records for unique group ID (Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Records for PAR:</strong> ${incentivesDetails.records_for_PAR ?? 0}</p>
-                            <p class="card-text"><strong>Monthly loan loss rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}</p>
+                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Unique customer ID (Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Records for unique group ID (Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Records for PAR:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
+                            <p class="card-text"><strong>Monthly loan loss rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
                             <p class="card-text"><strong>SGL records:</strong> ${(incentivesDetails.sgl_records).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text h5"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}/=</p>
                         </div>
                     </div>
                 </div>
