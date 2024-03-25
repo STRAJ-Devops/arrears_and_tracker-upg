@@ -33,6 +33,10 @@
                             <th>PAR>1Day</th>
                             <th>LLR</th>
                             <th>No Of Groups</th>
+                            <th>Incentive From PAR>1Day</th>
+                            <th>Net Portifolio Growth</th>
+                            <th>Net Client Growth</th>
+                            <th>Total Incentive</th>
                         </tr>
                     </thead>
                     <tbody>

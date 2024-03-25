@@ -65,6 +65,11 @@ $(document).ready(function () {
                             incentivesDetails.records_for_PAR ?? 0,
                             incentivesDetails.monthly_loan_loss_rate ?? 0,
                             Number(incentivesDetails.sgl_records).toLocaleString() ?? 0,
+                            Number(incentivesDetails.incentive_amount_PAR).toLocaleString() ?? 0,
+                            Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
+                            Number(incentivesDetails.incentive_amount_Net_Client_Growth).toLocaleString() ?? 0,
+                            Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
+
                         ];
                         table.row.add(row).draw();
                     });
@@ -124,6 +129,10 @@ $(document).ready(function () {
                             <p class="card-text"><strong>Records for PAR:</strong> ${incentivesDetails.records_for_PAR ?? 0}</p>
                             <p class="card-text"><strong>Monthly loan loss rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}</p>
                             <p class="card-text"><strong>SGL records:</strong> ${(incentivesDetails.sgl_records).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}</p>
                         </div>
                     </div>
                 </div>

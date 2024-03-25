@@ -33,6 +33,18 @@ class IncentiveController extends Controller
                 $incentive['monthly_loan_loss_rate'] = Arrear::where('staff_id', $staffId)->where('product_id', '!=', '21070')->sum('number_of_days_late');
                 $incentive['sgl_records'] = Arrear::where('staff_id', $staffId)->where('product_id', '21070')->count('customer_id');
 
+                //incentive amount for PAR
+                $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+
+                //incentive amount for Net Portfolio Growth
+                $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['outstanding_principal_individual']);
+
+                //incentive amount for Net Client Growth
+                $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['unique_customer_id_individual']);
+
+                //total incentive amount
+                $incentive['total_incentive_amount'] = $incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'];
+
                 // Combine the officer details with the incentives
                 $incentivesWithDetails[$staffId] = [
                     'incentive' => $incentive,
@@ -44,7 +56,7 @@ class IncentiveController extends Controller
                 // Get staff_id details from officers table
                 if ($staffId == $staff_id) {
                     $officer = Officer::where('staff_id', $staffId)->first();
-                    
+
                     $incentive['outstanding_principal_individual'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Individual')->sum('outsanding_principal');
                     $incentive['outstanding_principal_group'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Group')->sum('outsanding_principal');
                     $incentive['unique_customer_id_individual'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Individual')->distinct('customer_id')->count('customer_id');
@@ -156,7 +168,7 @@ class IncentiveController extends Controller
         $outstandingPrincipalSumIndividual = Arrear::select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Individual')
             ->groupBy('staff_id')
-            ->havingRaw('SUM(outsanding_principal) > 130000000') // Filter the sum
+            ->havingRaw('SUM(outsanding_principal) >= 130000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumIndividual;
@@ -168,7 +180,7 @@ class IncentiveController extends Controller
         $outstandingPrincipalSumGroup = Arrear::select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-            ->havingRaw('SUM(outsanding_principal) > 90000000') // Filter the sum
+            ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumGroup;
@@ -181,7 +193,7 @@ class IncentiveController extends Controller
         $uniqueCustomerIDIndividual = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
             ->where('lending_type', 'Individual')
             ->groupBy('staff_id')
-            ->havingRaw('COUNT(DISTINCT customer_id) > 130') // Filter the count
+            ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
             ->get();
 
         return $uniqueCustomerIDIndividual;
@@ -194,7 +206,7 @@ class IncentiveController extends Controller
         $uniqueGroupIDGroup = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-            ->havingRaw('COUNT(DISTINCT group_id) > 140') // Filter the count
+            ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
             ->get();
 
         return $uniqueGroupIDGroup;
@@ -208,7 +220,7 @@ class IncentiveController extends Controller
                                              ROUND(SUM(par) / SUM(outsanding_principal) * 100, 1) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
             ->groupBy('staff_id')
-            ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) >= 6.5')
+            ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
             ->get();
 
         return $recordsForPAR;
@@ -223,7 +235,7 @@ class IncentiveController extends Controller
              SUM(outsanding_principal)) * 100, 2) as count')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-            ->havingRaw('count < 0.18')
+            ->havingRaw('count <= 0.18')
             ->get();
 
         return $monthlyLoanLossRate;
@@ -238,6 +250,56 @@ class IncentiveController extends Controller
             ->get();
 
         return $noOfGroups;
+    }
+
+    public function calculateIncentiveAmountPAR($par)
+    {
+        $amount = 0;
+        if ($par <= 6.5) {
+            $amount = ((6.5 - $par) / 6.5) * (20 / 100) * 500000;
+        }
+
+        return $amount;
+    }
+
+    public function calculateIncentiveAmountNetPortifolioGrowth($outstandingPrincipalIndividual)
+    {
+        $max = 40000000;
+        $min = 5000000;
+        $actual = $outstandingPrincipalIndividual - 130000000;
+        $amount = 0;
+
+        //if $actual is less than  50000000
+        if (($actual > $min) && ($actual < $max)) {
+            $amount = (($actual - $min) / ($max - $min)) * (40 / 100) * 500000;
+        }
+        //greater than 40000000
+        if ($actual >= $max) {
+            $amount = (($max) / ($max - $min)) * (40 / 100) * 500000;
+        }
+
+        return $amount;
+
+    }
+
+    public function calculateIncentiveAmountNetClientGrowth($uniqueCustomerIDIndividual)
+    {
+        $max = 20;
+        $min = 5;
+
+        $actual = $uniqueCustomerIDIndividual - 130;
+        $amount = 0;
+
+        if ($actual >= 5) {
+            $amount = (($actual - $min) / ($max - $min)) * (40 / 100) * 500000;
+        }
+
+        //if $actual is greater than 20
+        if ($actual >= 20) {
+            $amount = (($max) / ($max - $min)) * (40 / 100) * 500000;
+        }
+
+        return $amount;
     }
 
 }
