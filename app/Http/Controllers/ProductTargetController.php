@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductTargetsImport;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 use App\Models\ProductTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -44,9 +44,8 @@ class ProductTargetController extends Controller
 
     public function import(Request $request)
     {
-        DB::statement("SET foreign_key_checks=0");
+        //truncate the ProductTarget table
         ProductTarget::truncate();
-        DB::statement("SET foreign_key_checks=1");
         // Validate the uploaded file
         $request->validate([
             'product_targets_file' => 'required|mimes:xlsx,xls,csv'
