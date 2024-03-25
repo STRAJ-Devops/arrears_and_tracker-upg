@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Imports\BranchTargetsImport;
-use App\Models\Branch;
 use App\Models\BranchTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,11 +46,7 @@ class BranchTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the BranchTarget table
-        $Ids = DB::table('branch_targets')->pluck('id');
-
-        foreach ($Ids as $id) {
-            DB::table('branch_targets')->where('id', $id)->delete();
-        }
+        BranchTarget::truncate();
 
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {
