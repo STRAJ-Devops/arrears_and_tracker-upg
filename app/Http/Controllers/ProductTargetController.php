@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\ProductTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductTargetController extends Controller
 {
@@ -45,7 +47,11 @@ class ProductTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the ProductTarget table
-        ProductTarget::truncate();
+       $ids = DB::table('product_targets')->pluck('id');
+
+       foreach ($ids as $id) {
+           DB::table('product_targets')->where('id', $id)->delete();
+         }
         // Validate the uploaded file
         $request->validate([
             'product_targets_file' => 'required|mimes:xlsx,xls,csv'
