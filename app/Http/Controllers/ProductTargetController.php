@@ -6,8 +6,6 @@ use App\Imports\ProductTargetsImport;
 use App\Models\ProductTarget;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\DB;
-
 
 class ProductTargetController extends Controller
 {
@@ -45,17 +43,19 @@ class ProductTargetController extends Controller
 
     public function import(Request $request)
     {
-        //truncate the ProductTarget table
-        DB::statement('TRUNCATE TABLE product_targets');
-        // Validate the uploaded file
-        $request->validate([
-            'product_targets_file' => 'required|mimes:xlsx,xls,csv'
-        ], [
-            'product_targets_file.required' => 'Please upload a file.',
-            'product_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.'
-        ]);
-
         try {
+            //truncate the ProductTarget table
+            $ids = ProductTarget::pluck('id');
+            foreach ($ids as $id) {
+                ProductTarget::destroy($id);
+            }
+            // Validate the uploaded file
+            $request->validate([
+                'product_targets_file' => 'required|mimes:xlsx,xls,csv',
+            ], [
+                'product_targets_file.required' => 'Please upload a file.',
+                'product_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
+            ]);
             // Import the file using BranchTargetsImport class
             Excel::import(new ProductTargetsImport, $request->file('product_targets_file'));
         } catch (\Exception $e) {
