@@ -45,7 +45,8 @@ class ProductTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the ProductTarget table
-        DB::table('branch_targets')->truncate();
+        ProductTarget::query()->delete();
+        //iterate as you are
         // Validate the uploaded file
         $request->validate([
             'product_targets_file' => 'required|mimes:xlsx,xls,csv'

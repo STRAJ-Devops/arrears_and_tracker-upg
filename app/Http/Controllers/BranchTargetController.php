@@ -46,8 +46,7 @@ class BranchTargetController extends Controller
     public function import(Request $request)
     {
         //truncate the BranchTarget table
-        DB::table('branch_targets')->truncate();
-
+        BranchTarget::query()->delete();
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {
             return response()->json(['error' => 'Branch targets already exist. Please delete existing targets before uploading new ones.'], 400);
