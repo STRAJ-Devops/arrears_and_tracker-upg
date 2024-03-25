@@ -49,7 +49,9 @@ class BranchTargetController extends Controller
         //truncate the BranchTarget table
         $Ids = DB::table('branch_targets')->pluck('id');
 
-        BranchTarget::destroy($Ids);
+        foreach ($Ids as $id) {
+            DB::table('branch_targets')->where('id', $id)->delete();
+        }
 
         //check if BranchTarget table is empty
         if (BranchTarget::count() > 0) {
