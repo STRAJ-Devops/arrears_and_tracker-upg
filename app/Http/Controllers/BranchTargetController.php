@@ -46,12 +46,7 @@ class BranchTargetController extends Controller
     {
 
         try {
-            //truncate the BranchTarget table
-            $ids = BranchTarget::pluck('id');
-
-            foreach ($ids as $id) {
-                BranchTarget::destroy($id);
-            }
+             BranchTarget::truncate();
 
             //check if BranchTarget table is empty
             if (BranchTarget::count() > 0) {

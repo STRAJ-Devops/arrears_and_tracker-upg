@@ -45,10 +45,8 @@ class ProductTargetController extends Controller
     {
         try {
             //truncate the ProductTarget table
-            $ids = ProductTarget::pluck('id');
-            foreach ($ids as $id) {
-                ProductTarget::destroy($id);
-            }
+           ProductTarget::truncate();
+
             // Validate the uploaded file
             $request->validate([
                 'product_targets_file' => 'required|mimes:xlsx,xls,csv',
