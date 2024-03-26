@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ->sum('number_of_group_members');
 
         $number_of_groups = $logged_user == 1
-        ? DB::table(DB::raw('(SELECT DISTINCT group_id, id FROM arrears WHERE lending_type = "Group") as distinct_groups'))
+        ? DB::table(DB::raw('(SELECT DISTINCT group_id FROM arrears WHERE lending_type = "Group") as distinct_groups'))
         ->count() : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->groupBy('group_id')
             ->count();
 
