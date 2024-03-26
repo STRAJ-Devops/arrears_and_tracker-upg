@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\BranchTarget;
 use App\Models\Product;
 use App\Models\Sale;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -42,7 +43,8 @@ class DashboardController extends Controller
             ->sum('number_of_group_members');
 
         $number_of_groups = $logged_user == 1
-        ? Arrear::where('lending_type', 'Group')->groupBy('group_id')->count() : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->groupBy('group_id')
+        ? DB::table(DB::raw('(SELECT DISTINCT group_id, id FROM arrears WHERE lending_type = "Group") as distinct_groups'))
+        ->count() : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->groupBy('group_id')
             ->count();
 
         $number_of_individuals = $logged_user == 1
