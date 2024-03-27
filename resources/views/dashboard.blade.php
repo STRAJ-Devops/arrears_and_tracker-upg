@@ -280,6 +280,7 @@
             var PrincipalInArrears = {!! json_encode($data['principal_arrears']) !!};
             var totalTargets = {!! json_encode($data['total_targets']) !!};
             var totalSales = {!! json_encode($data['total_disbursements']) !!};
+
         </script>
         <script src="{{ asset('assets/js/custom-dashboard.js') }}"></script>
     @endpush

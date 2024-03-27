@@ -147,7 +147,7 @@ class ArrearController extends Controller
                 'clients_in_arrears' => $clients_in_arrears,
                 'total_clients' => $total_clients,
                 'names' => $names,
-                'total_par' => number_format(round($total_par,1),1),
+                'total_par' => number_format(round($total_par,2),2),
                 'phone_number' => $phone_number,
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed,

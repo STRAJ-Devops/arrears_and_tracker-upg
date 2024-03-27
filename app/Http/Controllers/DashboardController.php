@@ -36,7 +36,7 @@ class DashboardController extends Controller
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('disbursement_amount');
-        $total_targets = BranchTarget::sum('target_amount');
+
         $number_of_clients = $logged_user == 1
         ? Sale::sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
@@ -68,6 +68,8 @@ class DashboardController extends Controller
         $branchLabels = $brachData->pluck('branch_name', 'branch_id')->toArray();
         $productTargets = $productData->pluck('productTarget.target_amount', 'product_id')->toArray();
         $branchTargets = $brachData->pluck('branchTarget.target_amount', 'branch_id')->toArray();
+        //get total targets by summing branch targets using eloquent
+        $total_targets = BranchTarget::sum('target_amount');
         // Get product actuals for this month
         $productActuals = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->selectRaw('product_id, sum(disbursement_amount) as total_disbursements')
@@ -103,6 +105,18 @@ class DashboardController extends Controller
             $branchSalesList[] = $branchActuals[$branchId] ?? 0; // Use null coalescing operator
         }
 
+        $currentTime = date('H:i'); // Get current time in 24-hour format
+        $greeting = ''; // Initialize an empty string for the greeting
+
+        // Determine the appropriate greeting based on the time of the day
+        if ($currentTime >= '05:00' && $currentTime < '12:00') {
+            $greeting = 'Good Morning';
+        } elseif ($currentTime >= '12:00' && $currentTime < '17:00') {
+            $greeting = 'Good Afternoon';
+        } else {
+            $greeting = 'Good Evening';
+        }
+
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 
         $data = [
@@ -112,6 +126,7 @@ class DashboardController extends Controller
             'number_of_female_borrowers' => $number_of_female_borrowers,
             'number_of_children' => $number_of_children,
             'total_disbursements' => $total_disbursements_this_month,
+            'total_targets' => $total_targets,
             'par_30_days' => number_format(round($par_30_per, 2), 2),
             'par_1_days' => number_format(round($par_1_per, 2), 2),
             'number_of_clients' => $number_of_clients,
@@ -123,10 +138,9 @@ class DashboardController extends Controller
             'branch_labels' => $branchLabelsList,
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
-            // 'withArrears' => $withArrears,
-            // 'withOutArrears' => $withOuthArrears,
             'total_targets' => $total_targets,
             'sgl' => $sgl,
+            'greeting' => $greeting,
         ];
 
         return view('dashboard', compact('data'));
