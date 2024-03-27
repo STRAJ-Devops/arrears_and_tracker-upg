@@ -8,8 +8,20 @@
             </ol>
             <h6 class="font-weight-bolder mb-0 text-capitalize">{{ str_replace('-', ' ', Request::path()) }}</h6>
         </nav>
-        <div>
-            <h1> {{$data['greeting'].", ". auth()->user()->names}}</h1>
+        <div>                @php
+                $currentTime = date('H:i'); // Get current time in 24-hour format
+                $greeting = ''; // Initialize an empty string for the greeting
+
+                // Determine the appropriate greeting based on the time of the day
+                if ($currentTime >= '05:00' && $currentTime < '12:00') {
+                    $greeting = 'Good Morning';
+                } elseif ($currentTime >= '12:00' && $currentTime < '17:00') {
+                    $greeting = 'Good Afternoon';
+                } else {
+                    $greeting = 'Good Evening';
+                }
+            @endphp
+            <h1>{{ $greeting .", ". auth()->user()->names}}</h1>
         </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 d-flex justify-content-end" id="navbar">
             <ul class="navbar-nav  justify-content-end">

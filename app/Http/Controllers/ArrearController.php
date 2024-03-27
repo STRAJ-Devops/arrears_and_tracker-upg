@@ -62,7 +62,7 @@ class ArrearController extends Controller
                 $nameField = 'village';
                 $nameAttribute = 'village_name';
             } else if ($request->group == 'age') {
-                $arrears = auth()->user()->user_type == 1 ? Arrear::all()->groupBy(function ($arrear) {
+                $arrears = auth()->user()->user_type == 1 ? Arrear::where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -79,7 +79,7 @@ class ArrearController extends Controller
                     }  else {
                         return '180+';
                     }
-                }) : Arrear::where("staff_id", auth()->user()->staff_id)->get()->groupBy(function ($arrear) {
+                }) : Arrear::where("staff_id", auth()->user()->staff_id)->where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';

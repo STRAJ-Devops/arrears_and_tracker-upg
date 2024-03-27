@@ -109,13 +109,7 @@ class DashboardController extends Controller
         $greeting = ''; // Initialize an empty string for the greeting
 
         // Determine the appropriate greeting based on the time of the day
-        if ($currentTime >= '05:00' && $currentTime < '12:00') {
-            $greeting = 'Good Morning';
-        } elseif ($currentTime >= '12:00' && $currentTime < '17:00') {
-            $greeting = 'Good Afternoon';
-        } else {
-            $greeting = 'Good Evening';
-        }
+
 
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 
@@ -140,7 +134,6 @@ class DashboardController extends Controller
             'branch_sales' => $branchSalesList,
             'total_targets' => $total_targets,
             'sgl' => $sgl,
-            'greeting' => $greeting,
         ];
 
         return view('dashboard', compact('data'));
