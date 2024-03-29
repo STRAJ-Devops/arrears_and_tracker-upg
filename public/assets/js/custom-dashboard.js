@@ -166,8 +166,8 @@ var config = {
                 color: 'white',
                 // display percentage with two decimal points
                 formatter: function (value, context) {
-                    console.log(value, totalTargets, totalSales);
-                    const percentage = (value / (Number(totalTargets) + Number(totalSales))) * 100;
+                    console.log(typeof value, totalTargets, totalSales);
+                    const percentage = (Number(value) / (Number(totalTargets) + Number(totalSales))) * 100;
                     console.log(percentage);
                     return percentage.toFixed(2) + '%';
                 },

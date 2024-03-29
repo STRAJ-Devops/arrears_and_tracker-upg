@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\OfficerController;
+use App\Http\Controllers\PreviousEndMonthSalesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTargetController;
 use App\Http\Controllers\RegionController;
@@ -50,6 +51,8 @@ Route::group(['middleware' => 'auth:officer'], function () {
 
     Route::get('arrears-and-sales-uploader', [ArrearsAndSalesController::class, 'index'])->name('arrears-and-sales-uploader');
 
+    Route::get('previous-end-month-sales-uploader', [PreviousEndMonthSalesController::class, 'index'])->name('previous-end-month-sales-uploader');
+
     Route::get('regions', [RegionController::class, 'index'])->name('regions');
 
     Route::get('arrears', [ArrearController::class, 'index'])->name('arrears');
@@ -67,8 +70,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('get-expected-repayments', [ExpectedController::class, 'group_by']);
 
     Route::get('incentives', [IncentiveController::class, 'index'])->name('incentives');
-    Route::get('get-incentives', [IncentiveController::class, 'getAllTheIncentives']);
-
+    Route::get('get-incentives', [IncentiveController::class, 'calculateIncentive']);
 
     Route::get('tracker', [SaleController::class, 'index'])->name('tracker');
 
@@ -82,20 +84,24 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('upload-branch-targets', [BranchTargetController::class, 'import'])->name('upload-targets');
     Route::post('upload-product-targets', [ProductTargetController::class, 'import'])->name('upload-product-targets');
     Route::post('upload-sales-targets', [SaleController::class, 'import'])->name('upload-sales-targets');
+    Route::post('upload-previous-end-month-sales', [SaleController::class, 'importPreviousEndMonthSales'])->name('upload-end-month-sales');
+
 
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
+
 
     Route::get('/login', function () {
         return view('dashboard');
     })->name('sign-up');
 });
 
-Route::get('get-all-regions', [RegionController::class, 'getAllRegions'])->name('allRegions');
-
+Route::get('download-template', [SaleController::class, 'downloadTemplate'])->name('download-template');
 
 Route::group(['middleware' => 'guest'], function () {
+
+
     Route::get('comments', [CommentController::class, 'index'])->name('comments');
 
     Route::get('/register', [RegisterController::class, 'create']);

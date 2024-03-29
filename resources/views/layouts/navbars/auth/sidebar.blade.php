@@ -158,6 +158,15 @@
             <span class="nav-link-text ms-1">Product Targets</span>
         </a>
       </li>
+
+      <li class="nav-item pb-2">
+        <a class="nav-link {{ (Request::is('previous-end-month-sales-uploader') ? 'active' : '') }}" href="{{ url('previous-end-month-sales-uploader') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i style="font-size: 1rem;" class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ (Request::is('previous-end-month-sales-uploader') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Previous End Month Sales</span>
+        </a>
+      </li>
         @endif
     </ul>
   </div>

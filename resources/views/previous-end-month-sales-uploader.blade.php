@@ -7,7 +7,7 @@
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body px-4 pt-4 pb-2">
-                            <h2 class="text-center mb-4">Upload Sales and Arrears</h2>
+                            <h2 class="text-center mb-4">Upload Previous End Month Sales</h2>
                             <form id="uploadForm" enctype="multipart/form-data" method="post">
                                 @csrf
                                 <div class="mb-3">
@@ -84,7 +84,7 @@
 
                 // AJAX request
                 $.ajax({
-                    url: '/upload-sales-targets',
+                    url: '/upload-previous-end-month-sales',
                     type: 'POST',
                     data: formData,
                     processData: false,
