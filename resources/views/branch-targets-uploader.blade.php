@@ -8,7 +8,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <a href="{{ url('upload-branch-targets') }}" class="btn btn-primary btn-sm" title="Add New assignment">
+                        <a href="{{ url('upload-branch-targets') }}" class="btn btn-primary btn-sm" title="Add Branch Targets">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
                     </div>
@@ -122,10 +122,10 @@
                         });
 
                         // Hide overlay
-                        overlay.hide();
-                        $('#uploadForm')[0].reset();
-                        $('#uploadBtn').prop('disabled',
-                            true); // Disable the button after successful upload
+                        // overlay.hide();
+                        // $('#uploadForm')[0].reset();
+                        // $('#uploadBtn').prop('disabled',
+                        //     true); // Disable the button after successful upload
                     },
                     error: function(xhr, status, error) {
                         // Handle error

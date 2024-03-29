@@ -139,7 +139,7 @@ $(document).ready(function () {
                             item.expected_principal.toLocaleString(), // Pad with comma after every three digits
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
-                            item.next_repayment_date,
+                            '',
                             '',
                             '',
                             '',
@@ -150,7 +150,7 @@ $(document).ready(function () {
                         ];
 
                         //hide the last 3 columns
-                        table.columns([6, 7, 8, 9, 10, 11, 12]).visible(false);
+                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
                     } else if (group === 'client') {
                         var row = [
                             item.customer_id,
@@ -169,8 +169,9 @@ $(document).ready(function () {
                             item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
 
                             item.next_repayment_date ? item.next_repayment_date : new Date().toISOString().slice(0, 10),
-                            item.number_of_days_late.toLocaleString(), // Pad with comma after every three digits
+                            ''
                         ];
+                        table.columns([12]).visible(false);
                     } else {
                         var row = [
                             item.group_key,
@@ -180,7 +181,7 @@ $(document).ready(function () {
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.next_repayment_date,
+                            '',
                             '',
                             '',
                             '',
@@ -189,7 +190,7 @@ $(document).ready(function () {
                         ];
 
                         //hide the last 3 columns
-                        table.columns([8, 9, 10, 11, 12]).visible(false);
+                        table.columns([7, 8, 9, 10, 11, 12]).visible(false);
                     }
                     table.row.add(row).draw();
                 });
