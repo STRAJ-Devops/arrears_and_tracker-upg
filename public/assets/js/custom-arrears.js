@@ -28,7 +28,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "sub_county": ["Sub County", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "village": ["Village", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "actions"],
+            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late","actions"],
             "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
         };
 
@@ -58,12 +58,13 @@ $(document).ready(function () {
             success: function (response) {
                 var data = response.data;
                 var rows = [];
-                var tbody = $('#arrears tbody');
                 var visibleColumns = [true, true, true, true, true, true, true, true];
                 if (group === 'age' || group === 'loan_product') {
-                    visibleColumns.splice(5, 3, false, false, false);
+                    visibleColumns.splice(5, 4, false, false, false, false);
                 } else if (group === 'gender') {
-                    visibleColumns.splice(6, 2, false, false);
+                    visibleColumns.splice(6, 3, false, false, false);
+                } else if (group === 'staff_id') {
+                    visibleColumns.splice(8, 1, false);
                 }
                 $.each(data, function (index, item) {
                     if (group === 'age') {
@@ -74,6 +75,7 @@ $(document).ready(function () {
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            '',
                             '',
                             '',
                             ''
@@ -88,6 +90,7 @@ $(document).ready(function () {
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
                             ''
                         ];
                     } else if (group === 'gender') {
@@ -100,12 +103,12 @@ $(document).ready(function () {
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_par.toLocaleString(),
                             '',
+                            '',
                             ''
                         ];
                     } else if (group === 'client') {
                         var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
                         var row = [
-                            //item.custome_id,
                             item.names,
                             item.phone_number,
                             numberOfCommentsHtml,
@@ -114,6 +117,7 @@ $(document).ready(function () {
                             item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.number_of_days_late.toLocaleString(),
                             '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
                         ];
                     } else {
@@ -126,7 +130,8 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_par.toLocaleString()
+                            item.total_par.toLocaleString(),
+                            ''
                         ];
                     }
                     rows.push(row);
@@ -195,6 +200,7 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
+                { title: "" },
                 { title: "" }
             ],
             //show sortable headers with arrows
@@ -229,7 +235,7 @@ $(document).ready(function () {
         });
 
         // Set initial visibility for columns
-        var initialColumnsVisibility = [true, true, true, true, true, true, true, true];
+        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true];
         table.columns().visible(initialColumnsVisibility);
 
         new $.fn.dataTable.Buttons(table, {

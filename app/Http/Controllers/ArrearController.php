@@ -146,6 +146,7 @@ class ArrearController extends Controller
             $number_of_comments = $arrear->first()->customer->comments->count();
             $amount_disbursed = $arrear->sum('amount_disbursed');
             $branch_name = $arrear->first()->branch->branch_name ?? "None";
+            $number_of_days_late = $arrear->sum('number_of_days_late');
             $data[] = [
                 'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
                 'customer_id' => $arrear->first()->customer->customer_id, // Fetch customer id for the first record in the group
@@ -162,6 +163,7 @@ class ArrearController extends Controller
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed,
                 'total_outstanding_principal' => $total_outstanding_principal,
+                'number_of_days_late' => $number_of_days_late
             ];
         }
 
