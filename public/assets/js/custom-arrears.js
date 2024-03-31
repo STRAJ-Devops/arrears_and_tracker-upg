@@ -57,15 +57,14 @@ $(document).ready(function () {
             },
             success: function (response) {
                 var data = response.data;
+                var rows = [];
                 var tbody = $('#arrears tbody');
-                table.columns().visible([true, true, true, true, true, true, true, true]);
-                table.clear().draw(); // Clear existing data before populating and redraw
-
-                if (group === 'age') {
-                    //delete the last 4 columns from the table not visibility
-                    // table.columns([1]).visible(false);
+                var visibleColumns = [true, true, true, true, true, true, true, true];
+                if (group === 'age' || group === 'loan_product') {
+                    visibleColumns.splice(5, 3, false, false, false);
+                } else if (group === 'gender') {
+                    visibleColumns.splice(6, 2, false, false);
                 }
-
                 $.each(data, function (index, item) {
                     if (group === 'age') {
                         var row = [
@@ -79,9 +78,6 @@ $(document).ready(function () {
                             '',
                             ''
                         ];
-
-                        //hide the last 3 columns
-                        table.columns([5, 6, 7]).visible(false);
                     } else if (group === 'loan_product') {
                         var row = [
                             item.names,
@@ -94,9 +90,6 @@ $(document).ready(function () {
                             '',
                             ''
                         ];
-
-                        //hide the last 3 columns
-                        table.columns([5, 6, 7]).visible(false);
                     } else if (group === 'gender') {
                         var row = [
                             item.group_key,
@@ -109,9 +102,6 @@ $(document).ready(function () {
                             '',
                             ''
                         ];
-
-                        //hide the last 3 columns
-                        table.columns([6, 7]).visible(false);
                     } else if (group === 'client') {
                         var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
                         var row = [
@@ -139,8 +129,16 @@ $(document).ready(function () {
                             item.total_par.toLocaleString()
                         ];
                     }
-                    table.row.add(row).draw();
+                    rows.push(row);
                 });
+
+                // Clear existing data before populating
+                table.clear();
+
+                // Add all rows at once
+                table.rows.add(rows).draw();
+
+                table.columns().visible(visibleColumns);
 
                 // Stop the spinner and display content
                 $("#content").show();
@@ -288,47 +286,47 @@ $(document).ready(function () {
         function fetchComments(customerId) {
             // Make a GET request to fetch comments
             $.ajax({
-              url: "/comments", // Replace with your server endpoint
-              type: "GET",
-              data: {
-                customer_id: customerId
-              },
-              success: function (response) {
-                var comments = response.comments;
-                var commentsContainer = $('#comments-container');
-                commentsContainer.empty(); // Clear existing comments
+                url: "/comments", // Replace with your server endpoint
+                type: "GET",
+                data: {
+                    customer_id: customerId
+                },
+                success: function (response) {
+                    var comments = response.comments;
+                    var commentsContainer = $('#comments-container');
+                    commentsContainer.empty(); // Clear existing comments
 
-                // Loop through comments and append them to the container with styling
-                comments.forEach(function (comment) {
-                  var commentBox = $('<div class="comment-box mb-3 p-3 rounded shadow-sm"></div>');
+                    // Loop through comments and append them to the container with styling
+                    comments.forEach(function (comment) {
+                        var commentBox = $('<div class="comment-box mb-3 p-3 rounded shadow-sm"></div>');
 
-                  // Add comment content with styling
-                  var commentContent = $('<p class="comment-text mb-0"></p>')
-                    .text(comment.comment)
-                    .css({
-                      fontSize: '16px', // Adjust font size as desired
-                      lineHeight: '1.5', // Set line spacing for readability
-                      fontFamily: 'sans-serif', // Use a user-friendly font
-                      color: '#333' // Set text color for clarity
+                        // Add comment content with styling
+                        var commentContent = $('<p class="comment-text mb-0"></p>')
+                            .text(comment.comment)
+                            .css({
+                                fontSize: '16px', // Adjust font size as desired
+                                lineHeight: '1.5', // Set line spacing for readability
+                                fontFamily: 'sans-serif', // Use a user-friendly font
+                                color: '#333' // Set text color for clarity
+                            });
+
+                        // Optional: Add user information (if available)
+                        if (comment.created_at) {
+                            var userSpan = $('<span class="user-info mr-2"></span>')
+                                .text(formatDate(comment.created_at) + ': ');
+                            commentBox.prepend(userSpan);
+                        }
+
+                        commentBox.append(commentContent);
+                        commentsContainer.append(commentBox);
                     });
-
-                  // Optional: Add user information (if available)
-                  if (comment.created_at) {
-                    var userSpan = $('<span class="user-info mr-2"></span>')
-                      .text(formatDate(comment.created_at) + ': ');
-                    commentBox.prepend(userSpan);
-                  }
-
-                  commentBox.append(commentContent);
-                  commentsContainer.append(commentBox);
-                });
-              },
-              error: function (xhr, status, error) {
-                // Handle error
-                console.error("Error fetching comments:", xhr.responseText);
-              }
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error("Error fetching comments:", xhr.responseText);
+                }
             });
-          }
+        }
 
 
         // Attach click event handler to view comments

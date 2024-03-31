@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
 });
 
 Route::get('download-template', [SaleController::class, 'downloadTemplate'])->name('download-template');
+Route::get('officers', [OfficerController::class, 'getOfficers'])->name('officers');
 
 Route::group(['middleware' => 'guest'], function () {
 

@@ -124,8 +124,8 @@ $(document).ready(function () {
                             <hr>
                             <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual)).toLocaleString() ?? 0}/=</p>
                             <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0}</p>
                             <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
                             <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
                             <p class="card-text"><strong>Number Of Groups:</strong> ${(incentivesDetails.sgl_records).toLocaleString() ?? 0}</p>

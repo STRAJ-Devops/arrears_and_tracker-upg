@@ -24,6 +24,21 @@
                     </div>
                 </div>
             </div>
+            <table id="users-table" class="display">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Names</th>
+                        <th>Clients</th>
+                        <th>Outstanding Principal</th>
+                        <th>Principle Arrears</th>
+                        <th>Interest Arrears</th>
+                        <th>Total Arrears</th>
+                        <th>Clients in Arrears</th>
+                        <th>Par>1 Day(%)</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </main>
 @endsection
@@ -57,6 +72,63 @@
 
     <script>
         $(document).ready(function() {
+            let tableUsers = $('#users-table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                dom: 'Bfrtip',
+                "ajax": {
+                    "url": "/arrears-group-by",
+                    "type": "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    "data": function(request) {
+                        request.perPage = request.length;
+                        request.page = (request.start / request.length) + 1;
+                        request.search = request.search.value;
+                        request.group = 'staff_id';
+                    },
+                },
+                "columns": [
+                    {
+                        data: 'group_key'
+                    },
+                    {
+                        data: 'names'
+                    },
+                    {
+                        data: 'total_clients'
+                    },
+                    {
+                        data: 'total_outstanding_principal'
+                    },
+                    {
+                        data: 'total_principle_arrears'
+                    },
+                    {
+                        data: 'total_interest_arrears'
+                    },
+                    {
+                        data: 'total_arrears'
+                    },
+                    {
+                        data: 'clients_in_arrears'
+                    },
+                    {
+                        data: 'total_par'
+                    }
+                ],
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "lengthMenu": [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ], // Specify the length menu options
+                "paging": true,
+                "info": true,
+                "searching": true
+            });
+
             // Disable upload button initially
             $('#uploadBtn').prop('disabled', true);
 
