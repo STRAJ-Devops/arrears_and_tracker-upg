@@ -18,6 +18,7 @@ $(document).ready(function () {
 
     // Function to populate table headers
     function populateTableHeaders(group) {
+
         var headers = {
             // define headers that belong to the institution
             "staff_id": ["Officer ID", "Names", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
@@ -28,7 +29,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "sub_county": ["Sub County", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "village": ["Village", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late","actions"],
+            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late", "actions"],
             "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
         };
 
@@ -58,14 +59,6 @@ $(document).ready(function () {
             success: function (response) {
                 var data = response.data;
                 var rows = [];
-                var visibleColumns = [true, true, true, true, true, true, true, true];
-                if (group === 'age' || group === 'loan_product') {
-                    visibleColumns.splice(5, 4, false, false, false, false);
-                } else if (group === 'gender') {
-                    visibleColumns.splice(6, 3, false, false, false);
-                } else if (group === 'staff_id') {
-                    visibleColumns.splice(8, 1, false);
-                }
                 $.each(data, function (index, item) {
                     if (group === 'age') {
                         var row = [
@@ -107,19 +100,22 @@ $(document).ready(function () {
                             ''
                         ];
                     } else if (group === 'client') {
-                        var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
-                        var row = [
-                            item.names,
-                            item.phone_number,
-                            numberOfCommentsHtml,
-                            item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
-                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
-                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
-                            item.number_of_days_late.toLocaleString(),
-                            '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
-                        ];
+
+                            var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
+                            var row = [
+                                item.names,
+                                item.phone_number,
+                                numberOfCommentsHtml,
+                                item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
+                                item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
+                                item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
+                                item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
+                                item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                                item.number_of_days_late.toLocaleString(),
+                                '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
+                            ];
+
+
                     } else {
                         var row = [
                             item.group_key,
@@ -143,8 +139,21 @@ $(document).ready(function () {
                 // Add all rows at once
                 table.rows.add(rows).draw();
 
-                table.columns().visible(visibleColumns);
-
+                if (group === 'age' || group === 'loan_product') {
+                    table.columns([6, 7, 8, 9]).visible(false);
+                } else if (group === 'gender') {
+                    table.columns([7, 8, 9]).visible(false);
+                } else if (group === 'staff_id') {
+                    table.columns([9]).visible(false);
+                } else if (group === 'client') {
+                    if (logged_user == 1) {
+                        table.columns([9]).visible(false);
+                        table.columns([2]).visible(false);
+                    } else {
+                        //make all columns visible
+                        table.columns().visible(true);
+                    }
+                }
                 // Stop the spinner and display content
                 $("#content").show();
                 $("#spinner").hide();
@@ -235,7 +244,7 @@ $(document).ready(function () {
         });
 
         // Set initial visibility for columns
-        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true];
+        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true];
         table.columns().visible(initialColumnsVisibility);
 
         new $.fn.dataTable.Buttons(table, {

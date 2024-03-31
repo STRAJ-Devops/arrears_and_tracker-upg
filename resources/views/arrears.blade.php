@@ -117,6 +117,9 @@
 
     @push('dashboard')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            var logged_user = {!! json_encode($logged_user) !!};
+        </script>
 
         <script src="{{ asset('assets/js/custom-arrears.js') }}"></script>
     @endpush

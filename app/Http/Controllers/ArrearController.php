@@ -11,16 +11,16 @@ class ArrearController extends Controller
 {
     public function index()
     {
-        //get the logged in officer
-        return view('arrears');
+        $logged_user = auth()->user()->user_type;
+        return view('arrears', compact('logged_user'));
     }
 
     public function group_by(Request $request)
     {
         ini_set('max_execution_time', 1200);
 
-        $loggedin_user_type = 1;
-        $loggedin_staff_id = 1106;
+        $loggedin_user_type = auth()->user()->user_type;
+        $loggedin_staff_id = auth()->user()->staff_id;
 
         // Check if request has group as parameter
         if ($request->has('group')) {
