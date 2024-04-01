@@ -24,21 +24,6 @@
                     </div>
                 </div>
             </div>
-            <table id="users-table" class="display">
-                <thead>
-                    <tr>
-                        <th>Staff ID</th>
-                        <th>Names</th>
-                        <th>Clients</th>
-                        <th>Outstanding Principal</th>
-                        <th>Principle Arrears</th>
-                        <th>Interest Arrears</th>
-                        <th>Total Arrears</th>
-                        <th>Clients in Arrears</th>
-                        <th>Par>1 Day(%)</th>
-                    </tr>
-                </thead>
-            </table>
         </div>
     </main>
 @endsection

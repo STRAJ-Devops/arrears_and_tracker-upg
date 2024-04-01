@@ -30,7 +30,7 @@ class SaleController extends Controller
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {
                     //sales categorized by branches
-                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                    $sales = $logged_user == 5 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
                     //process the sales data and return the view
                     $data = [];
                     foreach ($sales as $key => $sale) {
@@ -79,7 +79,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'products') {
-                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('product_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('product_id');
+                    $sales = $logged_user == 5 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('product_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('product_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $branch_name = $sale->first()->branch->branch_name ?? "unkown";
@@ -107,7 +107,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'officers') {
-                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('staff_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('staff_id');
+                    $sales = $logged_user == 5 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('staff_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('staff_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $staff_name = $sale->first()->officer->names;
@@ -121,7 +121,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'regions-loans' || $request->group == 'regions-clients') {
-                    $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('region_id');
+                    $sales = $logged_user == 5 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('region_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $region_name = $sale->first()->region->region_name;
@@ -160,7 +160,7 @@ class SaleController extends Controller
                 }
             } else {
                 //sales categorized by branches
-                $sales = $logged_user == 1 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
+                $sales = $logged_user == 5 ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id') : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->get()->groupBy('branch_id');
                 //process the sales data and return the view
                 $data = [];
                 foreach ($sales as $key => $sale) {
@@ -264,19 +264,20 @@ class SaleController extends Controller
                                 $found->save();
                             }
                         } else {
+                            $password = bcrypt($staff_id);
+
                             // Staff not found, create new
-                            $staffName = count($staffData) > 2 ? $staffData[2] : $staffData[1];
                             $staff = new Officer();
+
                             $staff->staff_id = $staff_id;
-                            $staff->names = $staffName;
-                            $staff->user_type = 1;
+                            $staff->names = $full_name;
+                            $staff->user_type = 2;
                             $staff->username = $staff_id;
-                            $staff->password = Hash::make($staff_id);
+                            $staff->password = $password;
+                            $staff->un_hashed_password = $staff_id;
                             $staff->save();
 
-                            $staff_id = $staff->staff_id;
                         }
-
 
                         $product_id = $csv[$i][17];
                         $found = Product::where('product_id', $product_id)->first();
@@ -393,7 +394,8 @@ class SaleController extends Controller
         return response()->json(['message' => 'Sales and arrears imported successfully.'], 200);
     }
 
-    public function importPreviousEndMonthSales(Request $request){
+    public function importPreviousEndMonthSales(Request $request)
+    {
         ini_set('max_execution_time', 1200);
         ini_set('memory_limit', '-1');
         // Validate the uploaded file
@@ -464,12 +466,12 @@ class SaleController extends Controller
                             $staff->names = $staffName;
                             $staff->user_type = 1;
                             $staff->username = $staff_id;
-                            $staff->password = Hash::make($staff_id);
+                            $staff->password = bcrypt($staff_id);
+                            $staff->un_hashed_password = $staff_id;
                             $staff->save();
 
                             $staff_id = $staff->staff_id;
                         }
-
 
                         $product_id = $csv[$i][17];
                         $found = Product::where('product_id', $product_id)->first();
@@ -615,7 +617,8 @@ class SaleController extends Controller
                     $staff->names = $staffName;
                     $staff->user_type = 1;
                     $staff->username = $staff_id;
-                    $staff->password = Hash::make($staff_id);
+                    $staff->password = bcrypt($staff_id);
+                    $staff->un_hashed_password = $staff_id;
                     $staff->save();
 
                     $staff_id = $staff->staff_id;
@@ -720,7 +723,8 @@ class SaleController extends Controller
         return response()->json(['message' => 'Records imported successfully.'], 200);
     }
 
-    public function downloadTemplate(){
+    public function downloadTemplate()
+    {
         $file = public_path('uploads/1711546042_Upload.csv');
         return response()->download($file);
     }

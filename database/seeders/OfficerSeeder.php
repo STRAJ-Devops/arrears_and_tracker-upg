@@ -16,21 +16,12 @@ class OfficerSeeder extends Seeder
     public function run()
     {
         DB::table('officers')->insert([
-            'staff_id' => 110611,
-            'names' => 'Edmond Angwala',
-            'user_type' => 2,
-            'username' => '1106',
-            'password' => Hash::make('1106'),
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        DB::table('officers')->insert([
-            'staff_id' => 100511,
+            'staff_id' => 1,
             'names' => 'VFU Admin',
-            'user_type' => 1,
+            'user_type' => 5,
             'username' => 'admin@vfu.com',
             'password' => Hash::make('vfu@2024'),
+            'un_hashed_password' => 'vfu@2024',
             'created_at' => now(),
             'updated_at' => now()
         ]);

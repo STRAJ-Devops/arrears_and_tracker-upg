@@ -22,6 +22,7 @@ class Officer extends Authenticatable
         'user_type',
         'username',
         'password',
+        'un_hashed_password',
     ];
 
     protected $hidden = [

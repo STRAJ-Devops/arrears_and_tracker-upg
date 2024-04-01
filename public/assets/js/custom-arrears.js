@@ -101,19 +101,19 @@ $(document).ready(function () {
                         ];
                     } else if (group === 'client') {
 
-                            var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
-                            var row = [
-                                item.names,
-                                item.phone_number,
-                                numberOfCommentsHtml,
-                                item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
-                                item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
-                                item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
-                                item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
-                                item.total_arrears.toLocaleString(), // Pad with comma after every three digits
-                                item.number_of_days_late.toLocaleString(),
-                                '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
-                            ];
+                        var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
+                        var row = [
+                            item.names,
+                            item.phone_number,
+                            numberOfCommentsHtml,
+                            item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
+                            item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.total_arrears.toLocaleString(), // Pad with comma after every three digits
+                            item.number_of_days_late.toLocaleString(),
+                            '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
+                        ];
 
 
                     } else {
@@ -146,7 +146,7 @@ $(document).ready(function () {
                 } else if (group === 'staff_id') {
                     table.columns([9]).visible(false);
                 } else if (group === 'client') {
-                    if (logged_user == 1) {
+                    if (logged_user == 5) {
                         table.columns([9]).visible(false);
                         table.columns([2]).visible(false);
                     } else {

@@ -63,8 +63,6 @@
 @endsection
 
 @push('dashboard')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
     <script>
         $(document).ready(function() {
             // Disable upload button initially

@@ -47,6 +47,8 @@
         href="https://cdn.datatables.net/buttons/2.1.2/css/buttons.dataTables.min.css">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 
 </head>
@@ -61,11 +63,29 @@
     @endguest
 
     @if (session()->has('success'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-            class="position-fixed bottom-3 right-3 bg-success rounded text-sm py-2 px-4">
-            <p class="m-0">{{ session('success') }}</p>
-        </div>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: "Success",
+                text: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000 // Close alert after 3 seconds
+            });
+        </script>
     @endif
+
+    @if (session()->has('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: "Error",
+                text: "{{ session('error') }}",
+                showConfirmButton: false,
+                timer: 3000 // Close alert after 3 seconds
+            });
+        </script>
+    @endif
+
 
     <!--   Core JS Files   -->
     <script src="../assets/js/core/popper.min.js"></script>

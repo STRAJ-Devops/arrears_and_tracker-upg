@@ -5,6 +5,9 @@
         <div class="spinner"></div>
     </div>
 
+    {{-- <div id="progress-bar"></div> --}}
+
+
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
@@ -16,7 +19,7 @@
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
                                     <select class="form-control staff" id="staff">
-                                        @if (Auth::user()->user_type == 1)
+                                        @if (Auth::user()->user_type == 5)
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="region_id">Region</option>
@@ -27,7 +30,7 @@
                                             <option value="age">Age</option>
                                             <option value="village">Village</option>
                                             <option value="client">Client</option>
-                                        @elseif (Auth::user()->user_type == 2)
+                                        @elseif (Auth::user()->user_type == 1)
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="client">Client</option>

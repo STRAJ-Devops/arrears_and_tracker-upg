@@ -85,7 +85,7 @@
             <span class="nav-link-text ms-1">Incentives</span>
         </a>
       </li>
-      @if (Auth::user()->user_type == 1)
+      @if (Auth::user()->user_type == 5)
       <li class="nav-item mt-2">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">General Settings</h6>
       </li>
@@ -113,14 +113,14 @@
             <span class="nav-link-text ms-1">Products</span>
         </a>
       </li>
-      <li class="nav-item pb-2">
+      {{-- <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('targets') ? 'active' : '') }}" href="{{ url('targets') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i style="font-size: 1rem;" class="fas fa-lg fa-cogs ps-2 pe-2 text-center text-dark {{ (Request::is('targets') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
             </div>
             <span class="nav-link-text ms-1">Targets</span>
         </a>
-      </li>
+      </li> --}}
       <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -131,14 +131,6 @@
       </li>
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">UPLOADS</h6>
-      </li>
-      <li class="nav-item pb-2">
-        <a class="nav-link {{ (Request::is('arrears-and-sales-uploader') ? 'active' : '') }}" href="{{ url('arrears-and-sales-uploader') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i style="font-size: 1rem;" class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ (Request::is('arrears-and-sales-uploader') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-            </div>
-            <span class="nav-link-text ms-1">Arrears and Sales</span>
-        </a>
       </li>
 
       <li class="nav-item pb-2">
@@ -156,6 +148,15 @@
                 <i style="font-size: 1rem;" class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ (Request::is('product-targets-uploader') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
             </div>
             <span class="nav-link-text ms-1">Product Targets</span>
+        </a>
+      </li>
+
+      <li class="nav-item pb-2">
+        <a class="nav-link {{ (Request::is('arrears-and-sales-uploader') ? 'active' : '') }}" href="{{ url('arrears-and-sales-uploader') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i style="font-size: 1rem;" class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ (Request::is('arrears-and-sales-uploader') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Arrears and Sales</span>
         </a>
       </li>
 

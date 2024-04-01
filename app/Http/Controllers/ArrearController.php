@@ -17,15 +17,13 @@ class ArrearController extends Controller
 
     public function group_by(Request $request)
     {
-        ini_set('max_execution_time', 1200);
-
         $loggedin_user_type = auth()->user()->user_type;
         $loggedin_staff_id = auth()->user()->staff_id;
 
         // Check if request has group as parameter
         if ($request->has('group')) {
             if ($request->group == 'staff_id') {
-                $arrears = $loggedin_user_type == 1 ?
+                $arrears = $loggedin_user_type == 5 ?
                 Arrear::all()->groupBy('staff_id')
                 :
                 Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('staff_id');
@@ -34,43 +32,43 @@ class ArrearController extends Controller
                 $nameAttribute = 'names';
             } else if ($request->group == 'branch_id') {
                 //get the branch where the officer is assigned by getting the first record from a8   and get the branch_id
-                $branch_id  = $loggedin_user_type == 1 ? 10000 : Arrear::where('staff_id', $loggedin_staff_id)->first()->branch_id;
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('branch_id') : Arrear::where('branch_id', $branch_id )->get()->groupBy('branch_id');
+                $branch_id  = $loggedin_user_type == 5 ? 10000 : Arrear::where('staff_id', $loggedin_staff_id)->first()->branch_id;
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('branch_id') : Arrear::where('branch_id', $branch_id )->get()->groupBy('branch_id');
                 $groupKey = 'branch_id';
                 $nameField = 'branch';
                 $nameAttribute = 'branch_name';
             } else if ($request->group == 'region_id') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('region_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('region_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('region_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('region_id');
                 $groupKey = 'region_id';
                 $nameField = 'region';
                 $nameAttribute = 'region_name';
             } else if ($request->group == 'loan_product') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('product_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('product_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('product_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('product_id');
                 $groupKey = 'product_id';
                 $nameField = 'product';
                 $nameAttribute = 'product_name';
             } else if ($request->group == 'gender') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('gender') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('gender');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('gender') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('gender');
                 $groupKey = 'gender';
                 $nameField = 'gender';
                 $nameAttribute = "None";
             } else if ($request->group == 'district') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('district_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('district_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('district_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('district_id');
                 $groupKey = 'district_id';
                 $nameField = 'district';
                 $nameAttribute = 'district_name';
             } else if ($request->group == 'sub_county') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('subcounty_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('subcounty_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('subcounty_id') : Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('subcounty_id');
                 $groupKey = 'subcounty_id';
                 $nameField = 'sub_county';
                 $nameAttribute = 'subcounty_name';
             } else if ($request->group == 'village') {
-                $arrears = $loggedin_user_type == 1?Arrear::all()->groupBy('village_id'): Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('village_id');
+                $arrears = $loggedin_user_type == 5?Arrear::all()->groupBy('village_id'): Arrear::where('staff_id', $loggedin_staff_id)->get()->groupBy('village_id');
                 $groupKey = 'village_id';
                 $nameField = 'village';
                 $nameAttribute = 'village_name';
             } else if ($request->group == 'age') {
-                $arrears = $loggedin_user_type == 1 ? Arrear::where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
+                $arrears = $loggedin_user_type == 5 ? Arrear::where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -110,20 +108,20 @@ class ArrearController extends Controller
                 $nameAttribute = null;
             } else if ($request->group == 'client') {
                 // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
-                $arrears = $loggedin_user_type == 1 ? Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id') : Arrear::where("staff_id", $loggedin_staff_id)->whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id') : Arrear::where("staff_id", $loggedin_staff_id)->whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
                 $groupKey = 'client_id';
                 $nameField = 'customer';
                 $nameAttribute = 'names';
             } else {
                 // Default to group by staff_id
-                $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", $loggedin_staff_id)->get()->groupBy('staff_id');
+                $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", $loggedin_staff_id)->get()->groupBy('staff_id');
                 $groupKey = 'staff_id';
                 $nameField = 'officer';
                 $nameAttribute = 'names';
             }
         } else {
             // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = $loggedin_user_type == 1 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", $loggedin_staff_id)->get()->groupBy('staff_id');
+            $arrears = $loggedin_user_type == 5 ? Arrear::all()->groupBy('staff_id') : Arrear::where("staff_id", $loggedin_staff_id)->get()->groupBy('staff_id');
             $groupKey = 'staff_id';
             $nameField = 'officer';
         }

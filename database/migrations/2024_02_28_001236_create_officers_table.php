@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('names', 333);
             $table->smallInteger('user_type');
             $table->string('username', 333);
-            $table->string('password', 333);
+            $table->string('password');
+            $table->string('un_hashed_password');
             $table->timestamps();
         });
     }

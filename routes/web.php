@@ -44,6 +44,11 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('branches', [BranchController::class, 'index'])->name('branches');
 
     Route::get('user-management', [OfficerController::class, 'index'])->name('user-management');
+    Route::get('create-user', [OfficerController::class, 'create'])->name('create-user');
+    Route::post('store-user', [OfficerController::class, 'store'])->name('store-user');
+    Route::get('edit-user/{id}', [OfficerController::class, 'edit'])->name('edit-user');
+    Route::patch('update-user/{id}', [OfficerController::class, 'update'])->name('update-user');
+    Route::delete('delete-user/{id}', [OfficerController::class, 'destroy'])->name('delete-user');
 
     Route::get('products', [ProductController::class, 'index'])->name('products');
 

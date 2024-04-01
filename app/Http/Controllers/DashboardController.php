@@ -15,19 +15,19 @@ class DashboardController extends Controller
     {
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
-        $outstanding_principal = $logged_user == 1 ? Arrear::sum('outsanding_principal') : Arrear::where('staff_id', $staff_id)->sum('outsanding_principal');
+        $outstanding_principal = $logged_user == 5 ? Arrear::sum('outsanding_principal') : Arrear::where('staff_id', $staff_id)->sum('outsanding_principal');
 
-        $outstanding_interest = $logged_user == 1 ? Arrear::sum('outstanding_interest') : Arrear::where('staff_id', $staff_id)->sum('outstanding_interest');
+        $outstanding_interest = $logged_user == 5 ? Arrear::sum('outstanding_interest') : Arrear::where('staff_id', $staff_id)->sum('outstanding_interest');
 
-        $principal_arrears = $logged_user == 1 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
+        $principal_arrears = $logged_user == 5 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
 
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $logged_user == 1 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = $logged_user == 5 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
 
-        $number_of_female_borrowers = $logged_user == 1 ? Sale::where('gender', 'female')->count() : Sale::where('gender', 'female')->where('staff_id', $staff_id)->count();
+        $number_of_female_borrowers = $logged_user == 5 ? Sale::where('gender', 'female')->count() : Sale::where('gender', 'female')->where('staff_id', $staff_id)->count();
 
-        $number_of_children = $logged_user == 1 ? Sale::sum('number_of_children') : Sale::where('staff_id', $staff_id)->sum('number_of_children');
+        $number_of_children = $logged_user == 5 ? Sale::sum('number_of_children') : Sale::where('staff_id', $staff_id)->sum('number_of_children');
 
         $currentMonthYear = date_create()->format('M-y'); // Get the current month abbreviation like "Mar"
 
@@ -52,12 +52,12 @@ class DashboardController extends Controller
 
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
-        $par_30_days = $logged_user == 1 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
+        $par_30_days = $logged_user == 5 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
 
         $par_30_per = $outstanding_principal == 0 ? 0 : (($par_30_days / $outstanding_principal) * 100);
 
         //get pa 1 day that is sum of par for all arrears that are more than 1 day late
-        $par_1_days = $logged_user == 1 ? Arrear::sum('par') : Arrear::where('staff_id', $staff_id)->sum('par');
+        $par_1_days = $logged_user == 5 ? Arrear::sum('par') : Arrear::where('staff_id', $staff_id)->sum('par');
 
         $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
 
