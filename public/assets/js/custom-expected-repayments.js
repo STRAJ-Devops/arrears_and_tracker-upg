@@ -3,7 +3,7 @@ $(document).ready(function () {
     $('#date-filter').datepicker({
         dateFormat: 'dd-M-y',
         onSelect: function (dateText, inst) {
-        table.column(11).search(dateText).draw(); // Assuming next repayment date is in column index 10
+            table.column(11).search(dateText).draw(); // Assuming next repayment date is in column index 10
         }
     });
     //set the initial date to today
@@ -90,6 +90,7 @@ $(document).ready(function () {
             success: function (response) {
                 var data = response.data;
                 var tbody = $('#arrears tbody');
+                var rows = [];
                 table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true, true]);
                 table.clear().draw(); // Clear existing data before populating and redraw
 
@@ -192,8 +193,14 @@ $(document).ready(function () {
                         //hide the last 3 columns
                         table.columns([7, 8, 9, 10, 11, 12]).visible(false);
                     }
-                    table.row.add(row).draw();
+                    rows.push(row);
                 });
+
+                // Clear existing data before populating
+                table.clear();
+
+                // Add all rows at once
+                table.rows.add(rows).draw();
 
                 // Stop the spinner and display content
                 $("#content").show();

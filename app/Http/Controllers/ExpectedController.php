@@ -36,7 +36,7 @@ class ExpectedController extends Controller
     public function group_by(Request $request)
     {
         $logged_in_user_type = auth()->user()->user_type;
-        if ($logged_in_user_type == 1) {
+        if ($logged_in_user_type == 5) {
             // Check if request has group as parameter
             if ($request->has('group')) {
                 if ($request->group == 'staff_id') {
