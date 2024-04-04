@@ -29,25 +29,25 @@ class DashboardController extends Controller
 
         $number_of_children = $logged_user == 5 ? Sale::sum('number_of_children') : Sale::where('staff_id', $staff_id)->sum('number_of_children');
 
-        $currentMonthYear = date_create()->format('M-y'); // Get the current month abbreviation like "Mar"
+        $currentMonthYear = 'Mar-24'; // Get the current month abbreviation like "Mar"
 
-        $total_disbursements_this_month = $logged_user == 1
+        $total_disbursements_this_month = $logged_user == 5
         ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount')
         : Sale::where('staff_id', $staff_id)
             ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
             ->sum('disbursement_amount');
 
-        $number_of_clients = $logged_user == 1
+        $number_of_clients = $logged_user == 5
         ? Sale::sum('number_of_group_members')
         : Sale::where('staff_id', $staff_id)
             ->sum('number_of_group_members');
 
-        $number_of_groups = $logged_user == 1
+        $number_of_groups = $logged_user == 5
         ? DB::table(DB::raw('(SELECT DISTINCT group_id FROM arrears WHERE lending_type = "Group") as distinct_groups'))
         ->count() : DB::table(DB::raw('(SELECT DISTINCT group_id FROM arrears WHERE lending_type = "Group" AND staff_id='.$staff_id.') as distinct_groups'))
             ->count();
 
-        $number_of_individuals = $logged_user == 1
+        $number_of_individuals = $logged_user == 5
         ? Arrear::where('lending_type', 'Group')->sum('number_of_group_members') : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->sum('number_of_group_members');
 
 
