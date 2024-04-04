@@ -22,7 +22,7 @@ class IncentiveController extends Controller
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
 
-        if ($logged_user == 1) {
+        if ($logged_user == 5) {
             foreach ($incentives as $staffId => $incentive) {
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();

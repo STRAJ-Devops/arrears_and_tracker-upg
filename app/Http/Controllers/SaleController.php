@@ -23,7 +23,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = date_create()->format('M-y'); // Get the current month abbreviation like "Mar"
+        $currentMonthYear = 'Mar-24'; // Get the current month abbreviation like "Mar"
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
         try {
