@@ -19,8 +19,8 @@ class IncentiveController extends Controller
     {
         $incentives = $this->getAllIncentives();
         $incentivesWithDetails = [];
-        $logged_user = 5;
-        $staff_id = 1106;
+        $logged_user = auth()->user()->user_type;
+        $staff_id = auth()->user()->staff_id;
 
         if ($logged_user == 5) {
             foreach ($incentives as $staffId => $value) {
