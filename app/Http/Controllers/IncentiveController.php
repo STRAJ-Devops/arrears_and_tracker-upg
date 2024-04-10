@@ -50,14 +50,6 @@ class IncentiveController extends Controller
                 if ($staffId == $staff_id) {
                     $officer = Officer::where('staff_id', $staffId)->first();
 
-                    // $incentive['outstanding_principal_individual'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Individual')->sum('outsanding_principal');
-                    // $incentive['outstanding_principal_group'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Group')->sum('outsanding_principal');
-                    // $incentive['unique_customer_id_individual'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Individual')->distinct('customer_id')->count('customer_id');
-                    // $incentive['records_for_unique_group_id_group'] = Arrear::where('staff_id', $staffId)->where('lending_type', 'Group')->distinct('group_id')->count('group_id');
-                    // $incentive['records_for_PAR'] = Arrear::where('staff_id', $staffId)->where('product_id', '!=', '21070')->sum('par');
-                    // $incentive['monthly_loan_loss_rate'] = Arrear::where('staff_id', $staffId)->where('product_id', '!=', '21070')->sum('number_of_days_late');
-                    // $incentive['sgl_records'] = Arrear::where('staff_id', $staffId)->where('product_id', '21070')->count('customer_id');
-
                     //incentive amount for PAR
                     $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
 
