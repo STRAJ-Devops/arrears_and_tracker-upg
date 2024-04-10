@@ -478,7 +478,7 @@ class IncentiveController extends Controller
         }
         //greater than 40000000
         if ($actual >= $max) {
-            $amount = (($max) / ($max - $min)) * (40 / 100) * 500000;
+            $amount = (40 / 100) * 500000;
         }
 
         return ROUND($amount, 2);
