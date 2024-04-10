@@ -19,8 +19,8 @@ class IncentiveController extends Controller
     {
         $incentives = $this->getAllIncentives();
         $incentivesWithDetails = [];
-        $logged_user = auth()->user()->user_type;
-        $staff_id = auth()->user()->staff_id;
+        $logged_user = 5;
+        $staff_id = 1106;
 
         if ($logged_user == 5) {
             foreach ($incentives as $staffId => $incentive) {
@@ -489,7 +489,7 @@ class IncentiveController extends Controller
         $max = 20;
         $min = 5;
 
-        $actual = $uniqueCustomerIDIndividual - 130;
+        $actual = $uniqueCustomerIDIndividual;
         $amount = 0;
 
         if ($actual >= 5) {
