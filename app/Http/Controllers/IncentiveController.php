@@ -489,7 +489,7 @@ class IncentiveController extends Controller
         $max = 20;
         $min = 5;
 
-        $actual = $uniqueCustomerIDIndividual - 130;
+        $actual = $uniqueCustomerIDIndividual;
         $amount = 0;
 
         if ($actual >= 5) {
