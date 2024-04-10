@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('get-expected-repayments', [ExpectedController::class, 'group_by']);
 
     Route::get('incentives', [IncentiveController::class, 'index'])->name('incentives');
-    Route::get('get-incentives', [IncentiveController::class, 'calculateIncentive']);
+
 
     Route::get('tracker', [SaleController::class, 'index'])->name('tracker');
 
@@ -101,6 +101,8 @@ Route::group(['middleware' => 'auth:officer'], function () {
         return view('dashboard');
     })->name('sign-up');
 });
+
+Route::get('get-incentives', [IncentiveController::class, 'calculateIncentive']);
 
 Route::get('download-template', [SaleController::class, 'downloadTemplate'])->name('download-template');
 Route::get('officers', [OfficerController::class, 'getOfficers'])->name('officers');
