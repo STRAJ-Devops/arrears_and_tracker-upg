@@ -108,6 +108,7 @@ class IncentiveController extends Controller
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Individual')
+                ->distinct('customer_id')
                 ->count('customer_id');
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
@@ -165,11 +166,13 @@ class IncentiveController extends Controller
     public function calculateUniqueCustomerIDIndividual()
     {
         //group by staff_id by calculating the number of unique customer_id
-        $uniqueCustomerIDIndividual = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
-            ->where('lending_type', 'Individual')
-            ->groupBy('staff_id')
-            ->havingRaw('COUNT(customer_id) >= 130') // Filter the count
-            ->get();
+        $uniqueCustomerIDIndividual = DB::select(DB::raw("
+        SELECT staff_id, COUNT(*) AS result_count
+        FROM arrears
+        WHERE lending_type='Individual'
+        GROUP BY staff_id
+        HAVING COUNT(*) > 130
+    "));
 
         return $uniqueCustomerIDIndividual;
     }
