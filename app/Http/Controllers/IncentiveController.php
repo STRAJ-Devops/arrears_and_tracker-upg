@@ -23,17 +23,17 @@ class IncentiveController extends Controller
         $staff_id = auth()->user()->staff_id;
 
         if ($logged_user == 5) {
-            foreach ($incentives as $staffId => $value) {
+            foreach ($incentives as $staffId => $incentive) {
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();
 
                 //incentive amount for PAR
-                $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($value['records_for_PAR']);
+                $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
                 //incentive amount for Net Portfolio Growth
-                $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($value['net_portifolio_growth']);
+                $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth']);
 
                 //incentive amount for Net Client Growth
-                $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($value['net_client_growth']);
+                $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
                 //total incentive amount
                 $incentive['total_incentive_amount'] =ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
@@ -489,7 +489,7 @@ class IncentiveController extends Controller
         $max = 20;
         $min = 5;
 
-        $actual = $uniqueCustomerIDIndividual;
+        $actual = $uniqueCustomerIDIndividual - 130;
         $amount = 0;
 
         if ($actual >= 5) {
