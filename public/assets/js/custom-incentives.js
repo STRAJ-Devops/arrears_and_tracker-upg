@@ -90,7 +90,6 @@ $(document).ready(function () {
                         `);
                     } else{
                         $("#incentives-card-section").show();
-
                     // Create cards for each officer
                     $.each(response.incentives, function (index, item) {
                         var officerDetails = item.officer_details;

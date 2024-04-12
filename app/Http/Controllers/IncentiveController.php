@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Arrear;
+use App\Models\IncentiveSettings;
 use App\Models\Officer;
 use App\Models\PreviousEndMonth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class IncentiveController extends Controller
 {
@@ -36,7 +38,7 @@ class IncentiveController extends Controller
                 $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
                 //total incentive amount
-                $incentive['total_incentive_amount'] =ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
+                $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
 
                 // Combine the officer details with the incentives
                 $incentivesWithDetails[$staffId] = [
@@ -449,9 +451,11 @@ class IncentiveController extends Controller
 
     public function calculateIncentiveAmountPAR($par)
     {
+        $maxPar = IncentiveSettings::first()->max_par;
+        $parPercentage = IncentiveSettings::first()->percentage_incentive_par;
         $amount = 0;
-        if (($par/100) <= (6.5/100)) {
-            $amount = (((6.5/100) - ($par/100)) / (6.5/100)) * (20 / 100) * 500000;
+        if (($maxPar / 100) <= ($maxPar / 100)) {
+            $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * 500000;
         }
 
         return ROUND($amount, 2);
@@ -459,18 +463,19 @@ class IncentiveController extends Controller
 
     public function calculateIncentiveAmountNetPortifolioGrowth($outstandingPrincipalIndividual)
     {
-        $max = 40000000;
-        $min = 5000000;
+        $max = IncentiveSettings::first()->max_cap_portifolio;
+        $min = IncentiveSettings::first()->min_cap_portifolio;
+        $portifolioPercentage = IncentiveSettings::first()->percentage_incentive_portifolio;
         $actual = $outstandingPrincipalIndividual;
         $amount = 0;
 
         //if $actual is less than  50000000
         if (($actual > $min) && ($actual < $max)) {
-            $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * (40 / 100) * 500000;
+            $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * ($portifolioPercentage / 100) * 500000;
         }
         //greater than 40000000
         if ($actual >= $max) {
-            $amount = (40 / 100) * 500000;
+            $amount = ($portifolioPercentage / 100) * 500000;
         }
 
         return ROUND($amount, 2);
@@ -478,22 +483,56 @@ class IncentiveController extends Controller
 
     public function calculateIncentiveAmountNetClientGrowth($uniqueCustomerIDIndividual)
     {
-        $max = 20;
-        $min = 5;
+        $max = IncentiveSettings::first()->max_cap_client;
+        $min = IncentiveSettings::first()->min_cap_client;
+        $clientPercentage = IncentiveSettings::first()->percentage_incentive_client;
 
         $actual = $uniqueCustomerIDIndividual;
         $amount = 0;
 
         if ($actual >= 5) {
-            $amount = (($actual - $min) / ($max - $min)) * (40 / 100) * 500000;
+            $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * 500000;
         }
 
         //if $actual is greater than 20
-        if ($actual >= 20) {
-            $amount = (($max) / ($max - $min)) * (40 / 100) * 500000;
+        if ($actual >= $max) {
+            $amount = ($clientPercentage / 100) * 500000;
         }
 
         return ROUND($amount, 2);
     }
+
+    public function settings()
+    {
+        $incentiveSettings = IncentiveSettings::first();
+        return view('incentive-settings', compact('incentiveSettings'));
+    }
+
+    public function update_incentive_settings(Request $request)
+    {
+        $requestData = $request->all();
+        $incentiveSettings = IncentiveSettings::first();
+
+        // Remove commas from numeric fields
+        $numericFields = ['max_par', 'percentage_incentive_par', 'max_cap_portifolio', 'min_cap_portifolio', 'percentage_incentive_portifolio', 'max_cap_client', 'min_cap_client', 'percentage_incentive_client', 'max_incentive'];
+        foreach ($numericFields as $field) {
+            if (isset($requestData[$field])) {
+                $requestData[$field] = str_replace(',', '', $requestData[$field]);
+            }
+        }
+
+        if ($incentiveSettings) {
+            $incentiveSettings->update($requestData);
+        } else {
+            IncentiveSettings::create($requestData);
+        }
+
+        // Add a session flash message to indicate success
+        session()->flash('success', 'Incentive settings updated successfully!');
+
+        // Redirect back to the settings page
+        return redirect()->route('incentives-settings');
+    }
+
 
 }

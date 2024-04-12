@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('get-expected-repayments', [ExpectedController::class, 'group_by']);
 
     Route::get('incentives', [IncentiveController::class, 'index'])->name('incentives');
+    Route::get('incentives-settings', [IncentiveController::class, 'settings'])->name('incentives-settings');
+    Route::patch('incentives-settings-update', [IncentiveController::class, 'update_incentive_settings'])->name('incentive-settings.store');
     Route::get('get-incentives', [IncentiveController::class, 'calculateIncentive']);
 
     Route::get('tracker', [SaleController::class, 'index'])->name('tracker');

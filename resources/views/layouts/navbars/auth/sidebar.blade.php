@@ -113,20 +113,20 @@
             <span class="nav-link-text ms-1">Products</span>
         </a>
       </li>
-      {{-- <li class="nav-item pb-2">
-        <a class="nav-link {{ (Request::is('targets') ? 'active' : '') }}" href="{{ url('targets') }}">
-            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                <i style="font-size: 1rem;" class="fas fa-lg fa-cogs ps-2 pe-2 text-center text-dark {{ (Request::is('targets') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
-            </div>
-            <span class="nav-link-text ms-1">Targets</span>
-        </a>
-      </li> --}}
       <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('user-management') ? 'active' : '') }}" href="{{ url('user-management') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i style="font-size: 1rem;" class="fas fa-lg fa-cogs ps-2 pe-2 text-center text-dark {{ (Request::is('user-management') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
             </div>
             <span class="nav-link-text ms-1">User Management</span>
+        </a>
+      </li>
+      <li class="nav-item pb-2">
+        <a class="nav-link {{ (Request::is('incentives-settings') ? 'active' : '') }}" href="{{ url('incentives-settings') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i style="font-size: 1rem;" class="fas fa-lg fa-cogs ps-2 pe-2 text-center text-dark {{ (Request::is('incentives-settings') ? 'text-white' : 'text-dark') }} " aria-hidden="true"></i>
+            </div>
+            <span class="nav-link-text ms-1">Incentives</span>
         </a>
       </li>
       <li class="nav-item mt-3">
