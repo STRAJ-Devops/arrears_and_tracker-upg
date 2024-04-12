@@ -159,8 +159,9 @@ class IncentiveController extends Controller
     //parameter 3
     public function calculateUniqueCustomerIDIndividual()
     {
+        $currentMonthYear = date('M-y');
         //group by staff_id by calculating the number of unique customer_id
-        $uniqueCustomerIDIndividual = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
+        $uniqueCustomerIDIndividual = Arrear::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
             ->where('lending_type', 'Individual')
             ->groupBy('staff_id')
             ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
@@ -176,7 +177,8 @@ class IncentiveController extends Controller
     //outstanding principal for group
     public function calculateOutstandingPrincipalGroup()
     {
-        $outstandingPrincipalSumGroup = Arrear::select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
+        $currentMonthYear = date('M-y');
+        $outstandingPrincipalSumGroup = Arrear::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
             ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
@@ -188,8 +190,9 @@ class IncentiveController extends Controller
     //number of total customers in a groups
     public function recordsForUniqueGroupIDGroup()
     {
+        $currentMonthYear = date('M-y');
         //group by staff_id by calculating the number of unique group_id
-        $uniqueGroupIDGroup = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
+        $uniqueGroupIDGroup = Arrear::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
             ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
@@ -201,8 +204,9 @@ class IncentiveController extends Controller
     //par per officer
     public function recordsForPAR()
     {
+        $currentMonthYear = date('M-y');
         // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
-        $recordsForPAR = Arrear::selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
+        $recordsForPAR = Arrear::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
             ->groupBy('staff_id')
             ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
@@ -214,8 +218,9 @@ class IncentiveController extends Controller
     //llr per officer
     public function recordsForMonthlyLoanLossRate()
     {
+        $currentMonthYear = date('M-y');
         // Calculate the monthly loan loss rate for each staff
-        $monthlyLoanLossRate = Arrear::selectRaw('staff_id,
+        $monthlyLoanLossRate = Arrear::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->selectRaw('staff_id,
             round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) /
              SUM(outsanding_principal)) * 100, 2) as count')
             ->where('product_id', '!=', '21070')

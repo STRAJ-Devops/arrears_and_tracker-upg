@@ -382,6 +382,7 @@ class SaleController extends Controller
                         $arrear->next_repayment_interest = $csv[$i][34];
                         $arrear->next_repayment_date = $csv[$i][32];
                         $arrear->group_id = $csv[$i][4];
+                        $arrear->disbursement_date = $csv[$i][30];
 
                         $arrear->save();
                     } catch (\Exception $e) {

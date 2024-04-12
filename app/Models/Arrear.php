@@ -35,6 +35,7 @@ class Arrear extends Model
         'next_repayment_date',
         'dda',
         'group_id',
+        'disbursement_date'
     ];
 
     //an arrear belongs to an Officer

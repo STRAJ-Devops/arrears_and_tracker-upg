@@ -75,6 +75,8 @@ return new class extends Migration
 
             $table->string('group_id')->nullable();
 
+            $table->string('disbursement_date');
+
             $table->timestamps();
         });
     }
