@@ -453,9 +453,10 @@ class IncentiveController extends Controller
     {
         $maxPar = IncentiveSettings::first()->max_par;
         $parPercentage = IncentiveSettings::first()->percentage_incentive_par;
+        $maximumIncentive = IncentiveSettings::first()->max_incentive;
         $amount = 0;
         if (($maxPar / 100) <= ($maxPar / 100)) {
-            $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * 500000;
+            $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
         }
 
         return ROUND($amount, 2);
@@ -466,16 +467,17 @@ class IncentiveController extends Controller
         $max = IncentiveSettings::first()->max_cap_portifolio;
         $min = IncentiveSettings::first()->min_cap_portifolio;
         $portifolioPercentage = IncentiveSettings::first()->percentage_incentive_portifolio;
+        $maximumIncentive = IncentiveSettings::first()->max_incentive;
         $actual = $outstandingPrincipalIndividual;
         $amount = 0;
 
         //if $actual is less than  50000000
         if (($actual > $min) && ($actual < $max)) {
-            $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * ($portifolioPercentage / 100) * 500000;
+            $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * ($portifolioPercentage / 100) * $maximumIncentive;
         }
         //greater than 40000000
         if ($actual >= $max) {
-            $amount = ($portifolioPercentage / 100) * 500000;
+            $amount = ($portifolioPercentage / 100) * $maximumIncentive;
         }
 
         return ROUND($amount, 2);
@@ -486,17 +488,18 @@ class IncentiveController extends Controller
         $max = IncentiveSettings::first()->max_cap_client;
         $min = IncentiveSettings::first()->min_cap_client;
         $clientPercentage = IncentiveSettings::first()->percentage_incentive_client;
+        $maximumIncentive = IncentiveSettings::first()->max_incentive;
 
         $actual = $uniqueCustomerIDIndividual;
         $amount = 0;
 
         if ($actual >= 5) {
-            $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * 500000;
+            $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
         }
 
         //if $actual is greater than 20
         if ($actual >= $max) {
-            $amount = ($clientPercentage / 100) * 500000;
+            $amount = ($clientPercentage / 100) * $maximumIncentive;
         }
 
         return ROUND($amount, 2);
