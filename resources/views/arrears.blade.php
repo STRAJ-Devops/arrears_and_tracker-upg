@@ -16,7 +16,7 @@
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
                                     <select class="form-control staff" id="staff">
-                                        @if (Auth::user()->user_type == 5)
+                                        @if ((Auth::user()->user_type == 5 || 4))
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="region_id">Region</option>

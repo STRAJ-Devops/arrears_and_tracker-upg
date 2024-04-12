@@ -12,7 +12,7 @@
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
                         <div class="row card-header pb-0 d-flex justify-content-between">
-                            @if (Auth::user()->user_type == 5)
+                            @if (Auth::user()->user_type == 5 || Auth::user()->user_type ==4 || Auth::user()->user_type ==3 || Auth::user()->user_type ==2)
                                 <div class="col-md-9">
                                     <div class="form-group d-flex">
                                         <label for="staff" class="mr-2">Group By</label>

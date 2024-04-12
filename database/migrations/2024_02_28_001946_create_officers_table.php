@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('names', 333);
             $table->smallInteger('user_type');
             $table->string('username', 333);
+            $table->integer('region_id')->nullable();
+            $table->foreign('region_id')->references('region_id')->on('regions');
+            $table->bigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('branch_id')->on('branches');
             $table->string('password');
             $table->string('un_hashed_password');
             $table->timestamps();

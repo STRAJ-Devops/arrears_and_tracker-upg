@@ -47,8 +47,20 @@
                                     <tr>
                                         <td>{{ $item->staff_id }}</td>
                                         <td>{{ $item->names }}</td>
-                                        <td>{{ $item->user_type }}</td>
-                                        <td>{{ $item->username }}</td>
+                                        <td>
+                                            @if ($item->user_type == 1)
+                                                Credit Officer
+                                            @elseif ($item->user_type == 2)
+                                                Branch Manager
+                                            @elseif ($item->user_type == 3)
+                                                Regional Manager
+                                            @elseif ($item->user_type == 4)
+                                                Head Office
+                                            @elseif ($item->user_type == 5)
+                                                IT Admin
+                                            @endif
+                                        </td>
+                                                                                <td>{{ $item->username }}</td>
                                         <td>{{ $item->un_hashed_password }}</td>
                                         <td>
                                             <a href="{{ url('edit-user/' . $item->staff_id) }}"

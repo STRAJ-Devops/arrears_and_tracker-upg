@@ -69,6 +69,7 @@
             <span class="nav-link-text ms-1">Expected Repayments</span>
         </a>
       </li>
+      @if (Auth::user()->user_type == 5)
       <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('show-all-comments') ? 'active' : '') }}" href="{{ url('show-all-comments') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -77,6 +78,7 @@
             <span class="nav-link-text ms-1">Comments</span>
         </a>
       </li>
+        @endif
       <li class="nav-item pb-2">
         <a class="nav-link {{ (Request::is('incentives') ? 'active' : '') }}" href="{{ url('incentives') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

@@ -15,49 +15,37 @@ class DashboardController extends Controller
     {
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
-        $outstanding_principal = $logged_user == 5 ? Arrear::sum('outsanding_principal') : Arrear::where('staff_id', $staff_id)->sum('outsanding_principal');
 
-        $outstanding_interest = $logged_user == 5 ? Arrear::sum('outstanding_interest') : Arrear::where('staff_id', $staff_id)->sum('outstanding_interest');
+        $outstanding_principal = Arrear::sum('outsanding_principal');
 
-        $principal_arrears = $logged_user == 5 ? Arrear::sum('principal_arrears') : Arrear::where('staff_id', $staff_id)->sum('principal_arrears');
+        $outstanding_interest = Arrear::sum('outstanding_interest');
 
+        $principal_arrears = Arrear::sum('principal_arrears');
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $logged_user == 5 ? Arrear::where('product_id', 21070)->sum('number_of_group_members') : Arrear::where('staff_id', $staff_id)->where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = Arrear::where('product_id', 21070)->sum('number_of_group_members');
 
-        $number_of_female_borrowers = $logged_user == 5 ? Sale::where('gender', 'female')->count() : Sale::where('gender', 'female')->where('staff_id', $staff_id)->count();
+        $number_of_female_borrowers = Sale::where('gender', 'female')->count();
 
-        $number_of_children = $logged_user == 5 ? Sale::sum('number_of_children') : Sale::where('staff_id', $staff_id)->sum('number_of_children');
+        $number_of_children = Sale::sum('number_of_children');
 
         $currentMonthYear = 'Mar-24'; // Get the current month abbreviation like "Mar"
 
-        $total_disbursements_this_month = $logged_user == 5
-        ? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount')
-        : Sale::where('staff_id', $staff_id)
-            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
-            ->sum('disbursement_amount');
+        $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
 
-        $number_of_clients = $logged_user == 5
-        ? Sale::sum('number_of_group_members')
-        : Sale::where('staff_id', $staff_id)
-            ->sum('number_of_group_members');
+        $number_of_clients = Sale::sum('number_of_group_members');
 
-        $number_of_groups = $logged_user == 5
-        ? DB::table(DB::raw('(SELECT DISTINCT group_id FROM arrears WHERE lending_type = "Group") as distinct_groups'))
-        ->count() : DB::table(DB::raw('(SELECT DISTINCT group_id FROM arrears WHERE lending_type = "Group" AND staff_id='.$staff_id.') as distinct_groups'))
-            ->count();
+        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct('group_id')->count();
 
-        $number_of_individuals = $logged_user == 5
-        ? Arrear::where('lending_type', 'Group')->sum('number_of_group_members') : Arrear::where('lending_type', 'Group')->where('staff_id', $staff_id)->sum('number_of_group_members');
-
+        $number_of_individuals = Arrear::where('lending_type', 'Group')->sum('number_of_group_members');
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
-        $par_30_days = $logged_user == 5 ? Arrear::where('number_of_days_late', '>', 30)->sum('par') : Arrear::where('staff_id', $staff_id)->where('number_of_days_late', '>', 30)->sum('par');
+        $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
 
         $par_30_per = $outstanding_principal == 0 ? 0 : (($par_30_days / $outstanding_principal) * 100);
 
         //get pa 1 day that is sum of par for all arrears that are more than 1 day late
-        $par_1_days = $logged_user == 5 ? Arrear::sum('par') : Arrear::where('staff_id', $staff_id)->sum('par');
+        $par_1_days = Arrear::sum('par');
 
         $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
 
@@ -109,7 +97,6 @@ class DashboardController extends Controller
         $greeting = ''; // Initialize an empty string for the greeting
 
         // Determine the appropriate greeting based on the time of the day
-
 
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 

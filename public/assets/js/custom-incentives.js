@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // Check logged_user variable and show corresponding section
-    if (logged_user === 5) {
+    if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
         $("#table-section").show(); // Show the table section if user is logged in
         // Initialize DataTable
         var table = $('#Incentives').DataTable({
@@ -46,7 +46,7 @@ $(document).ready(function () {
             //export buttons
 
             success: function (response) {
-                if (typeof logged_user !== 'undefined' && logged_user === 5) {
+                if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
                     $("#general-section").empty();
                     var tbody = $('#Incentives tbody');
                     tbody.empty(); // Clear existing data

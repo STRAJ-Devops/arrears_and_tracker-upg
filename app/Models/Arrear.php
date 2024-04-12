@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ArrearScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ScopedBy(ArrearScope::class)]
 class Arrear extends Model
 {
     use HasFactory;
@@ -94,4 +97,5 @@ class Arrear extends Model
     {
         return $this->hasMany(ProductTarget::class, 'product_id', 'product_id');
     }
+
 }

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SaleScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use EllGreen\LaravelLoadFile\Laravel\Traits\LoadsFiles;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
-
+#[ScopedBy(SaleScope::class)]
 class Sale extends Model
 {
     use HasFactory, LoadsFiles;

@@ -29,15 +29,24 @@ class OfficerController extends Controller
 
     public function store(Request $request)
     {
-        $requestData = $request->all();
-        //un hash password
-        $requestData['un_hashed_password'] = $requestData['password'];
-        //hash password
-        $requestData['password'] = bcrypt($requestData['password']);
 
-        Officer::create($requestData);
+            //validate form data
+            $this->validate($request, [
+                'names' => 'required',
+                'staff_id' => 'required|integer|unique:officers,staff_id',
+                'username' => 'required',
+                'password' => 'required',
+            ]);
 
-        return redirect('user-management')->with('flash_message', 'New User Added!');
+            $requestData = $request->all();
+            //un hash password
+            $requestData['un_hashed_password'] = $requestData['password'];
+            //hash password
+            $requestData['password'] = bcrypt($requestData['password']);
+
+            Officer::create($requestData);
+
+            return redirect('user-management')->with('flash_message', 'New User Added!');
     }
 
     public function edit($id)

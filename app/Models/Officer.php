@@ -18,9 +18,10 @@ class Officer extends Authenticatable
     protected $fillable = [
         'staff_id',
         'names',
-        'last_name',
         'user_type',
         'username',
+        'region_id',
+        'branch_id',
         'password',
         'un_hashed_password',
     ];
