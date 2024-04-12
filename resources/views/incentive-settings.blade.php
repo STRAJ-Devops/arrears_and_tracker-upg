@@ -13,7 +13,7 @@
                             @method('PATCH')
                             @csrf
                             {{-- bootstrap form legend showing PAR calculation settings ie maximum par, percentage incentive --}}
-                            <fieldset>
+                            <fieldset class="form-group border p-3">
                                 <legend>PAR Calculation Settings</legend>
                                 <div class="form-group row">
                                     <label for="max_par" class="col-md-4 col-form-label text-md-right">Maximum PAR</label>
@@ -33,8 +33,8 @@
                                 </div>
                             </fieldset>
                             {{-- bootstrap form legend showing Net Portifolio Growth ie Maximum cap, minimum cap, percentage incentive --}}
-                            <fieldset>
-                                <legend>Net Portifolio Growth</legend>
+                            <fieldset class="form-group border p-3">
+                                <legend>Net Portifolio Growth Settings</legend>
                                 <div class="form-group row">
                                     <label for="max_cap_portifolio" class="col-md-4 col-form-label text-md-right">Maximum
                                         Cap</label>
@@ -68,8 +68,8 @@
                             </fieldset>
 
                             {{-- bootstrap form legend showing Net Client Growth ie Maximum cap, minimum cap, percentage incentive --}}
-                            <fieldset>
-                                <legend>Net Client Growth</legend>
+                            <fieldset class="form-group border p-3">
+                                <legend>Net Client Growth Settings</legend>
                                 <div class="form-group row">
                                     <label for="max_cap_client" class="col-md-4 col-form-label text-md-right">Maximum
                                         Cap</label>
@@ -102,8 +102,8 @@
                                 </div>
                             </fieldset>
                             {{-- Maximum incentive --}}
-                            <fieldset>
-                                <legend>Maximum Incentive</legend>
+                            <fieldset class="form-group border p-3">
+                                <legend>Maximum Incentive Settings</legend>
                                 <div class="form-group row">
                                     <label for="max_incentive" class="col-md-4 col-form-label text-md-right">Maximum
                                         Incentive</label>
