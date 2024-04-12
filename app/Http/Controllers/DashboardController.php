@@ -29,7 +29,8 @@ class DashboardController extends Controller
 
         $number_of_children = Sale::sum('number_of_children');
 
-        $currentMonthYear = 'Mar-24'; // Get the current month abbreviation like "Mar"
+        // Get the current month abbreviation like "Mar-24"
+        $currentMonthYear = date('M-y');
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
 
@@ -93,10 +94,6 @@ class DashboardController extends Controller
             $branchSalesList[] = $branchActuals[$branchId] ?? 0; // Use null coalescing operator
         }
 
-        $currentTime = date('H:i'); // Get current time in 24-hour format
-        $greeting = ''; // Initialize an empty string for the greeting
-
-        // Determine the appropriate greeting based on the time of the day
 
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 

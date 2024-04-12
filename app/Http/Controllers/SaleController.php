@@ -23,9 +23,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = 'Mar-24'; // Get the current month abbreviation like "Mar"
-        $logged_user = auth()->user()->user_type;
-        $staff_id = auth()->user()->staff_id;
+        $currentMonthYear = date('M-y');
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {
