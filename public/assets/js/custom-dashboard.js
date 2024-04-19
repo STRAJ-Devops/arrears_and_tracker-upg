@@ -103,7 +103,7 @@ var data = {
         {
             label: 'Arrears',
             backgroundColor: ['green', 'red'],
-            borderColor: ['green','red'],
+            borderColor: ['green', 'red'],
             data: [outstandingPrincipal, PrincipalInArrears]
         }
     ]
@@ -166,10 +166,13 @@ var config = {
                 color: 'white',
                 // display percentage with two decimal points
                 formatter: function (value, context) {
-                    console.log(typeof value, totalTargets, totalSales);
-                    const percentage = (Number(value) / (Number(totalTargets) + Number(totalSales))) * 100;
-                    console.log(percentage);
-                    return percentage.toFixed(2) + '%';
+                    var percentage = 0;
+                    if (context.dataIndex === 0) {
+                        percentage = ((totalSales / totalTargets) * 100).toFixed(2);
+                    } else {
+                        percentage = (((totalTargets - totalSales) / totalTargets) * 100).toFixed(2);
+                    }
+                    return percentage + '%';
                 },
                 font: {
                     weight: 'bold',

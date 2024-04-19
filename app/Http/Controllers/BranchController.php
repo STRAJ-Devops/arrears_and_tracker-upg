@@ -12,4 +12,21 @@ class BranchController extends Controller
         $branches = Branch::all();
         return view('branches', compact('branches'));
     }
+
+    public function edit($id){
+        $branch = Branch::find($id);
+        return view('edit-branch', compact('branch'));
+    }
+
+    public function update(Request $request, $id){
+        $requestData = $request->all();
+        $branch = Branch::find($id);
+        $branch->update($requestData);
+        return redirect()->route('branches');
+
+    }
+
+    public function delete(){
+
+    }
 }
