@@ -29,7 +29,7 @@ Route::get('process-csv-arrears', [SaleController::class, 'process_csv_for_arrea
 Route::post('arrears-group-by', [ArrearController::class, 'group_by'])->name('arrears-group-by');
 Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
 
-Route::get('incentives', [IncentiveController::class, 'calculateIncentives']);
+Route::get('incentives', [IncentiveController::class, 'overallGroupRecords']);
 
 
 

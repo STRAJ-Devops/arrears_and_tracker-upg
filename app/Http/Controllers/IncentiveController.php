@@ -6,10 +6,10 @@ use App\Models\Arrear;
 use App\Models\IncentiveSettings;
 use App\Models\Officer;
 use App\Models\PreviousEndMonth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Scopes\ArrearScope;
 use Illuminate\Http\Request;
 //import ArrerScope
-use App\Models\Scopes\ArrearScope;
+use Illuminate\Support\Facades\DB;
 
 class IncentiveController extends Controller
 {
@@ -28,19 +28,27 @@ class IncentiveController extends Controller
 
         if ($logged_user == 5 || 4) {
             foreach ($incentives as $staffId => $incentive) {
+
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();
+                if ($this->determineQualifiers($incentive)) {
 
-                //incentive amount for PAR
-                $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
-                //incentive amount for Net Portfolio Growth
-                $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth']);
+                    //incentive amount for PAR
+                    $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+                    //incentive amount for Net Portfolio Growth
+                    $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth']);
 
-                //incentive amount for Net Client Growth
-                $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
+                    //incentive amount for Net Client Growth
+                    $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
-                //total incentive amount
-                $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
+                    //total incentive amount
+                    $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
+                } else {
+                    $incentive['incentive_amount_PAR'] = 0;
+                    $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
+                    $incentive['incentive_amount_Net_Client_Growth'] = 0;
+                    $incentive['total_incentive_amount'] = 0;
+                }
 
                 // Combine the officer details with the incentives
                 $incentivesWithDetails[$staffId] = [
@@ -149,10 +157,12 @@ class IncentiveController extends Controller
      */
     public function calculateOutstandingPrincipalIndividual()
     {
-        $outstandingPrincipalSumIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
+        $currentMonthYear = date('M-y');
+        $outstandingPrincipalSumIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Individual')
+            ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-            ->havingRaw('SUM(outsanding_principal) >= 130000000') // Filter the sum
+        // ->havingRaw('SUM(outsanding_principal) >= 130000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumIndividual;
@@ -163,13 +173,49 @@ class IncentiveController extends Controller
     {
         $currentMonthYear = date('M-y');
         //group by staff_id by calculating the number of unique customer_id
-        $uniqueCustomerIDIndividual = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
+        $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
             ->where('lending_type', 'Individual')
+            ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-            ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
+        // ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
             ->get();
 
         return $uniqueCustomerIDIndividual;
+    }
+    //par per officer
+    public function recordsForPARIndividual()
+    {
+        $currentMonthYear = date('M-y');
+        // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
+        $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('lending_type', 'Individual')
+            ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
+            ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
+            ->groupBy('staff_id')
+        // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
+            ->get();
+
+        return $recordsForPAR;
+    }
+
+    //llr per officer
+    public function recordsForMonthlyLoanLossRateIndividual()
+    {
+        $currentMonthYear = date('M-y');
+        // Calculate the monthly loan loss rate for each staff
+        $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('lending_type', 'Individual')
+            ->selectRaw('staff_id,
+                round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) /
+                 SUM(outsanding_principal)) * 100, 2) as count')
+            ->where('product_id', '!=', '21070')
+            ->groupBy('staff_id')
+        // ->havingRaw('count <= 0.18')
+            ->get();
+
+        return $monthlyLoanLossRate;
     }
 
     /**
@@ -180,10 +226,10 @@ class IncentiveController extends Controller
     public function calculateOutstandingPrincipalGroup()
     {
         $currentMonthYear = date('M-y');
-        $outstandingPrincipalSumGroup = Arrear::select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
+        $outstandingPrincipalSumGroup = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-            ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
+        // ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumGroup;
@@ -194,40 +240,46 @@ class IncentiveController extends Controller
     {
         $currentMonthYear = date('M-y');
         //group by staff_id by calculating the number of unique group_id
-        $uniqueGroupIDGroup = Arrear::select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
+        $uniqueGroupIDGroup = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-            ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
+        // ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
             ->get();
 
         return $uniqueGroupIDGroup;
     }
 
     //par per officer
-    public function recordsForPAR()
+    public function recordsForPARGroup()
     {
         $currentMonthYear = date('M-y');
         // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
-        $recordsForPAR = Arrear::selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
+        $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('lending_type', 'Group')
+            ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
             ->groupBy('staff_id')
-            ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
+        // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
             ->get();
 
         return $recordsForPAR;
     }
 
     //llr per officer
-    public function recordsForMonthlyLoanLossRate()
+    public function recordsForMonthlyLoanLossRatellrGroup()
     {
         $currentMonthYear = date('M-y');
         // Calculate the monthly loan loss rate for each staff
-        $monthlyLoanLossRate = Arrear::selectRaw('staff_id,
+        $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('disbursement_date', 'LIKE', "%$currentMonthYear%")
+            ->where('lending_type', 'Group')
+            ->selectRaw('staff_id,
             round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) /
              SUM(outsanding_principal)) * 100, 2) as count')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-            ->havingRaw('count <= 0.18')
+        // ->havingRaw('count <= 0.18')
             ->get();
 
         return $monthlyLoanLossRate;
@@ -242,9 +294,10 @@ class IncentiveController extends Controller
     public function overallIndividualRecords()
     {
         $outstandingPrincipalIndividual = $this->calculateOutstandingPrincipalIndividual();
+
         $uniqueCustomerIDIndividual = $this->calculateUniqueCustomerIDIndividual();
-        $recordsForPAR = $this->recordsForPAR();
-        $monthlyLoanLossRate = $this->recordsForMonthlyLoanLossRate();
+        $recordsForPAR = $this->recordsForPARIndividual();
+        $monthlyLoanLossRate = $this->recordsForMonthlyLoanLossRateIndividual();
 
         $overallIndividualRecords = [];
 
@@ -298,8 +351,8 @@ class IncentiveController extends Controller
     {
         $outstandingPrincipalGroup = $this->calculateOutstandingPrincipalGroup();
         $recordsForUniqueGroupIDGroup = $this->recordsForUniqueGroupIDGroup();
-        $recordsForPAR = $this->recordsForPAR();
-        $monthlyLoanLossRate = $this->recordsForMonthlyLoanLossRate();
+        $recordsForPAR = $this->recordsForPARGroup();
+        $monthlyLoanLossRate = $this->recordsForMonthlyLoanLossRatellrGroup();
 
         $overallGroupRecords = [];
 
@@ -334,10 +387,10 @@ class IncentiveController extends Controller
             $overallGroupRecords[$staffId]['monthly_loan_loss_rate'] = $record->count;
         }
 
-        //filter only those with sgl_records property or has all [outstanding_principal_group, records_for_unique_group_id_group, records_for_PAR, monthly_loan_loss_rate]
-        $overallGroupRecords = array_filter($overallGroupRecords, function ($record) {
-            return isset($record['outstanding_principal_group']) && isset($record['records_for_unique_group_id_group']) && isset($record['records_for_PAR']) && isset($record['monthly_loan_loss_rate']);
-        });
+        // //filter only those with sgl_records property or has all [outstanding_principal_group, records_for_unique_group_id_group, records_for_PAR, monthly_loan_loss_rate]
+        // $overallGroupRecords = array_filter($overallGroupRecords, function ($record) {
+        //     return isset($record['outstanding_principal_group']) && isset($record['records_for_unique_group_id_group']) && isset($record['records_for_PAR']) && isset($record['monthly_loan_loss_rate']);
+        // });
 
         return $overallGroupRecords;
     }
@@ -544,5 +597,36 @@ class IncentiveController extends Controller
         return redirect()->route('incentives-settings');
     }
 
+    //function to determine qualifiers
+    public function determineQualifiers($incentive)
+    {
+        //check if incentive is individual by checking for the presence of outstanding_principal_individual
+        if (array_key_exists('outstanding_principal_individual', $incentive)) {
+            $outstanding_principal_individual = $incentive['outstanding_principal_individual'];
+            $unique_customer_id_individual = $incentive['unique_customer_id_individual'];
+            $records_for_PAR = $incentive['records_for_PAR'];
+            $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
+
+            //check if the staff qualifies for the incentive
+            if ($outstanding_principal_individual >= 130000000 && $unique_customer_id_individual >= 130 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
+                return true;
+            }
+        }
+
+        //check if incentive is group by checking for the presence of outstanding_principal_group
+        if (array_key_exists('outstanding_principal_group', $incentive)) {
+            $outstanding_principal_group = $incentive['outstanding_principal_group'];
+            $records_for_unique_group_id_group = $incentive['records_for_unique_group_id_group'];
+            $records_for_PAR = $incentive['records_for_PAR'];
+            $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
+
+            //check if the staff qualifies for the incentive
+            if ($outstanding_principal_group >= 90000000 && $records_for_unique_group_id_group >= 140 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }
