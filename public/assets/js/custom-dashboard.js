@@ -171,9 +171,10 @@ var config = {
                             label += ': ';
                         }
                         if (context.dataIndex === 0) {
-                            label += Number(totalSales).toLocaleString();
-                        } else {
                             label += Number(totalTargets).toLocaleString();
+
+                        } else {
+                            label += Number(totalSales).toLocaleString();
                         }
                         return label;
                     }
