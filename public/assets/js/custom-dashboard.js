@@ -139,6 +139,8 @@ var config = {
 
 new Chart(document.getElementById('arrears-chart'), config);
 
+var actuals = ((totalSales / totalTargets) * 100)
+var targets = (((totalTargets - totalSales) / totalTargets) * 100)
 //pie chart for arrears
 var data = {
     labels: ['Targets', 'Actuals'],
@@ -147,7 +149,7 @@ var data = {
             label: 'Arrears',
             backgroundColor: ['red', 'green'],
             borderColor: ['red', 'green'],
-            data: [totalTargets, totalSales]
+            data: [actuals, targets]
         }
     ]
 }
@@ -161,6 +163,22 @@ var config = {
             title: {
                 display: true,
                 text: 'Total Sales vs Total Targets'
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        var label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.dataIndex === 0) {
+                            label += Number(totalSales).toLocaleString();
+                        } else {
+                            label += Number(totalTargets).toLocaleString();
+                        }
+                        return label;
+                    }
+                }
             },
             datalabels: {
                 color: 'white',
@@ -182,6 +200,7 @@ var config = {
         }
     },
 };
+
 
 
 new Chart(document.getElementById('targets-sales-chart'), config);
