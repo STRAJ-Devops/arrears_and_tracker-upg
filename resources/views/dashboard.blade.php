@@ -264,7 +264,9 @@
         </div>
     </div>
     @push('dashboard')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+            integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script>
             Chart.register(ChartDataLabels);
@@ -279,8 +281,7 @@
             var PrincipalInArrears = {!! json_encode($data['principal_arrears']) !!};
             var totalTargets = {!! json_encode($data['total_targets']) !!};
             var totalSales = {!! json_encode($data['total_disbursements']) !!};
-
         </script>
-        <script src="{{ asset('assets/js/custom-dashboard.js?v=1.0.0') }}"></script>
-    @endpush
+<script src="{{ asset('assets/js/custom-dashboard.js?v=' . time()) }}"></script>
+@endpush
 @endsection
