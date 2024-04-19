@@ -54,10 +54,19 @@ class ProductTargetController extends Controller
             $csv = array_map('str_getcsv', file($file));
 
             for ($i = 1; $i < count($csv); $i++) {
-                $product_target = new ProductTarget();
-                $product_target->product_id = $csv[$i][0];
-                $product_target->target_amount = $csv[$i][2];
-                $product_target->save();
+                $existingRecord = ProductTarget::where('product_id', $csv[$i][0])->first();
+
+                if (!$existingRecord) {
+                    $product_target = new ProductTarget();
+                    $product_target->product_id = $csv[$i][0];
+                    $product_target->target_amount = $csv[$i][2];
+                    $product_target->save();
+                } else {
+                    // If duplicate found, you can update the existing record or handle it accordingly
+                    // For example, you can update the target_amount:
+                    $existingRecord->target_amount = $csv[$i][2];
+                    $existingRecord->save();
+                }
             }
         } catch (\Exception $e) {
             // Return an error message if import fails

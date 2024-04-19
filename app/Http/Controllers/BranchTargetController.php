@@ -56,11 +56,21 @@ class BranchTargetController extends Controller
             $csv = array_map('str_getcsv', file($file));
 
             for ($i = 1; $i < count($csv); $i++) {
-                $branch_target = new BranchTarget();
-                $branch_target->branch_id = $csv[$i][0];
-                $branch_target->target_amount = $csv[$i][2];
-                $branch_target->target_numbers = $csv[$i][3];
-                $branch_target->save();
+                //check if the branch target already exists
+                $existingRecord = BranchTarget::where('branch_id', $csv[$i][0])->first();
+                if (!$existingRecord) {
+                    $branch_target = new BranchTarget();
+                    $branch_target->branch_id = $csv[$i][0];
+                    $branch_target->target_amount = $csv[$i][2];
+                    $branch_target->target_numbers = $csv[$i][3];
+                    $branch_target->save();
+                } else {
+                    //update the branch target if it already exists
+                    $existingRecord->target_amount = $csv[$i][2];
+                    $existingRecord->target_numbers = $csv[$i][3];
+                    $existingRecord->save();
+                }
+
             }
         } catch (\Exception $e) {
             // Return an error message if import fails
