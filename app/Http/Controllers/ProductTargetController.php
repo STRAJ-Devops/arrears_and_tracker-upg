@@ -43,19 +43,22 @@ class ProductTargetController extends Controller
 
     public function import(Request $request)
     {
+        $file = $request->file('product_targets_file');
+        $file_name = time() . '_' . $file->getClientOriginalName();
+        $save = $file->move(public_path('uploads'), $file_name);
         try {
             //truncate the ProductTarget table
            ProductTarget::truncate();
 
-            // Validate the uploaded file
-            $request->validate([
-                'product_targets_file' => 'required|mimes:xlsx,xls,csv',
-            ], [
-                'product_targets_file.required' => 'Please upload a file.',
-                'product_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
-            ]);
-            // Import the file using BranchTargetsImport class
-            Excel::import(new ProductTargetsImport, $request->file('product_targets_file'));
+            $file = public_path('uploads/' . $file_name);
+            $csv = array_map('str_getcsv', file($file));
+
+            for ($i = 1; $i < count($csv); $i++) {
+                $product_target = new ProductTarget();
+                $product_target->product_id = $csv[$i][0];
+                $product_target->target_amount = $csv[$i][2];
+                $product_target->save();
+            }
         } catch (\Exception $e) {
             // Return an error message if import fails
             return response()->json(['error' => 'Failed to import product targets. Please ensure the file format is correct.'], 400);

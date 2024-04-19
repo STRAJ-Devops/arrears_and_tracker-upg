@@ -44,23 +44,24 @@ class BranchTargetController extends Controller
 
     public function import(Request $request)
     {
+        //save the file to the server
+        $file = $request->file('branch_targets_file');
+        $file_name = time() . '_' . $file->getClientOriginalName();
+        $save = $file->move(public_path('uploads'), $file_name);
 
         try {
-             BranchTarget::truncate();
+            BranchTarget::truncate();
 
-            //check if BranchTarget table is empty
-            if (BranchTarget::count() > 0) {
-                return redirect()->back()->with('error', 'Failed to delete branch targets. Please try again.');
+            $file = public_path('uploads/' . $file_name);
+            $csv = array_map('str_getcsv', file($file));
+
+            for ($i = 1; $i < count($csv); $i++) {
+                $branch_target = new BranchTarget();
+                $branch_target->branch_id = $csv[$i][0];
+                $branch_target->target_amount = $csv[$i][2];
+                $branch_target->target_numbers = $csv[$i][3];
+                $branch_target->save();
             }
-            // Validate the uploaded file
-            $request->validate([
-                'branch_targets_file' => 'required|mimes:xlsx,xls,csv',
-            ], [
-                'branch_targets_file.required' => 'Please upload a file.',
-                'branch_targets_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
-            ]);
-            // Import the file using BranchTargetsImport class
-            Excel::import(new BranchTargetsImport, $request->file('branch_targets_file'));
         } catch (\Exception $e) {
             // Return an error message if import fails
             return response()->json(['error' => 'Failed to import branch targets. Please ensure the file format is correct.', 'exception' => $e], 400);
