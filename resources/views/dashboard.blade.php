@@ -281,6 +281,6 @@
             var totalSales = {!! json_encode($data['total_disbursements']) !!};
 
         </script>
-        <script src="{{ asset('assets/js/custom-dashboard.js') }}"></script>
+        <script src="{{ asset('assets/js/custom-dashboard.js?v=1.0.0') }}"></script>
     @endpush
 @endsection
