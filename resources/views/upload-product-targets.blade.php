@@ -95,7 +95,7 @@
                             true); // Disable the button after successful upload
 
                             //navigate to product-targets-uploader using jquery
-                            //window.location.href = '/product-targets-uploader';
+                            window.location.href = '/product-targets-uploader';
                     },
                     error: function(xhr, status, error) {
                         // Handle error
