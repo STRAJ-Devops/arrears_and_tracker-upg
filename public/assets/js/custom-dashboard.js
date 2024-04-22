@@ -146,8 +146,8 @@ var data = {
     labels: ['Targets', 'Actuals'],
     datasets: [
         {
-            backgroundColor: ['green', 'red'],
-            borderColor: ['green', 'red'],
+            backgroundColor: ['red', 'green'],
+            borderColor: ['red', 'green'],
             data: [actuals, targets]
         }
     ]
