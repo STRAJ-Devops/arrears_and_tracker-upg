@@ -143,7 +143,7 @@ var actuals = ((totalSales / totalTargets) * 100)
 var targets = (((totalTargets - totalSales) / totalTargets) * 100)
 //pie chart for arrears
 var data = {
-    labels: ['Targets', 'Actuals'],
+    labels: ['Actuals', 'Targets'],
     datasets: [
         {
             backgroundColor: ['green', 'red'],
