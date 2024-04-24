@@ -7,7 +7,6 @@ use App\Http\Controllers\BranchTargetController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ExpectedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncentiveController;
@@ -22,7 +21,6 @@ use App\Http\Controllers\ResetController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\TargetController;
-use App\Http\Controllers\TargetsUploaderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +37,10 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'auth:officer'], function () {
 
     Route::get('/', [HomeController::class, 'home']);
+
+    Route::get('/loan-calculator', function () {
+        return view('calculator')->with('title', 'Loan Calculator');
+    })->name('loan-calculator');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('branches', [BranchController::class, 'index'])->name('branches');
@@ -66,7 +68,6 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('upload-branch-targets', [BranchTargetController::class, 'uploadBranchTargets']);
     Route::get('delete-branch-targets', [BranchTargetController::class, 'deleteBranchTargets']);
 
-
     Route::get('product-targets-uploader', [ProductTargetController::class, 'index'])->name('product-targets-uploader');
     Route::get('upload-product-targets', [ProductTargetController::class, 'uploadProductTargets']);
     Route::get('delete-product-targets', [ProductTargetController::class, 'deleteProductTargets']);
@@ -93,11 +94,9 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('upload-sales-targets', [SaleController::class, 'import'])->name('upload-sales-targets');
     Route::post('upload-previous-end-month-sales', [SaleController::class, 'importPreviousEndMonthSales'])->name('upload-end-month-sales');
 
-
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
-
 
     Route::get('/login', function () {
         return view('dashboard');
@@ -108,7 +107,6 @@ Route::get('download-template', [SaleController::class, 'downloadTemplate'])->na
 Route::get('officers', [OfficerController::class, 'getOfficers'])->name('officers');
 
 Route::group(['middleware' => 'guest'], function () {
-
 
     Route::get('comments', [CommentController::class, 'index'])->name('comments');
 
