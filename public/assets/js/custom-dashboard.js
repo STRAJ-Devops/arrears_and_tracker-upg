@@ -165,16 +165,17 @@ var config = {
             },
             tooltip: {
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         var label = context.dataset.label || '';
                         if (label) {
                             label += ': ';
                         }
                         if (context.dataIndex === 0) {
-                            label += Number(totalTargets).toLocaleString();
+                            label += Number(totalSales).toLocaleString();
 
                         } else {
-                            label += Number(totalSales).toLocaleString();
+
+                            label += Number(totalTargets).toLocaleString();
                         }
                         return label;
                     }
