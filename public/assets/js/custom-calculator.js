@@ -11,28 +11,28 @@
                     <div class="form-group">
                         <label for="amortization-schedule-amount">Loan Amount</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="amortization-schedule-amount" placeholder="e.g. 3800" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control number_format" id="amortization-schedule-amount" placeholder="e.g. 3800" aria-describedby="basic-addon2">
                             <span class="input-group-text" id="basic-addon2">UGX</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-interest">Annual Interest</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="amortization-schedule-interest" placeholder="e.g. 32" aria-describedby="basic-addon3">
+                            <input type="text" class="form-control number_format" id="amortization-schedule-interest" placeholder="e.g. 32" aria-describedby="basic-addon3">
                             <span class="input-group-text" id="basic-addon3">%</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-duration">Duration</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="amortization-schedule-duration" placeholder="e.g. 48" aria-describedby="basic-addon4">
+                            <input type="text" class="form-control number_format" id="amortization-schedule-duration" placeholder="e.g. 48" aria-describedby="basic-addon4">
                             <span class="input-group-text" id="basic-addon4">Month(s)</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-grace">Grace Period</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="amortization-schedule-grace" placeholder="e.g. 0" aria-describedby="basic-addon5">
+                            <input type="text" class="form-control number_format" id="amortization-schedule-grace" placeholder="e.g. 0" aria-describedby="basic-addon5">
                             <span class="input-group-text" id="basic-addon5">Month(s)</span>
                         </div>
                     </div>
@@ -67,6 +67,49 @@
     `;
         $('#' + settings.controlsID).append(controlsHtml);
 
+        //set the commas padding in the input fields
+        $('.number_format').on('keyup', function (event) {
+            var selection = window.getSelection().toString();
+
+            if (selection !== '') {
+                return;
+            }
+
+            if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                return;
+            }
+
+            var $this = $(this);
+
+            var input = $this.val();
+
+            // Remove non-numeric and non-decimal characters except periods and decimals
+            input = input.replace(/[^\d.]+/g, "");
+
+            // Convert input to a numeric value
+            var numericValue = parseFloat(input);
+
+            // If input is NaN, default to 0
+            numericValue = isNaN(numericValue) ? 0 : numericValue;
+
+            $this.val(function () {
+                var pos = this.selectionStart;
+
+                // Format the numeric value as a string with commas and two decimal places
+                var formattedInput = numericValue.toLocaleString("en-US", {
+                });
+
+                // Update the input field value with the formatted number
+                this.value = formattedInput;
+
+                // Set the cursor position after the last modified character
+                this.setSelectionRange(pos, pos);
+
+                // Return the formatted input
+                return formattedInput;
+            });
+        });
+
         var container = this;
         $('#amortization-schedule-submit').on('click', function () {
             var dataHtml = calculate();
@@ -79,7 +122,7 @@
         });
 
         function calculate() {
-            var loanAmount = parseInt($('#amortization-schedule-amount').val()),
+            var loanAmount = parseInt($('#amortization-schedule-amount').val().replace(/,/g, '')),
                 loanInterest = parseFloat($('#amortization-schedule-interest').val()), // %
                 loanDuration = parseInt($('#amortization-schedule-duration').val()), // Month
                 loanGrace = parseInt($('#amortization-schedule-grace').val()), // Month
@@ -141,25 +184,77 @@
                 i++;
             }
             // Transform into html
-            var loanTableTd = [];
+            // var loanTableTd = [];
 
-            var total_principal = 0;
-            var total_interest = 0;
-            var total_installment = 0;
-            for (var t = 0; t < loanTable.length; t++) {
-                total_principal = (total_principal + parseFloat(loanTable[t].base));
-                total_interest = (total_interest + parseFloat(loanTable[t].percent));
-                total_installment = (total_installment + parseFloat(loanTable[t].installment));
+            // var total_principal = 0;
+            // var total_interest = 0;
+            // var total_installment = 0;
+            // for (var t = 0; t < loanTable.length; t++) {
+            //     total_principal = (total_principal + parseFloat(loanTable[t].base));
+            //     total_interest = (total_interest + parseFloat(loanTable[t].percent));
+            //     total_installment = (total_installment + parseFloat(loanTable[t].installment));
 
-                loanTableTd.push((t == 0 ? '<table class="table"><thead><tr><th>#</th><th>Date</th><th>Principal</th><th>Interest</th><th>Installment</th><th>Balance</th></tr></thead><tbody>' : '') + '<tr><td>'
-                    + (t + 1) + '</td><td>'
-                    + formatDate(loanTable[t].date) + '</td><td>'
-                    + roundTo2(loanTable[t].base) + '</td><td>'
-                    + roundTo2(loanTable[t].percent) + '</td><td>'
-                    + Math.round(loanTable[t].installment) + '</td><td>'
-                    + roundTo2(loanTable[t].balance) + '</td></tr>' + (t == loanTable.length - 1 ? '<td></td><td><b>Total</b></td><td><b>' + roundTo2(total_principal) + '</b></td><td><b>' + roundTo2(total_interest) + '</b></td><td><b>' + Math.round(total_installment) + '</b></td><td></td></tbody></table>' : ''));
+            //     loanTableTd.push((t == 0 ? '<table class="table"><thead><tr><th>#</th><th>Date</th><th>Principal</th><th>Interest</th><th>Installment</th><th>Balance</th></tr></thead><tbody>' : '') + '<tr><td>'
+            //         + (t + 1) + '</td><td>'
+            //         + formatDate(loanTable[t].date) + '</td><td>'
+            //         + roundTo2(loanTable[t].base) + '</td><td>'
+            //         + roundTo2(loanTable[t].percent) + '</td><td>'
+            //         + Math.round(loanTable[t].installment).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</td><td>'
+            //         + roundTo2(loanTable[t].balance) + '</td></tr>' + (t == loanTable.length - 1 ? '<td></td><td><b>Total</b></td><td><b>' + roundTo2(total_principal) + '</b></td><td><b>' + roundTo2(total_interest) + '</b></td><td><b>' + Math.round(total_installment) + '</b></td><td></td></tbody></table>' : ''));
+            // }
+            // return loanTableTd;
+
+            //create a data table using the data table library and the loanTable data
+            //remove any existing table
+            //first check if the table exists
+            if ($.fn.DataTable.isDataTable('#loan-schedule')) {
+                console.log('table exists');
+                //remove the table
+                $('#loan-schedule').DataTable().destroy();
             }
-            return loanTableTd;
+            createDataTable(loanTable);
+        }
+
+        function createDataTable(data) {
+            var table = $('#loan-schedule').DataTable({
+                paging: false,
+                data: data,
+                dom: 'Bfrtip',
+                order: [[4, 'desc']],
+                columns: [
+                    { data: 'date', title: 'Date', render: function (data) { return formatDate(data); } },
+                    { data: 'base', title: 'Principal', render: function (data) { return data.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); } },
+                    { data: 'percent', title: 'Interest', render: function (data) { return data.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); } },
+                    { data: 'installment', title: 'Installment', render: function (data) { return data.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); } },
+                    { data: 'balance', title: 'Balance', render: function (data) { return data.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); } }
+                ],
+                //show sortable headers with arrows
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api();
+
+                    // Total function
+                    // Total function
+                    // Total function
+                    var sum = function (data) {
+                        var total = data.reduce(function (acc, value) {
+                            // Remove commas and parse as float
+                            var floatValue = parseFloat(value.toString().replace(/,/g, ''));
+                            // Add to accumulator
+                            return acc + (isNaN(floatValue) ? 0 : floatValue);
+                        }, 0);
+                        return total.toLocaleString(); // Format total with commas
+                    };
+
+
+
+                    // Calculate total for each column
+                    //check if group is client
+                    $(api.column(1).footer()).html(sum(api.column(1).data())); // Principle Arrears
+                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Principle Arrears
+                    $(api.column(3).footer()).html(sum(api.column(3).data())); // Interest Arrears
+                },
+            });
+
         }
 
         // Helper functions
@@ -167,8 +262,9 @@
             return String(date).substr(4, 12);
         }
         function roundTo2(num) {
-            return parseFloat(Math.round(num * 100) / 100).toFixed(2);
+            return parseFloat(Math.round(num * 100) / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
+
 
         function round2null(num) {
             return parseFloat(Math.round(num * 100) / 100).toFixed(0);

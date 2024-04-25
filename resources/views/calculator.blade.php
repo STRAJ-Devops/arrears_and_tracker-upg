@@ -9,7 +9,22 @@
             </div>
             <div class="col-md-9">
 
-                <div id="schedule-container"></div>
+                <div id="schedule-container">
+                    {{-- data table here --}}
+                    <table id="loan-schedule" class="table table-striped">
+
+                        {{-- footer callback --}}
+                        <tbody>
+                            <tfoot align="right">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                            </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>
