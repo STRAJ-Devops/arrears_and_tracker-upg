@@ -726,7 +726,7 @@ class SaleController extends Controller
 
     public function downloadTemplate()
     {
-        $file = public_path('uploads/1713771440_upload.csv');
+        $file = public_path('uploads/1713367015_End.csv');
         return response()->download($file);
     }
 }
