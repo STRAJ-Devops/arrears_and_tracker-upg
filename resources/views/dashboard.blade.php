@@ -265,10 +265,10 @@
     </div>
 
     {{-- download --}}
-        <div class="row">
+    <div class="row">
         <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
             <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
-                <canvas id="branch-sales-targets" width="600" height="300"></canvas>
+                <a href="/download-template">Download</a>
             </div>
         </div>
     </div>
