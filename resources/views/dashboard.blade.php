@@ -264,13 +264,6 @@
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
-            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
-                <a href="/download-template">Download Template</a>
-            </div>
-        </div>
-    </div>
     @push('dashboard')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
             integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
