@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\CommentScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy(CommentScope::class)]
 class Comment extends Model
 {
     use HasFactory;

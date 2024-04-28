@@ -1,31 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    //get all comments
-    public function index()
-    {
-        //get comments where request customer_id
-        $comments = Comment::where('customer_id', request()->customer_id)->get();
-
-        return response()->json(['comments' => $comments], 200);
-    }
-
-    public function showAllComments(){
-        return view('comments');
-    }
-
     //store a new comment
     public function store(Request $request)
     {
         $request->validate(
             [
-                'comment' => 'required'
+                'comment' => 'required',
             ]
         );
 
@@ -35,7 +23,7 @@ class CommentController extends Controller
         $comment->staff_id = auth()->user()->staff_id;
         $comment->save();
 
-        return back()->with(['success' => 'Comment added successfully.']);
+        return response()->json(['comment' => $comment], 201);
     }
 
     //get all comments

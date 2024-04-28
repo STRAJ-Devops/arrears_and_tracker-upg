@@ -6,6 +6,7 @@ use App\Models\Scopes\ArrearScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sub_County;
 
 #[ScopedBy(ArrearScope::class)]
 class Arrear extends Model
