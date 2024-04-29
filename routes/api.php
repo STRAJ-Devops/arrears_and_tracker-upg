@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\ArrearController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\IncentiveController;
 use App\Http\Controllers\API\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,9 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::post('logout', [LoginController::class, 'logout']);
 
+    //dashboard
+    Route::get('dashboard', [DashboardController::class, 'index']);
+
     //incentives
     Route::get('incentives', [IncentiveController::class, 'calculateIncentive']);
 
@@ -27,6 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');
     //sales
     Route::post('sales', [SaleController::class, 'group_by'])->name('sales-group-by');
+
+    //expected
+    Route::post('expected', [App\Http\Controllers\API\ExpectedController::class, 'group_by'])->name('expected-group-by');
 
     //comments
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');

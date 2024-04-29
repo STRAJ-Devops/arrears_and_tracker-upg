@@ -95,18 +95,18 @@ class DashboardController extends Controller
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 
         $data = [
-            'outstanding_principal' => $outstanding_principal,
-            'outstanding_interest' => $outstanding_interest,
-            'principal_arrears' => $principal_arrears,
-            'number_of_female_borrowers' => $number_of_female_borrowers,
-            'number_of_children' => $number_of_children,
-            'total_disbursements' => $total_disbursements_this_month,
-            'total_targets' => $total_targets,
-            'par_30_days' => number_format(round($par_30_per, 2), 2),
-            'par_1_days' => number_format(round($par_1_per, 2), 2),
-            'number_of_clients' => $number_of_clients,
-            'number_of_groups' => $number_of_groups,
-            'number_of_individuals' => $number_of_individuals,
+            'outstanding_principal' => (string)$outstanding_principal,
+            'outstanding_interest' => (string)$outstanding_interest,
+            'principal_arrears' => (string)$principal_arrears,
+            'number_of_female_borrowers' => (string)$number_of_female_borrowers,
+            'number_of_children' => (string)$number_of_children,
+            'total_disbursements' => (string)$total_disbursements_this_month,
+            'total_targets' => (string)$total_targets,
+            'par_30_days' => (string)number_format(round($par_30_per, 2), 2),
+            'par_1_days' => (string)number_format(round($par_1_per, 2), 2),
+            'number_of_clients' => (string)$number_of_clients,
+            'number_of_groups' => (string)$number_of_groups,
+            'number_of_individuals' => (string)$number_of_individuals,
             'product_labels' => $labels,
             'product_targets' => $targets,
             'product_sales' => $sales,
@@ -114,7 +114,7 @@ class DashboardController extends Controller
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
             'total_targets' => $total_targets,
-            'sgl' => $sgl,
+            'sgl' => (string)$sgl,
         ];
 
         return response()->json(['data' => $data, 'message' => 'success'], 200);
