@@ -34,7 +34,9 @@ class DashboardController extends Controller
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
 
-        $number_of_clients = Sale::sum('number_of_group_members');
+        $number_of_clients = Sale::selectRaw('SUM(number_of_group_members) AS total_clients')
+        ->distinct()
+        ->get()[0]->total_clients;
 
         $number_of_groups = Arrear::where('lending_type', 'Group')->distinct('group_id')->count();
 

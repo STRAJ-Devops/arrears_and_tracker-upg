@@ -130,6 +130,7 @@ class ExpectedController extends Controller
         // Initialize data array
         $data = [];
 
+        // dd($arrears);
         // Iterate through grouped arrears and calculate totals
         foreach ($arrears as $key => $arrear) {
             $total_principle_arrears = $arrear->sum('principal_arrears');
