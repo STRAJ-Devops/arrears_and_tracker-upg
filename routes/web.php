@@ -22,6 +22,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MonitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,14 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
+
+    Route::get('monitors', [MonitorController::class, 'index'])->name('monitors');
+    Route::get('create-monitor', [MonitorController::class, 'create'])->name('create-monitor');
+    Route::post('store-monitor', [MonitorController::class, 'store'])->name('store-monitor');
+    Route::get('edit-monitor/{id}', [MonitorController::class, 'edit'])->name('edit-monitor');
+    Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
+    Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
+    Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
 
     Route::get('/login', function () {
         return view('dashboard');
