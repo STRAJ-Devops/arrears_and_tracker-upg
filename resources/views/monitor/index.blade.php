@@ -3,6 +3,12 @@
 @section('content')
     <div class="d-flex justify-content-between">
         <h6 class="fs-1">Sales Activity Monitor</h1>
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label for="date-filter">Select Date</label>
+                    <input type="text" class="form-control" id="date-filter">
+                </div>
+            </div>
             <a href="{{ route('create-monitor') }}" class="btn btn-primary">Add</a>
     </div>
     <div class="container-fluid ms-5 ps-5">
@@ -52,7 +58,7 @@
             <div id="spinner" class="spinner-overlay">
                 <div class="spinner"></div>
             </div>
-            <table id="monitor-table" class="table">
+            <table id="monitor-table " class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -103,10 +109,11 @@
             </table>
         </div>
     </div>
-
-    {{-- tab contents --}}
-@endsection
-
-@push('dashboard')
+    @push('dashboard')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script> <!-- Include jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- jQuery UI CSS -->
     <script src="{{ asset('assets/js/custom-monitor.js') }}"></script>
 @endpush
+    {{-- tab contents --}}
+@endsection

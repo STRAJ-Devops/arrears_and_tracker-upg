@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    getMonitors();
+    var table;
+    table = getMonitors();
     var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
     //console.log(tabEl)
     for (i = 0; i < tabEl.length; i++) {
@@ -105,14 +106,28 @@ $(document).ready(function () {
         });
     });
 
+    // Initialize datepicker
+    $("#date-filter").datepicker({
+        dateFormat: "M d, yy",
+        onSelect: function (dateText, inst) {
+            table.column(6).search(dateText).draw(); // Assuming next repayment date is in column index 10
+        },
+    });
+    //set the initial date to today
+    $("#date-filter").datepicker("setDate", new Date());
+
+    //show the calendar
+    $("#date-filter").datepicker("show");
+
     function getMonitors(activity = "all") {
-        $("#monitor-table").DataTable({
+        var table = $("#monitor-table").DataTable({
             processing: true,
             serverSide: false,
             drawCallback: function () {
                 $("#content").show();
                 $("#spinner").hide();
             },
+            responsive: true,
             //export buttons
             dom: "Bfrtip",
             //style the buttons
@@ -197,6 +212,8 @@ $(document).ready(function () {
                 },
             ],
         });
+
+        return table;
     }
 
     // Function to format the date (place it outside the $(document).ready)
