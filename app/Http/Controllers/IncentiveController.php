@@ -162,7 +162,7 @@ class IncentiveController extends Controller
             ->where('lending_type', 'Individual')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-        // ->havingRaw('SUM(outsanding_principal) >= 130000000') // Filter the sum
+            // ->havingRaw('SUM(outsanding_principal) >= 130000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumIndividual;
@@ -177,7 +177,7 @@ class IncentiveController extends Controller
             ->where('lending_type', 'Individual')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-        // ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
+            // ->havingRaw('COUNT(DISTINCT customer_id) >= 130') // Filter the count
             ->get();
 
         return $uniqueCustomerIDIndividual;
@@ -193,7 +193,7 @@ class IncentiveController extends Controller
             ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
             ->groupBy('staff_id')
-        // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
+            // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
             ->get();
 
         return $recordsForPAR;
@@ -212,7 +212,7 @@ class IncentiveController extends Controller
                  SUM(outsanding_principal)) * 100, 2) as count')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-        // ->havingRaw('count <= 0.18')
+            // ->havingRaw('count <= 0.18')
             ->get();
 
         return $monthlyLoanLossRate;
@@ -229,7 +229,7 @@ class IncentiveController extends Controller
         $outstandingPrincipalSumGroup = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-        // ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
+            // ->havingRaw('SUM(outsanding_principal) >= 90000000') // Filter the sum
             ->get();
 
         return $outstandingPrincipalSumGroup;
@@ -243,7 +243,7 @@ class IncentiveController extends Controller
         $uniqueGroupIDGroup = Arrear::withoutGlobalScope(ArrearScope::class)->where('disbursement_date', 'LIKE', "%$currentMonthYear%")->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
             ->where('lending_type', 'Group')
             ->groupBy('staff_id')
-        // ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
+            // ->havingRaw('COUNT(DISTINCT group_id) >= 140') // Filter the count
             ->get();
 
         return $uniqueGroupIDGroup;
@@ -260,7 +260,7 @@ class IncentiveController extends Controller
             ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
             ->groupBy('staff_id')
-        // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
+            // ->havingRaw('ROUND((SUM(par) / SUM(outsanding_principal) * 100), 1) <= 6.5')
             ->get();
 
         return $recordsForPAR;
@@ -279,7 +279,7 @@ class IncentiveController extends Controller
              SUM(outsanding_principal)) * 100, 2) as count')
             ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
-        // ->havingRaw('count <= 0.18')
+            // ->havingRaw('count <= 0.18')
             ->get();
 
         return $monthlyLoanLossRate;
@@ -334,7 +334,7 @@ class IncentiveController extends Controller
 
         //filter only those with sgl_records property or has all [outstanding_principal_individual, unique_customer_id_individual, records_for_PAR, monthly_loan_loss_rate]
         $overallIndividualRecords = array_filter($overallIndividualRecords, function ($record) {
-            return isset($record['outstanding_principal_individual']) && isset($record['unique_customer_id_individual']) && isset($record['records_for_PAR']) && isset($record['monthly_loan_loss_rate']);
+            return isset ($record['outstanding_principal_individual']) && isset ($record['unique_customer_id_individual']) && isset ($record['records_for_PAR']) && isset ($record['monthly_loan_loss_rate']);
         });
 
         return $overallIndividualRecords;
@@ -430,7 +430,7 @@ class IncentiveController extends Controller
     //number of groups customer
     public function recordsForNoOfGroupCustomer()
     {
-        $noOfGroups = Arrear::withoutGlobalScope(ArrearScope::class)->selectRaw('staff_id', DB::raw('COUNT(customer_id) as count'))
+        $noOfGroups = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(customer_id) as count'))
             ->where('product_id', '21070')
             ->groupBy('staff_id')
             ->havingRaw('COUNT(customer_id) >= 30')
@@ -479,7 +479,7 @@ class IncentiveController extends Controller
 
         //filter only those with sgl_records property or has all [recordsForNoOfGroupsPAR, recordsForMonthlyLoanLossRateGroup, recordsForNoOfGroupCustomer]
         $overallSGLRecords = array_filter($overallSGLRecords, function ($record) {
-            return isset($record['recordsForNoOfGroupsPAR']) && isset($record['recordsForMonthlyLoanLossRateGroup']) && isset($record['recordsForNoOfGroupCustomer']);
+            return isset ($record['recordsForNoOfGroupsPAR']) && isset ($record['recordsForMonthlyLoanLossRateGroup']) && isset ($record['recordsForNoOfGroupCustomer']);
         });
 
         return $overallSGLRecords;
@@ -577,7 +577,18 @@ class IncentiveController extends Controller
         $incentiveSettings = IncentiveSettings::first();
 
         // Remove commas from numeric fields
-        $numericFields = ['max_par', 'percentage_incentive_par', 'max_cap_portifolio', 'min_cap_portifolio', 'percentage_incentive_portifolio', 'max_cap_client', 'min_cap_client', 'percentage_incentive_client', 'max_incentive'];
+        $numericFields = [
+            'max_cap_portifolio',
+            'min_cap_portifolio',
+            'max_cap_client',
+            'min_cap_client',
+            'max_incentive',
+            'max_cap_portifolio_individual',
+            'max_cap_portifolio_group',
+            'min_cap_client_individual',
+            'min_cap_client_group',
+            'max_par_individual',
+        ];
         foreach ($numericFields as $field) {
             if (isset($requestData[$field])) {
                 $requestData[$field] = str_replace(',', '', $requestData[$field]);
@@ -600,6 +611,16 @@ class IncentiveController extends Controller
     //function to determine qualifiers
     public function determineQualifiers($incentive)
     {
+        $min_cap_portifolio_individual = IncentiveSettings::first()->min_cap_portifolio_individual;
+        $min_cap_portifolio_group = IncentiveSettings::first()->min_cap_portifolio_group;
+        $min_cap_client_individual = IncentiveSettings::first()->min_cap_client_individual;
+        $min_cap_client_group = IncentiveSettings::first()->min_cap_client_group;
+        $max_par_individual = IncentiveSettings::first()->max_par_individual;
+        $max_par_group = IncentiveSettings::first()->max_par_group;
+        $max_par_fast = IncentiveSettings::first()->max_par_fast;
+        $max_llr_group = IncentiveSettings::first()->max_llr_group;
+        $max_llr_individual = IncentiveSettings::first()->max_llr_individual;
+        $max_llr_fast = IncentiveSettings::first()->max_llr_fast;
         //check if incentive is individual by checking for the presence of outstanding_principal_individual
         if (array_key_exists('outstanding_principal_individual', $incentive)) {
             $outstanding_principal_individual = $incentive['outstanding_principal_individual'];
@@ -608,7 +629,7 @@ class IncentiveController extends Controller
             $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
             //check if the staff qualifies for the incentive
-            if ($outstanding_principal_individual >= 130000000 && $unique_customer_id_individual >= 130 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
+            if ($outstanding_principal_individual >= $min_cap_portifolio_individual && $unique_customer_id_individual >= $min_cap_client_individual && $records_for_PAR <= $max_par_individual&& $monthly_loan_loss_rate <= $max_llr_individual) {
                 return true;
             }
         }
@@ -621,7 +642,7 @@ class IncentiveController extends Controller
             $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
             //check if the staff qualifies for the incentive
-            if ($outstanding_principal_group >= 90000000 && $records_for_unique_group_id_group >= 140 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
+            if ($outstanding_principal_group >= $min_cap_portifolio_group && $records_for_unique_group_id_group >= $min_cap_client_group && $records_for_PAR <= $max_par_group && $monthly_loan_loss_rate <=  $max_llr_group) {
                 return true;
             }
         }

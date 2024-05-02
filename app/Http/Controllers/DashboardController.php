@@ -118,7 +118,6 @@ class DashboardController extends Controller
             'branch_labels' => $branchLabelsList,
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
-            'total_targets' => $total_targets,
             'sgl' => $sgl,
         ];
 

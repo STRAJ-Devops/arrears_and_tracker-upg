@@ -23,6 +23,16 @@ class IncentiveSettingsSeeder extends Seeder
             'min_cap_client' => 5,
             'percentage_incentive_client' => 40,
             'max_incentive' => 500000,
+            'max_cap_portifolio_individual' => 130000000,
+            'max_cap_portifolio_group' => 90000000,
+            'min_cap_client_individual' => 130,
+            'min_cap_client_group' => 140,
+            'max_par_individual' => 6.5,
+            'max_par_group' => 6.5,
+            'max_par_fast' => 6.5,
+            'max_llr_group' => 0.18,
+            'max_llr_individual' => 0.18,
+            'max_llr_fast' => 0.18,
         ]);
     }
 }

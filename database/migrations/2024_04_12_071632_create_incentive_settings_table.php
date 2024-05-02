@@ -22,6 +22,16 @@ return new class extends Migration
             $table->integer('min_cap_client');
             $table->double('percentage_incentive_client');
             $table->string('max_incentive', 255);
+            $table->string('max_cap_portifolio_individual', 255);
+            $table->string('max_cap_portifolio_group', 255);
+            $table->integer('min_cap_client_individual');
+            $table->integer('min_cap_client_group');
+            $table->double('max_par_individual');
+            $table->double('max_par_group');
+            $table->double('max_par_fast');
+            $table->double('max_llr_group');
+            $table->double('max_llr_individual');
+            $table->double('max_llr_fast');
             $table->timestamps();
         });
     }

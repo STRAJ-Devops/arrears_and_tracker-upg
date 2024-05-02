@@ -19,5 +19,15 @@ class IncentiveSettings extends Model
         'min_cap_client',
         'percentage_incentive_client',
         'max_incentive',
+        'max_cap_portifolio_individual',
+        'max_cap_portifolio_group',
+        'min_cap_client_individual',
+        'min_cap_client_group',
+        'max_par_individual',
+        'max_par_group',
+        'max_par_fast',
+        'max_llr_group',
+        'max_llr_individual',
+        'max_llr_fast',
     ];
 }
