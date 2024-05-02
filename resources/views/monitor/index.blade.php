@@ -3,13 +3,16 @@
 @section('content')
     <div class="d-flex justify-content-between">
         <h6 class="fs-1">Sales Activity Monitor</h1>
-            <div class="col-md-9">
+            <div>
                 <div class="form-group">
                     <label for="date-filter">Select Date</label>
                     <input type="text" class="form-control" id="date-filter">
                 </div>
             </div>
-            <a href="{{ route('create-monitor') }}" class="btn btn-primary">Add</a>
+            <div>
+                <a href="{{ route('create-monitor') }}" class="btn btn-primary">Add</a>
+
+            </div>
     </div>
     <div class="container-fluid ms-5 ps-5">
         <ul class="nav nav-underline nav-fill fixed-bottom custom-navbar" id="pills-tab" role="tablist">
@@ -110,10 +113,10 @@
         </div>
     </div>
     @push('dashboard')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script> <!-- Include jQuery UI -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- jQuery UI CSS -->
-    <script src="{{ asset('assets/js/custom-monitor.js') }}"></script>
-@endpush
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script> <!-- Include jQuery UI -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"> <!-- jQuery UI CSS -->
+        <script src="{{ asset('assets/js/custom-monitor.js') }}"></script>
+    @endpush
     {{-- tab contents --}}
 @endsection
