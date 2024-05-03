@@ -629,7 +629,7 @@ class IncentiveController extends Controller
             $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
             //check if the staff qualifies for the incentive
-            if ($outstanding_principal_individual >= $min_cap_portifolio_individual && $unique_customer_id_individual >= $min_cap_client_individual && $records_for_PAR <= $max_par_individual&& $monthly_loan_loss_rate <= $max_llr_individual) {
+            if ($outstanding_principal_individual >= $min_cap_portifolio_individual && $unique_customer_id_individual >= $min_cap_client_individual && $records_for_PAR <= $max_par_individual && $monthly_loan_loss_rate <= $max_llr_individual) {
                 return true;
             }
         }
@@ -642,7 +642,7 @@ class IncentiveController extends Controller
             $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
             //check if the staff qualifies for the incentive
-            if ($outstanding_principal_group >= $min_cap_portifolio_group && $records_for_unique_group_id_group >= $min_cap_client_group && $records_for_PAR <= $max_par_group && $monthly_loan_loss_rate <=  $max_llr_group) {
+            if ($outstanding_principal_group >= $min_cap_portifolio_group && $records_for_unique_group_id_group >= $min_cap_client_group && $records_for_PAR <= $max_par_group && $monthly_loan_loss_rate <= $max_llr_group) {
                 return true;
             }
         }
