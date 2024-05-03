@@ -23,7 +23,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = date('M-y');
+        $currentMonthYear = "Apr-24";
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {

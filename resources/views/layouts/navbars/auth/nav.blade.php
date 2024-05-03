@@ -26,23 +26,23 @@
                             $greeting = 'Good Evening';
                         }
                     @endphp
-                        <div class="row">
-                            <div class="col-md-12">
-                                @php
-                                    $currentTime = date('H:i'); // Get current time in 24-hour format
-                                    $greeting = ''; // Initialize an empty string for the greeting
+                    <div class="row">
+                        <div class="col-md-12">
+                            @php
+                                $currentTime = date('H:i'); // Get current time in 24-hour format
+                                $greeting = ''; // Initialize an empty string for the greeting
 
-                                    // Determine the appropriate greeting based on the time of the day
-                                    if ($currentTime >= '05:00' && $currentTime < '12:00') {
-                                        $greeting = 'Good Morning';
-                                    } elseif ($currentTime >= '12:00' && $currentTime < '17:00') {
-                                        $greeting = 'Good Afternoon';
-                                    } else {
-                                        $greeting = 'Good Evening';
-                                    }
-                                @endphp
-                                <h1 style="font-size: 4vw;">{{ $greeting . ', ' . auth()->user()->names }}</h1>
-                            </div>
+                                // Determine the appropriate greeting based on the time of the day
+                                if ($currentTime >= '05:00' && $currentTime < '12:00') {
+                                    $greeting = 'Good Morning';
+                                } elseif ($currentTime >= '12:00' && $currentTime < '17:00') {
+                                    $greeting = 'Good Afternoon';
+                                } else {
+                                    $greeting = 'Good Evening';
+                                }
+                            @endphp
+                            <h1 style="font-size: 4vw;">{{ $greeting . ', ' . auth()->user()->names }}</h1>
+                        </div>
                     </div>
                 </div>
             </div>

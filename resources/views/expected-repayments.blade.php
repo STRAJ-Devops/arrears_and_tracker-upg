@@ -25,6 +25,7 @@
                                             <option value="district">District</option>
                                             <option value="sub_county">Sub County</option>
                                             <option value="age">Age</option>
+                                            <option value="client">client</option>
                                         </select>
                                     </div>
                                 </div>
