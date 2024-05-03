@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('monitors');
+        
         Schema::create('monitors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -20,6 +22,8 @@ return new class extends Migration
             $table->string('marketing_date')->nullable();
             $table->string('appraisal_date')->nullable();
             $table->string('application_date')->nullable();
+            $table->integer('staff_id');
+            $table->foreign('staff_id')->references('staff_id')->on('officers');
             $table->timestamps();
         });
     }

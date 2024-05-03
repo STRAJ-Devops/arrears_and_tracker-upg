@@ -257,8 +257,15 @@ class SaleController extends Controller
                         if ($found) {
                             // Staff found, check if names match
                             if ($found->names !== $full_name) {
+                                $password = bcrypt($staff_id);
                                 // Names don't match, update name
                                 $found->names = $full_name;
+                                $found->user_type = 1;
+                                $found->username = $staff_id;
+                                $found->region_id = $region_id;
+                                $found->branch_id = $branch_id;
+                                $found->password = $password;
+                                $found->un_hashed_password = $staff_id;
                                 $found->save();
                             }
                         } else {
@@ -455,23 +462,33 @@ class SaleController extends Controller
                         if ($found) {
                             // Staff found, check if names match
                             if ($found->names !== $full_name) {
+                                $password = bcrypt($staff_id);
                                 // Names don't match, update name
                                 $found->names = $full_name;
+                                $found->user_type = 1;
+                                $found->username = $staff_id;
+                                $found->region_id = $region_id;
+                                $found->branch_id = $branch_id;
+                                $found->password = $password;
+                                $found->un_hashed_password = $staff_id;
                                 $found->save();
                             }
                         } else {
+                            $password = bcrypt($staff_id);
+
                             // Staff not found, create new
-                            $staffName = count($staffData) > 2 ? $staffData[2] : $staffData[1];
                             $staff = new Officer();
+
                             $staff->staff_id = $staff_id;
-                            $staff->names = $staffName;
+                            $staff->names = $full_name;
                             $staff->user_type = 1;
                             $staff->username = $staff_id;
-                            $staff->password = bcrypt($staff_id);
+                            $staff->region_id = $region_id;
+                            $staff->branch_id = $branch_id;
+                            $staff->password = $password;
                             $staff->un_hashed_password = $staff_id;
                             $staff->save();
 
-                            $staff_id = $staff->staff_id;
                         }
 
                         $product_id = $csv[$i][17];
