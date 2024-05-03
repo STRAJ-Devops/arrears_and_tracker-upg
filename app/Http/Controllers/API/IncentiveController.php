@@ -581,35 +581,46 @@ class IncentiveController extends Controller
     }
 
     //function to determine qualifiers
-    public function determineQualifiers($incentive)
-    {
-        //check if incentive is individual by checking for the presence of outstanding_principal_individual
-        if (array_key_exists('outstanding_principal_individual', $incentive)) {
-            $outstanding_principal_individual = $incentive['outstanding_principal_individual'];
-            $unique_customer_id_individual = $incentive['unique_customer_id_individual'];
-            $records_for_PAR = $incentive['records_for_PAR'];
-            $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
+   //function to determine qualifiers
+   public function determineQualifiers($incentive)
+   {
+       $min_cap_portifolio_individual = IncentiveSettings::first()->min_cap_portifolio_individual;
+       $min_cap_portifolio_group = IncentiveSettings::first()->min_cap_portifolio_group;
+       $min_cap_client_individual = IncentiveSettings::first()->min_cap_client_individual;
+       $min_cap_client_group = IncentiveSettings::first()->min_cap_client_group;
+       $max_par_individual = IncentiveSettings::first()->max_par_individual;
+       $max_par_group = IncentiveSettings::first()->max_par_group;
+       $max_par_fast = IncentiveSettings::first()->max_par_fast;
+       $max_llr_group = IncentiveSettings::first()->max_llr_group;
+       $max_llr_individual = IncentiveSettings::first()->max_llr_individual;
+       $max_llr_fast = IncentiveSettings::first()->max_llr_fast;
+       //check if incentive is individual by checking for the presence of outstanding_principal_individual
+       if (array_key_exists('outstanding_principal_individual', $incentive)) {
+           $outstanding_principal_individual = $incentive['outstanding_principal_individual'];
+           $unique_customer_id_individual = $incentive['unique_customer_id_individual'];
+           $records_for_PAR = $incentive['records_for_PAR'];
+           $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
-            //check if the staff qualifies for the incentive
-            if ($outstanding_principal_individual >= 130000000 && $unique_customer_id_individual >= 130 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
-                return true;
-            }
-        }
+           //check if the staff qualifies for the incentive
+           if ($outstanding_principal_individual >= $min_cap_portifolio_individual && $unique_customer_id_individual >= $min_cap_client_individual && $records_for_PAR <= $max_par_individual && $monthly_loan_loss_rate <= $max_llr_individual) {
+               return true;
+           }
+       }
 
-        //check if incentive is group by checking for the presence of outstanding_principal_group
-        if (array_key_exists('outstanding_principal_group', $incentive)) {
-            $outstanding_principal_group = $incentive['outstanding_principal_group'];
-            $records_for_unique_group_id_group = $incentive['records_for_unique_group_id_group'];
-            $records_for_PAR = $incentive['records_for_PAR'];
-            $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
+       //check if incentive is group by checking for the presence of outstanding_principal_group
+       if (array_key_exists('outstanding_principal_group', $incentive)) {
+           $outstanding_principal_group = $incentive['outstanding_principal_group'];
+           $records_for_unique_group_id_group = $incentive['records_for_unique_group_id_group'];
+           $records_for_PAR = $incentive['records_for_PAR'];
+           $monthly_loan_loss_rate = $incentive['monthly_loan_loss_rate'];
 
-            //check if the staff qualifies for the incentive
-            if ($outstanding_principal_group >= 90000000 && $records_for_unique_group_id_group >= 140 && $records_for_PAR <= 6.5 && $monthly_loan_loss_rate <= 0.18) {
-                return true;
-            }
-        }
+           //check if the staff qualifies for the incentive
+           if ($outstanding_principal_group >= $min_cap_portifolio_group && $records_for_unique_group_id_group >= $min_cap_client_group && $records_for_PAR <= $max_par_group && $monthly_loan_loss_rate <= $max_llr_group) {
+               return true;
+           }
+       }
 
-        return false;
-    }
+       return false;
+   }
 
 }
