@@ -26,7 +26,7 @@ class IncentiveController extends Controller
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
 
-        if ($logged_user == 5 || 4) {
+        if ($logged_user == 5 || $logged_user == 4) {
             foreach ($incentives as $staffId => $incentive) {
 
                 // Get staff_id details from officers table
@@ -41,6 +41,8 @@ class IncentiveController extends Controller
                     //incentive amount for Net Client Growth
                     $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
+                    $incentives['sgl_records'] = 0;
+
                     //total incentive amount
                     $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
                 } else {
@@ -48,6 +50,7 @@ class IncentiveController extends Controller
                     $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
                     $incentive['incentive_amount_Net_Client_Growth'] = 0;
                     $incentive['total_incentive_amount'] = 0;
+                    $incentives['sgl_records'] = 0;
                 }
 
                 // Combine the officer details with the incentives
@@ -61,19 +64,27 @@ class IncentiveController extends Controller
                 // Get staff_id details from officers table
                 if ($staffId == $staff_id) {
                     $officer = Officer::where('staff_id', $staffId)->first();
+                    if ($this->determineQualifiers($incentive)) {
 
-                    //incentive amount for PAR
-                    $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+                        //incentive amount for PAR
+                        $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+                        //incentive amount for Net Portfolio Growth
+                        $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth']);
 
-                    //incentive amount for Net Portfolio Growth
-                    $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['outstanding_principal_individual']);
+                        //incentive amount for Net Client Growth
+                        $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
-                    //incentive amount for Net Client Growth
-                    $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
+                        $incentives['sgl_records'] = 0;
 
-                    //total incentive amount
-                    $incentive['total_incentive_amount'] = $incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'];
-
+                        //total incentive amount
+                        $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
+                    } else {
+                        $incentive['incentive_amount_PAR'] = 0;
+                        $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
+                        $incentive['incentive_amount_Net_Client_Growth'] = 0;
+                        $incentive['total_incentive_amount'] = 0;
+                        $incentives['sgl_records'] = 0;
+                    }
                     // Combine the officer details with the incentives
                     $incentivesWithDetails[$staffId] = [
                         'incentive' => $incentive,
@@ -185,7 +196,6 @@ class IncentiveController extends Controller
     {
         // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
         $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
-            
             ->where('lending_type', 'Individual')
             ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
@@ -201,7 +211,6 @@ class IncentiveController extends Controller
     {
         // Calculate the monthly loan loss rate for each staff
         $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
-            
             ->where('lending_type', 'Individual')
             ->selectRaw('staff_id,
                 round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) /
@@ -248,7 +257,6 @@ class IncentiveController extends Controller
     {
         // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
         $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
-            
             ->where('lending_type', 'Group')
             ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->whereRaw('(product_id != 21070)') // Exclude product ID 21070
@@ -264,7 +272,6 @@ class IncentiveController extends Controller
     {
         // Calculate the monthly loan loss rate for each staff
         $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
-            
             ->where('lending_type', 'Group')
             ->selectRaw('staff_id,
             round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) /

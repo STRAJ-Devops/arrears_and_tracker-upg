@@ -20,7 +20,7 @@ class IncentiveController extends Controller
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
 
-        if ($logged_user == 5 || 4) {
+        if ($logged_user == 5 || $logged_user == 4){
             foreach ($incentives as $staffId => $incentive) {
 
                 // Get staff_id details from officers table
@@ -55,18 +55,23 @@ class IncentiveController extends Controller
                 if ($staffId == $staff_id) {
                     $officer = Officer::where('staff_id', $staffId)->first();
 
-                    //incentive amount for PAR
-                    $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+                    if($this->determineQualifiers($incentive)){
+                        //incentive amount for PAR
+                        $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR']);
+                        //incentive amount for Net Portfolio Growth
+                        $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth']);
 
-                    //incentive amount for Net Portfolio Growth
-                    $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['outstanding_principal_individual']);
+                        //incentive amount for Net Client Growth
+                        $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
 
-                    //incentive amount for Net Client Growth
-                    $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth']);
-
-                    //total incentive amount
-                    $incentive['total_incentive_amount'] = $incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'];
-
+                        //total incentive amount
+                        $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth']), 2);
+                    } else{
+                        $incentive['incentive_amount_PAR'] = 0;
+                        $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
+                        $incentive['incentive_amount_Net_Client_Growth'] = 0;
+                        $incentive['total_incentive_amount'] = 0;
+                    }
                     // Combine the officer details with the incentives
                     $incentivesWithDetails[$staffId] = [
                         'incentive' => $incentive,
