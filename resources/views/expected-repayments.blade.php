@@ -4,7 +4,9 @@
     <div id="spinner" class="spinner-overlay">
         <div class="spinner"></div>
     </div>
-
+    <div class="alert alert-warning text-light font-weight-bold lead text-center" role="alert">
+        Today's Expected repayments
+      </div>
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
