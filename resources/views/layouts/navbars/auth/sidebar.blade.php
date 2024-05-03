@@ -75,7 +75,7 @@
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-phone ps-2 pe-2 text-center text-dark {{ Request::is('tracker') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-lg fa-car ps-2 pe-2 text-center text-dark {{ Request::is('tracker') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Disbursement Tracker</span>
@@ -86,7 +86,7 @@
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-phone ps-2 pe-2 text-center text-dark {{ Request::is('monitors') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-lg fa-share ps-2 pe-2 text-center text-dark {{ Request::is('monitors') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Sales Activity</span>
@@ -98,7 +98,7 @@
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-phone ps-2 pe-2 text-center text-dark {{ Request::is('loan-calculator') ? 'text-white' : 'text-dark' }} "
+                            class="fas fa-lg fa-calculator ps-2 pe-2 text-center text-dark {{ Request::is('loan-calculator') ? 'text-white' : 'text-dark' }} "
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1">Loan Calculator</span>

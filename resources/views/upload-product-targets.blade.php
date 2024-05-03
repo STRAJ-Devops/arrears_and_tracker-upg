@@ -128,5 +128,3 @@
     </script>
 @endpush
 
-
-@extends('layouts.app')

@@ -1,32 +1,32 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-<main class="main-content d-flex justify-content-center align-items-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card mb-4">
-                    <div class="card-body px-4 pt-4 pb-2">
-                        <h2 class="text-center mb-4">Upload Branch Targets</h2>
-                        <form id="uploadForm" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="branch_targets_file" class="form-label">Choose File:</label>
-                                <input type="file" name="branch_targets_file" id="file" class="form-control">
+    <main class="main-content d-flex justify-content-center align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body px-4 pt-4 pb-2">
+                            <h2 class="text-center mb-4">Upload Branch Targets</h2>
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="branch_targets_file" class="form-label">Choose File:</label>
+                                    <input type="file" name="branch_targets_file" id="file" class="form-control">
+                                </div>
+                                <button type="submit" id="uploadBtn" class="btn btn-warning btn-lg"
+                                    disabled>Upload</button>
+                            </form>
+                            <div id="progress" class="progress mt-3" style="display: none;">
+                                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                            <button type="submit" id="uploadBtn" class="btn btn-warning btn-lg"
-                                disabled>Upload</button>
-                        </form>
-                        <div id="progress" class="progress mt-3" style="display: none;">
-                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
-                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 @endsection
 
 @push('dashboard')
@@ -121,7 +121,3 @@
         });
     </script>
 @endpush
-
-
-
-@extends('layouts.app')
