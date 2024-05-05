@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $number_of_children = Sale::sum('number_of_children');
 
         // Get the current month abbreviation like "Mar-24"
-        $currentMonthYear = date('M-y');
+        $currentMonthYear = 'Apr-24';
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
 
