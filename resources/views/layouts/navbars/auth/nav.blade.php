@@ -21,13 +21,14 @@
 
                                 // Determine the appropriate greeting based on the time of the day
                                 if ($currentTime >= '12:00' && $currentTime < '18:00') {
-                            $greeting = 'Good Afternoon';
-                        } elseif ($currentTime >= '18:00' && $currentTime < '00:00') {
-                            $greeting = 'Good Evening';
-                        } else {
-                            $greeting = 'Good Morning';
-                        }
+                                    $greeting = 'Good Afternoon';
+                                } elseif ($currentTime >= '18:00' && $currentTime < '24:00') {
+                                    $greeting = 'Good Evening';
+                                } else {
+                                    $greeting = 'Good Morning';
+                                }
                             @endphp
+                            <p>{{ $currentTime }}</p>
                             <h1 style="font-size: 4vw;">{{ $greeting . ', ' . auth()->user()->names }}</h1>
                         </div>
                     </div>
