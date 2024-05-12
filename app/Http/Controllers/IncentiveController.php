@@ -123,7 +123,7 @@ class IncentiveController extends Controller
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Individual')
-                ->distinct('customer_id')
+                ->distinct()->get(['customer_id'])
                 ->count('customer_id');
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
@@ -147,7 +147,7 @@ class IncentiveController extends Controller
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
-                ->distinct('group_id')
+                ->distinct()->get(['group_id'])
                 ->count('group_id');
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['records_for_unique_group_id_group']);
@@ -599,7 +599,6 @@ class IncentiveController extends Controller
         } else {
             IncentiveSettings::create($requestData);
         }
-
         // Add a session flash message to indicate success
         session()->flash('success', 'Incentive settings updated successfully!');
 

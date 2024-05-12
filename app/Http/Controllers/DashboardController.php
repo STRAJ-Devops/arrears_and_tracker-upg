@@ -33,14 +33,11 @@ class DashboardController extends Controller
         $currentMonthYear = 'Apr-24';
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
+        $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
-        $number_of_clients = Sale::selectRaw('SUM(number_of_group_members) AS total_clients')
-        ->distinct()
-        ->get()[0]->total_clients;
+        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
 
-        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct('group_id')->count();
-
-        $number_of_individuals = Arrear::where('lending_type', 'Group')->sum('number_of_group_members');
+        $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
@@ -95,7 +92,6 @@ class DashboardController extends Controller
             $branchTargetsList[] = $branchTargets[$branchId] ?? 0; // Use null coalescing operator
             $branchSalesList[] = $branchActuals[$branchId] ?? 0; // Use null coalescing operator
         }
-
 
         // Now you have aligned arrays $labels, $targets, and $sales where each index corresponds to the same product.
 

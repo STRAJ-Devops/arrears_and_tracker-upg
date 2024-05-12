@@ -6,6 +6,7 @@ use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\IncentiveController;
 use App\Http\Controllers\API\SaleController;
+use App\Http\Controllers\API\MonitorController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -16,27 +17,20 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    /**
-     * Auth routes
-     */
     Route::post('logout', [LoginController::class, 'logout']);
 
-    //dashboard
     Route::get('dashboard', [DashboardController::class, 'index']);
-
-    //incentives
     Route::get('incentives', [IncentiveController::class, 'calculateIncentive']);
-
-    //arrears
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');
-    //sales
     Route::post('sales', [SaleController::class, 'group_by'])->name('sales-group-by');
-
-    //expected
     Route::post('expected', [App\Http\Controllers\API\ExpectedController::class, 'group_by'])->name('expected-group-by');
-
-    //comments
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
+    Route::get('create-monitor', [MonitorController::class, 'create'])->name('create-monitor');
+    Route::post('store-monitor', [MonitorController::class, 'store'])->name('store-monitor');
+    Route::get('edit-monitor/{id}', [MonitorController::class, 'edit'])->name('edit-monitor');
+    Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
+    Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
+    Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
 });

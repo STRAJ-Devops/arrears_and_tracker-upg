@@ -361,7 +361,7 @@ class SaleController extends Controller
                         $sale->gender = $csv[$i][19];
                         $sale->number_of_children = $csv[$i][45];
                         $sale->number_of_group_members = $csv[$i][47];
-                        $sale->group_id = $csv[$i][4];
+                        $sale->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
                         $sale->save();
 
                         $arrear = new Arrear();
@@ -388,7 +388,7 @@ class SaleController extends Controller
                         $arrear->next_repayment_principal = $csv[$i][33];
                         $arrear->next_repayment_interest = $csv[$i][34];
                         $arrear->next_repayment_date = $csv[$i][32];
-                        $arrear->group_id = $csv[$i][4];
+                        $arrear->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
                         $arrear->disbursement_date = $csv[$i][30];
 
                         $arrear->save();
@@ -580,7 +580,7 @@ class SaleController extends Controller
                         $previous_end_month->next_repayment_principal = $csv[$i][33];
                         $previous_end_month->next_repayment_interest = $csv[$i][34];
                         $previous_end_month->next_repayment_date = $csv[$i][32];
-                        $previous_end_month->group_id = $csv[$i][4];
+                        $previous_end_month->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];
 
                         $previous_end_month->save();
                     } catch (\Exception $e) {
