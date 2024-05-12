@@ -4,11 +4,11 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header bg-primary text-light">Branch Targets</div>
+            <div class="card-header bg-warning text-light">Branch Targets</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <a href="{{ url('upload-branch-targets') }}" class="btn btn-primary btn-sm" title="Add Branch Targets">
+                        <a href="{{ url('upload-branch-targets') }}" class="btn btn-warning btn-sm text-light" title="Add Branch Targets">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
                     </div>
@@ -21,7 +21,7 @@
                         <input type="text" class="form-control" name="search" placeholder="Search..."
                             value="{{ request('search') }}">
                         <span style="margin-left:5px">
-                            <button class="btn btn-primary" type="submit" style="height:34px">
+                            <button class="btn btn-warning text-light" type="submit" style="height:34px">
                                 Search
                             </button>
                         </span>

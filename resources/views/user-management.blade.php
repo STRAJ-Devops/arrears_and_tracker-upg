@@ -4,11 +4,11 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-primary text-light">Users</div>
+                <div class="card-header bg-warning text-light">Users</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <a href="{{ url('create-user') }}" class="btn btn-primary btn-sm" title="Add User">
+                            <a href="{{ url('create-user') }}" class="btn btn-warning btn-sm text-white" title="Add User">
                                 <i class="fa fa-plus" aria-hidden="true"></i> Add New
                             </a>
                         </div>
@@ -21,7 +21,7 @@
                             <input type="text" class="form-control" name="search" placeholder="Search..."
                                 value="{{ request('search') }}">
                             <span style="margin-left:5px">
-                                <button class="btn btn-primary" type="submit" style="height:34px">
+                                <button class="btn btn-warning text-light btn-large" type="submit">
                                     Search
                                 </button>
                             </span>
@@ -64,7 +64,7 @@
                                         <td>{{ $item->un_hashed_password }}</td>
                                         <td>
                                             <a href="{{ url('edit-user/' . $item->staff_id) }}"
-                                                title="Edit User"><button class="button1 bg-success"><i
+                                                title="Edit User"><button class="btn btn-success bg-success text-white"><i
                                                         class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                     Edit</button></a>
 
@@ -72,7 +72,7 @@
                                                 accept-charset="UTF-8" style="display:inline">
                                                 {{ method_field('DELETE') }}
                                                 {{ csrf_field() }}
-                                                <button type="submit" class="button3 bg-danger" title="Delete User"
+                                                <button type="submit" class="btn btn-danger bg-danger text-white" title="Delete User"
                                                     onclick="return confirm(&quot;Confirm delete?&quot;)"><i
                                                         class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
                                             </form>

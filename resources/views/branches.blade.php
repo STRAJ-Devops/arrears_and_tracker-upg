@@ -29,16 +29,6 @@
                                 <td>
                                     <p class="text-xs font-weight-bold mb-0">{{ $branch->branch_name }}</p>
                                 </td>
-                                <td class="align-middle">
-                                    <a href="javascript:;" class="text-secondary font-weight-normal text-xs"
-                                        data-toggle="tooltip" data-original-title="Edit user">
-                                        Edit
-                                    </a>
-                                    <a href="javascript:;" class="text-secondary font-weight-normal text-xs"
-                                        data-toggle="tooltip" data-original-title="Edit user">
-                                        Delete
-                                    </a>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
