@@ -64,12 +64,11 @@ $(document).ready(function () {
                             Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0,
                             incentivesDetails.records_for_PAR ?? 0,
                             incentivesDetails.monthly_loan_loss_rate ?? 0,
-                            Number(incentivesDetails.sgl_records).toLocaleString() ?? 0,
+                            Number(incentivesDetails.sgl_records??0).toLocaleString(),
                             Number(incentivesDetails.incentive_amount_PAR).toLocaleString() ?? 0,
                             Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
                             Number(incentivesDetails.incentive_amount_Net_Client_Growth).toLocaleString() ?? 0,
                             Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
-
                         ];
                         table.row.add(row).draw();
                     });
@@ -137,9 +136,6 @@ $(document).ready(function () {
                 </div>
             </div>`;
     }
-
-
-
     // Call the fetchData function
     fetchData();
 });
