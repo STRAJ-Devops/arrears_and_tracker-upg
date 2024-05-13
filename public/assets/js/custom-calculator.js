@@ -183,30 +183,6 @@
                 //
                 i++;
             }
-            // Transform into html
-            // var loanTableTd = [];
-
-            // var total_principal = 0;
-            // var total_interest = 0;
-            // var total_installment = 0;
-            // for (var t = 0; t < loanTable.length; t++) {
-            //     total_principal = (total_principal + parseFloat(loanTable[t].base));
-            //     total_interest = (total_interest + parseFloat(loanTable[t].percent));
-            //     total_installment = (total_installment + parseFloat(loanTable[t].installment));
-
-            //     loanTableTd.push((t == 0 ? '<table class="table"><thead><tr><th>#</th><th>Date</th><th>Principal</th><th>Interest</th><th>Installment</th><th>Balance</th></tr></thead><tbody>' : '') + '<tr><td>'
-            //         + (t + 1) + '</td><td>'
-            //         + formatDate(loanTable[t].date) + '</td><td>'
-            //         + roundTo2(loanTable[t].base) + '</td><td>'
-            //         + roundTo2(loanTable[t].percent) + '</td><td>'
-            //         + Math.round(loanTable[t].installment).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</td><td>'
-            //         + roundTo2(loanTable[t].balance) + '</td></tr>' + (t == loanTable.length - 1 ? '<td></td><td><b>Total</b></td><td><b>' + roundTo2(total_principal) + '</b></td><td><b>' + roundTo2(total_interest) + '</b></td><td><b>' + Math.round(total_installment) + '</b></td><td></td></tbody></table>' : ''));
-            // }
-            // return loanTableTd;
-
-            //create a data table using the data table library and the loanTable data
-            //remove any existing table
-            //first check if the table exists
             if ($.fn.DataTable.isDataTable('#loan-schedule')) {
                 console.log('table exists');
                 //remove the table
