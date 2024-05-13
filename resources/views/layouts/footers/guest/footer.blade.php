@@ -8,7 +8,7 @@
               Copyright © <script>
                 document.write(new Date().getFullYear())
               </script>
-              <a style="color: #252f40;" href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">VisionFund Uganda</a>
+              <a style="color: #252f40;" href="https://www.visionfund.org/" class="font-weight-bold ml-1" target="_blank">VisionFund Uganda</a>
             </p>
           </div>
         </div>
