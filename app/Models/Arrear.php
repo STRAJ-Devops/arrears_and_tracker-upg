@@ -36,7 +36,8 @@ class Arrear extends Model
         'next_repayment_date',
         'dda',
         'group_id',
-        'disbursement_date'
+        'disbursement_date',
+        'number_of_women'
     ];
 
     //an arrear belongs to an Officer
@@ -98,6 +99,12 @@ class Arrear extends Model
     public function ProductTarget()
     {
         return $this->hasMany(ProductTarget::class, 'product_id', 'product_id');
+    }
+
+    public static function sumPrincipalArrearsBeforeToday()
+    {
+        return static::where('number_of_days_late', '>', 0)
+            ->sum('principal_arrears');
     }
 
 }

@@ -361,6 +361,7 @@ class SaleController extends Controller
                         $sale->gender = $csv[$i][19];
                         $sale->number_of_children = $csv[$i][45];
                         $sale->number_of_group_members = $csv[$i][47];
+                        $sale->number_of_women = $csv[$i][48];
                         $sale->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
                         $sale->save();
 
@@ -380,6 +381,7 @@ class SaleController extends Controller
                         $arrear->principal_arrears = $csv[$i][39];
                         $arrear->number_of_days_late = $csv[$i][41];
                         $arrear->number_of_group_members = $csv[$i][47];
+                        $arrear->number_of_women = $csv[$i][48];
                         $arrear->lending_type = $csv[$i][20] ?? 'Unknown';
                         $arrear->par = $csv[$i][42];
                         $arrear->gender = $csv[$i][19] ?? 'Unknown';

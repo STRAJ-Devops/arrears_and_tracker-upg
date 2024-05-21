@@ -66,6 +66,9 @@ class MonitorController extends Controller
     {
         $requestData = $request->all();
         $requestData['staff_id'] = auth()->user()->staff_id;
+        if($requestData['activity'] == '6'){
+            $requestData['activity'] = $requestData['other_activity'];
+        }
         Monitor::create($requestData);
 
         return redirect('monitors')->with('flash_message', 'sales activity added!');

@@ -275,7 +275,7 @@ $(document).ready(function () {
                             messageTop: generateMessageTop($('#staff').val())
                         }
                     ], // List of buttons in the dropdown
-                    className: 'btn btn-warning dropdown-toggle btn-lg' // Bootstrap button classes
+                    className: 'btn btn-warning dropdown-toggle btn-lg text-white' // Bootstrap button classes
                 }
             ]
 

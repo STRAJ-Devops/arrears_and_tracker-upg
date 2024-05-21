@@ -136,6 +136,7 @@ $(document).ready(function () {
                 </div>
             </div>`;
     }
+    
     // Call the fetchData function
     fetchData();
 });

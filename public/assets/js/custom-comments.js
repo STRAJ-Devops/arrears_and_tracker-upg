@@ -13,22 +13,22 @@ $(document).ready(function () {
         buttons: [
             {
                 extend: "csv",
-                className: "btn btn-warning btn-small",
+                className: "btn btn-warning btn-small text-white",
                 messageTop: "Comments about Arrears",
             },
             {
                 extend: "excel",
-                className: "btn btn-warning btn-small",
+                className: "btn btn-warning btn-small text-white",
                 messageTop: "Comments about Arrears",
             },
             {
                 extend: "pdf",
-                className: "btn btn-warning btn-small",
+                className: "btn btn-warning btn-small text-white",
                 messageTop: "Comments about Arrears",
             },
             {
                 extend: "print",
-                className: "btn btn-warning btn-small",
+                className: "btn btn-warning btn-small text-white",
                 messageTop: "Comments about Arrears",
             },
         ],

@@ -24,7 +24,8 @@ class Sale extends Model
         'gender',
         'number_of_children',
         'number_of_group_members',
-        'group_id'
+        'group_id',
+        'number_of_women'
     ];
 
     public function officer()

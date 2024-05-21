@@ -39,6 +39,8 @@ return new class extends Migration
 
             $table->string('group_id')->nullable();
 
+            $table->string('number_of_women')->nullable();
+
             $table->timestamps();
         });
     }

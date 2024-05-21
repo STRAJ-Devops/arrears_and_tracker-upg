@@ -77,6 +77,8 @@ return new class extends Migration
 
             $table->string('disbursement_date');
 
+            $table->string('number_of_women')->nullable();
+
             $table->timestamps();
         });
     }

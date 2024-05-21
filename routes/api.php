@@ -33,4 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
+
+    Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
+
 });
