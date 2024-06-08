@@ -309,7 +309,49 @@
                                                 class="form-control" required>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label for="max_cap_number_of_groups_fast"
+                                            class="col-md-4 col-form-label text-md-right">Maximum Number Of Groups</label>
+                                        <div class="col-md-6">
+                                            <input type="text" name="max_cap_number_of_groups_fast"
+                                                id="max_cap_number_of_groups_fast"
+                                                value="{{ number_format($incentiveSettings->max_cap_number_of_groups_fast, 0, '.', ',') }}"
+                                                class="form-control" required>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group row">
+                                        <label for="min_cap_number_of_groups_fast"
+                                            class="col-md-4 col-form-label text-md-right">Minimum Number Of Groups</label>
+                                        <div class="col-md-6">
+                                            <input type="text" name="min_cap_number_of_groups_fast"
+                                                id="min_cap_number_of_groups_fast"
+                                                value="{{ number_format($incentiveSettings->min_cap_number_of_groups_fast, 0, '.', ',') }}"
+                                                class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="max_cap_portifolio_fast"
+                                            class="col-md-4 col-form-label text-md-right">Maximum
+                                            Cap</label>
+                                        <div class="col-md-6">
+                                            <input type="text" name="max_cap_portifolio_fast" id="max_cap_portifolio_fast"
+                                                class="form-control number_format"
+                                                value="{{ number_format($incentiveSettings->max_cap_portifolio_fast, 2, '.', ',') }}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="min_cap_portifolio_fast"
+                                            class="col-md-4 col-form-label text-md-right">Minimum
+                                            Cap</label>
+                                        <div class="col-md-6">
+                                            <input type="text" name="min_cap_portifolio_fast" id="min_cap_portifolio_fast"
+                                                class="form-control number_format"
+                                                value="{{ number_format($incentiveSettings->min_cap_portifolio_fast, 2, '.', ',') }}"
+                                                required>
+                                        </div>
+                                    </div>
                                     {{-- submit button --}}
                                     <div class="form-group row mb-0">
                                         <div class="col-md-6 offset-md-4">

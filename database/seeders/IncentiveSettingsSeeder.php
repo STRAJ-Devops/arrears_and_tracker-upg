@@ -33,6 +33,10 @@ class IncentiveSettingsSeeder extends Seeder
             'max_llr_group' => 0.18,
             'max_llr_individual' => 0.18,
             'max_llr_fast' => 0.18,
+            "max_cap_number_of_groups_fast" => 60,
+            "min_cap_number_of_groups_fast" => 30,
+            'max_cap_portifolio_fast' => 20000000,
+            'min_cap_portifolio_fast' => 5000000,
         ]);
     }
 }

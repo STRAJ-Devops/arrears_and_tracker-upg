@@ -17,7 +17,7 @@
     <label for="monitor" class="control-label">{{ 'Activity' }}</label>
     <select class="form-control" name="activity" id="monitor">
         @foreach (json_decode('{"1":"Marketing","2":"Appraisal","3":"Application", "4":"Verification", "5":"Monitoring", "6":"Other"}') as $item => $value)
-            <option value="{{ $item }}" {{ isset($monitor->monitor) && $monitor->monitor == $item ? 'selected' : '' }}>
+            <option value="{{ $value }}" {{ isset($monitor->monitor) && $monitor->monitor == $item ? 'selected' : '' }}>
                 {{ $value }}
             </option>
         @endforeach

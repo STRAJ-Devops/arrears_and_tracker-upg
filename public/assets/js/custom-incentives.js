@@ -58,16 +58,19 @@ $(document).ready(function () {
                         var row = [
                             index,
                             officerDetails.names,
-                            Number(incentivesDetails.outstanding_principal_individual).toLocaleString() ?? 0,
-                            Number(incentivesDetails.outstanding_principal_group).toLocaleString() ?? 0,
-                            Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0,
-                            Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0,
-                            incentivesDetails.records_for_PAR ?? 0,
-                            incentivesDetails.monthly_loan_loss_rate ?? 0,
+                            Number(incentivesDetails.outstanding_principal_individual??0).toLocaleString(),
+                            Number(incentivesDetails.outstanding_principal_group??0).toLocaleString() ?? 0,
+                            Number(incentivesDetails.outstanding_principal_sgl??0).toLocaleString() ?? 0,
+                            Number(incentivesDetails.unique_customer_id_individual??0).toLocaleString() ?? 0,
+                            Number(incentivesDetails.records_for_unique_group_id_group??0).toLocaleString() ?? 0,
+                            incentivesDetails.sgl_records??0,
+                            incentivesDetails.records_for_PAR,
+                            incentivesDetails.monthly_loan_loss_rate,
                             Number(incentivesDetails.sgl_records??0).toLocaleString(),
-                            Number(incentivesDetails.incentive_amount_PAR).toLocaleString() ?? 0,
+                            Number(incentivesDetails.incentive_amount_PAR).toLocaleString(),
                             Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
-                            Number(incentivesDetails.incentive_amount_Net_Client_Growth).toLocaleString() ?? 0,
+                            Number(incentivesDetails.incentive_amount_Net_Client_Growth??0).toLocaleString(),
+                            Number(incentivesDetails.incentive_number_of_sgl_groups??0).toLocaleString(),
                             Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
                         ];
                         table.row.add(row).draw();
@@ -120,10 +123,11 @@ $(document).ready(function () {
                         <div class="card-body text-left">
                             <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names}</h5>
                             <hr>
-                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual??0)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group??0)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_sgl??0)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual??0).toLocaleString() ?? 0}</p>
+                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group??0).toLocaleString() ?? 0}</p>
                             <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
                             <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
                             <p class="card-text"><strong>Number Of Groups:</strong> ${incentivesDetails.sgl_records!=undefined?(incentivesDetails.sgl_records).toLocaleString() : 0}</p>
@@ -136,7 +140,7 @@ $(document).ready(function () {
                 </div>
             </div>`;
     }
-    
+
     // Call the fetchData function
     fetchData();
 });

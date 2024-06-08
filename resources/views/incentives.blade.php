@@ -28,14 +28,17 @@
                             <th>Full Name</th>
                             <th>Outstanding principal(Individual)</th>
                             <th>Outstanding principal(Group)</th>
+                            <th>Outstanding principal(SGL)</th>
                             <th>No of Customers(Individual)</th>
                             <th>No of Customers(Group)</th>
+                            <th>No of SGL Groups</th>
                             <th>PAR>1Day</th>
                             <th>LLR</th>
                             <th>SGL</th>
                             <th>Incentive(PAR>1Day)</th>
                             <th>Incentive(Net Portifolio Growth)</th>
                             <th>Incentive(Net Client Growth)</th>
+                            <th>Incentive(No of SGL Groups)</th>
                             <th>Total Incentive</th>
                         </tr>
                     </thead>

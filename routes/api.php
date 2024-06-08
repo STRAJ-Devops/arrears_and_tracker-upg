@@ -4,7 +4,7 @@ use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\ArrearController;
 use App\Http\Controllers\API\CommentController;
 use App\Http\Controllers\API\DashboardController;
-use App\Http\Controllers\API\IncentiveController;
+use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\MonitorController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +18,6 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
-
     Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('incentives', [IncentiveController::class, 'calculateIncentive']);
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');

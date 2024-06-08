@@ -52,6 +52,9 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('edit-user/{id}', [OfficerController::class, 'edit'])->name('edit-user');
     Route::patch('update-user/{id}', [OfficerController::class, 'update'])->name('update-user');
     Route::delete('delete-user/{id}', [OfficerController::class, 'destroy'])->name('delete-user');
+    Route::get('account-balance', function(){
+        return view('account-balance');
+    });
 
     Route::get('products', [ProductController::class, 'index'])->name('products');
 

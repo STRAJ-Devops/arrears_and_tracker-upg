@@ -141,6 +141,7 @@ class MonitorController extends Controller
         try {
             $monitor = Monitor::findOrFail(request()->get('monitor_id'));
             $monitor->appraisal_date = (string) now();
+            $monitor->activity = 'Appraisal';
             $monitor->save();
 
             return response()->json(['monitor' => $monitor], 200);
@@ -155,6 +156,7 @@ class MonitorController extends Controller
         try {
             $monitor = Monitor::findOrFail(request()->get('monitor_id'));
             $monitor->application_date = (string) now();
+            $monitor->activity = 'Application';
             $monitor->save();
             return response()->json(['monitor' => $monitor], 200);
         } catch (\Exception $e) {

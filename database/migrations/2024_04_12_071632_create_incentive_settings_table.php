@@ -32,6 +32,10 @@ return new class extends Migration
             $table->double('max_llr_group');
             $table->double('max_llr_individual');
             $table->double('max_llr_fast');
+            $table->integer('max_cap_number_of_groups_fast');
+            $table->integer('min_cap_number_of_groups_fast');
+            $table->string('max_cap_portifolio_fast', 255);
+            $table->string('min_cap_portifolio_fast', 255);
             $table->timestamps();
         });
     }
