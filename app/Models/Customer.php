@@ -22,4 +22,7 @@ class Customer extends Model
     {
         return $this->hasMany(Comment::class, "customer_id", "customer_id");
     }
+
+    //an arrear belongs to a customer
+    
 }

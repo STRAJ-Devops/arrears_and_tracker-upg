@@ -203,10 +203,10 @@ class SaleController extends Controller
         ini_set('memory_limit', '-1');
         // Validate the uploaded file
         $request->validate([
-            'upload_template_file' => 'required|mimes:xlsx,xls,csv',
+            'upload_template_file' => 'required|mimes:csv',
         ], [
             'upload_template_file.required' => 'Please upload a file.',
-            'upload_template_file.mimes' => 'The uploaded file must be a valid Excel or CSV file.',
+            'upload_template_file.mimes' => 'The uploaded file must be a valid CSV file.',
         ]);
 
         //save the file to the server
@@ -332,9 +332,9 @@ class SaleController extends Controller
 
                         $csv[$i][47] = $csv[$i][47] == "" ? 1 : $csv[$i][47];
 
-                        [$csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][44], $csv[$i][33], $csv[$i][34]] = array_map(function ($value) {
+                        [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]] = array_map(function ($value) {
                             return str_replace(',', '', $value);
-                        }, [$csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][44], $csv[$i][33], $csv[$i][34]]);
+                        }, [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]]);
 
                         $customer_id_column = $csv[$i][7] == '' ? $csv[$i][12] : $csv[$i][7];
                         //get the customer data and save it to get the customer_id
@@ -392,6 +392,8 @@ class SaleController extends Controller
                         $arrear->next_repayment_date = $csv[$i][32];
                         $arrear->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
                         $arrear->disbursement_date = $csv[$i][30];
+                        $arrear->draw_down_balance = $csv[$i][16];
+                        $arrear->savings_balance = $csv[$i][43];
 
                         $arrear->save();
                     } catch (\Exception $e) {
@@ -553,7 +555,6 @@ class SaleController extends Controller
                             $customer->customer_id = $customer_id_column;
                             $customer->names = $csv[$i][8] ?? "Unknown";
                             $customer->phone = $csv[$i][9] ?? 'Unknown';
-
                             //save the customer
                             $customer->save();
                         }

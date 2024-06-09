@@ -79,6 +79,10 @@ return new class extends Migration
 
             $table->string('number_of_women')->nullable();
 
+            $table->string('draw_down_balance')->nullable();
+            
+            $table->string('savings_balance')->nullable();
+
             $table->timestamps();
         });
     }
