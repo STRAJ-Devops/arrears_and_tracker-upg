@@ -331,9 +331,9 @@ class SaleController extends Controller
 
                         $csv[$i][47] = $csv[$i][47] == "" ? 1 : $csv[$i][47];
 
-                        [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]] = array_map(function ($value) {
+                        [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][36], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]] = array_map(function ($value) {
                             return str_replace(',', '', $value);
-                        }, [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]]);
+                        }, [$csv[$i][16], $csv[$i][27], $csv[$i][35], $csv[$i][40], $csv[$i][39], $csv[$i][36], $csv[$i][42], $csv[$i][43], $csv[$i][44], $csv[$i][33], $csv[$i][34]]);
 
                         $customer_id_column = $csv[$i][7] == '' ? $csv[$i][12] : $csv[$i][7];
                         //get the customer data and save it to get the customer_id
