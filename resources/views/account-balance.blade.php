@@ -83,12 +83,15 @@
                                 //set the width and height of the avatar
                                 $('#customer-avatar').attr('width', "30%");
                                 $('#customer-avatar').attr('height', "30%");
-                                $('#draw-down-balance').text(response
-                                    .draw_down_balance + '/=');
-                                $('#savings-balance').text(response.savings_balance +
+                                $('#draw-down-balance').text(Number(response
+                                    .draw_down_balance).toLocaleString() + '/=');
+                                $('#savings-balance').text(Number(response
+                                        .savings_balance).toLocaleString() +
                                     '/=');
-                                $('#loan-balance').text(response.loan_balance + '/=');
-                                $('#amount-due').text(response.amount_due + '/=');
+                                $('#loan-balance').text(Number(response.loan_balance)
+                                    .toLocaleString() + '/=');
+                                $('#amount-due').text(Number(response.amount_due)
+                                    .toLocaleString() + '/=');
                             } else {
                                 $('#customer-details').addClass('d-none');
                                 $('#search-result').removeClass('d-none').html(
