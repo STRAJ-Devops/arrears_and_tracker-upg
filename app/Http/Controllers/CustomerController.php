@@ -9,15 +9,23 @@ class CustomerController extends Controller
 {
     public function customer(Request $request)
     {
-        $customer_id = $request->input('customer_id');
+        $customer_id = $request->customer_id;
 
         //get customer name, phone, draw down balance, savings balance and loan balance
         $customer_details = DB::table('customers')
             ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
             ->selectRaw('customers.names,
-            arrears.draw_down_balance,
-            arrears.savings_balance,
-            (arrears.outstanding_principal + arrears.outstanding_interest) as loan_balance
-            (arrears.principal_in_arrears+outstanding_interest as amount_due');
+                arrears.draw_down_balance,
+                arrears.savings_balance,
+                (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
+                (arrears.principal_arrears + arrears.real_outstanding_interest) as amount_due')
+            ->where('customers.customer_id', $customer_id)->first();
+
+            if(!$customer_details) {
+                return response()->json(['message' => 'Customer not found'], 404);
+            }
+
+        return response()->json($customer_details, 200);
     }
+
 }

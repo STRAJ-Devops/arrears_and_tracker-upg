@@ -6,6 +6,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BranchTargetController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpectedController;
 use App\Http\Controllers\HomeController;
@@ -109,6 +110,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
+    Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
 
     Route::get('/login', function () {
         return view('dashboard');

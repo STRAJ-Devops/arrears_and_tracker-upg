@@ -377,6 +377,9 @@ class SaleController extends Controller
                         $arrear->outstanding_interest = $csv[$i][40];
                         //this is add column to the arrears table
                         $arrear->interest_in_arrears = $csv[$i][44] ?? 0;
+                        //outstanding interest
+                        $arrear->real_outstanding_interest = $csv[$i][36] ?? 0;
+
                         $arrear->principal_arrears = $csv[$i][39];
                         $arrear->number_of_days_late = $csv[$i][41];
                         $arrear->number_of_group_members = $csv[$i][47];
@@ -391,7 +394,7 @@ class SaleController extends Controller
                         $arrear->next_repayment_date = $csv[$i][32];
                         $arrear->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
                         $arrear->disbursement_date = $csv[$i][30];
-                        $arrear->draw_down_balance = $csv[$i][16];
+                        $arrear->draw_down_balance = $csv[$i][44];
                         $arrear->savings_balance = $csv[$i][43];
 
                         $arrear->save();

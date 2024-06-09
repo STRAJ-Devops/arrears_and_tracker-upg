@@ -65,6 +65,7 @@ return new class extends Migration
             $table->bigInteger('par');
 
             $table->string('customer_id');
+            
             $table->foreign('customer_id')->references('customer_id')->on('customers');
 
             $table->bigInteger('next_repayment_principal')->nullable();
@@ -80,8 +81,11 @@ return new class extends Migration
             $table->string('number_of_women')->nullable();
 
             $table->string('draw_down_balance')->nullable();
-            
+
             $table->string('savings_balance')->nullable();
+
+            //outstanding interest
+            $table->string('real_outstanding_interest')->nullable();
 
             $table->timestamps();
         });

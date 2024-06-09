@@ -107,7 +107,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'regions-loans' || $request->group == 'regions-clients') {
-                    $sales =Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id');
+                    $sales = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $region_name = $sale->first()->region->region_name;
@@ -146,7 +146,7 @@ class SaleController extends Controller
                 }
             } else {
                 //sales categorized by branches
-                $sales =Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id');
+                $sales = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id');
                 //process the sales data and return the view
                 $data = [];
                 foreach ($sales as $key => $sale) {
