@@ -17,6 +17,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'authenticate');
 });
 
+Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('dashboard', [DashboardController::class, 'index']);
@@ -33,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
-    Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
 
 });
