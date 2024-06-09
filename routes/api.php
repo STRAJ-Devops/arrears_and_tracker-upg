@@ -17,7 +17,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'authenticate');
 });
 
-Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
+Route::post('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
