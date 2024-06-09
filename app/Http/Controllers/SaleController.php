@@ -11,7 +11,6 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Sub_County;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class SaleController extends Controller
@@ -23,7 +22,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = "Apr-24";
+        $currentMonthYear = date('Y-m');
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {
@@ -119,7 +118,7 @@ class SaleController extends Controller
                         ];
                     }
                 } else if ($request->group == 'regions-loans' || $request->group == 'regions-clients') {
-                    $sales =Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id');
+                    $sales = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('region_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $region_name = $sale->first()->region->region_name;
@@ -158,7 +157,7 @@ class SaleController extends Controller
                 }
             } else {
                 //sales categorized by branches
-                $sales =Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id');
+                $sales = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('branch_id');
                 //process the sales data and return the view
                 $data = [];
                 foreach ($sales as $key => $sale) {
@@ -362,7 +361,7 @@ class SaleController extends Controller
                         $sale->number_of_children = $csv[$i][45];
                         $sale->number_of_group_members = $csv[$i][47];
                         $sale->number_of_women = $csv[$i][48];
-                        $sale->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
+                        $sale->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
                         $sale->save();
 
                         $arrear = new Arrear();
@@ -390,7 +389,7 @@ class SaleController extends Controller
                         $arrear->next_repayment_principal = $csv[$i][33];
                         $arrear->next_repayment_interest = $csv[$i][34];
                         $arrear->next_repayment_date = $csv[$i][32];
-                        $arrear->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];;
+                        $arrear->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
                         $arrear->disbursement_date = $csv[$i][30];
                         $arrear->draw_down_balance = $csv[$i][16];
                         $arrear->savings_balance = $csv[$i][43];
@@ -583,7 +582,7 @@ class SaleController extends Controller
                         $previous_end_month->next_repayment_principal = $csv[$i][33];
                         $previous_end_month->next_repayment_interest = $csv[$i][34];
                         $previous_end_month->next_repayment_date = $csv[$i][32];
-                        $previous_end_month->group_id = blank($csv[$i][7])?$csv[$i][12]:$csv[$i][7];
+                        $previous_end_month->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
 
                         $previous_end_month->save();
                     } catch (\Exception $e) {
