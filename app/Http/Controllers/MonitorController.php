@@ -21,25 +21,25 @@ class MonitorController extends Controller
         $activity = request()->get('activity');
         if ($activity == 'Marketing') {
             //get all monitors that are marketing
-            $monitors = Monitor::where('activity', 'Marketing')->get();
+            $monitors = Monitor::where('activity', 'Marketing')->with('officer')->get();
             return response()->json(['monitors' => $monitors], 200);
         }
 
         if ($activity == 'Appraisal') {
             //get all monitors that are appraisal
-            $monitors = Monitor::where('activity', 'Appraisal')->get();
+            $monitors = Monitor::where('activity', 'Appraisal')->with('officer')->get();
             return response()->json(['monitors' => $monitors], 200);
         }
 
 
         if ($activity == 'Application') {
             //get all monitors that are application
-            $monitors = Monitor::where('activity', 'Application')->get();
+            $monitors = Monitor::where('activity', 'Application')->with('officer')->get();
             return response()->json(['monitors' => $monitors], 200);
         }
 
         //get all monitors
-        $monitors = Monitor::all();
+        $monitors = Monitor::all()->load('officer');
 
         return response()->json(['monitors' => $monitors], 200);
     }

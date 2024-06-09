@@ -87,4 +87,10 @@ class Officer extends Authenticatable
     {
         return $this->attributes['password'];
     }
+
+    //an officer can have many monitors
+    public function monitors()
+    {
+        return $this->hasMany(Monitor::class, 'staff_id', 'staff_id');
+    }
 }

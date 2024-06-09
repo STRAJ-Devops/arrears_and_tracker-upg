@@ -51,6 +51,7 @@
                         <th>Marketing Date</th>
                         <th>Appraisal Date</th>
                         <th>Application Date</th>
+                        <th>Officer</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,7 @@
                         <th>Location</th>
                         <th>Activity</th>
                         <th>Date</th>
+                        <th>Officer</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +89,7 @@
                         <th>Location</th>
                         <th>Activity</th>
                         <th>Date</th>
+                        <th>Officer</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,6 +108,7 @@
                         <th>Location</th>
                         <th>Activity</th>
                         <th>Date</th>
+                        <th>Officer</th>
                     </tr>
                 </thead>
                 <tbody>

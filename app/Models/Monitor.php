@@ -21,4 +21,10 @@ class Monitor extends Model
         'application_date',
         'staff_id',
     ];
+
+    //a monitor belongs to an officer
+    public function officer()
+    {
+        return $this->belongsTo(Officer::class, 'staff_id', 'staff_id');
+    }
 }

@@ -210,6 +210,9 @@ $(document).ready(function () {
                         }
                     },
                 },
+                {
+                    data: "officer.names"
+                }
             ],
         });
 
