@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\ArrearController;
 use App\Http\Controllers\API\CommentController;
+use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\API\SaleController;
@@ -32,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
-
+    Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
 
 });
