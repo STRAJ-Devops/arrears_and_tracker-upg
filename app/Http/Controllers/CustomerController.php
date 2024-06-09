@@ -9,7 +9,7 @@ class CustomerController extends Controller
 {
     public function customer(Request $request)
     {
-        $customer_id = 311220;
+        $customer_id = $request->customer_id;
 
         //get customer name, phone, draw down balance, savings balance and loan balance
         $customer_details = DB::table('customers')
