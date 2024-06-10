@@ -22,7 +22,7 @@ class DashboardController extends Controller
         //get the sgl by counting number_of_group_members where product_code is 21070
         $sgl = Arrear::where('product_id', 21070)->sum('number_of_group_members');
 
-        $number_of_female_borrowers = Sale::where('gender', 'female')->count();
+        $number_of_female_borrowers = Sale::where('gender', 'female')->count() + Sale::where('product_id', 21070)->sum('number_of_women');
 
         $number_of_children = Sale::sum('number_of_children');
 
