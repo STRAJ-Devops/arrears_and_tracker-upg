@@ -361,7 +361,7 @@ class SaleController extends Controller
                         $sale->number_of_children = $csv[$i][45];
                         $sale->number_of_group_members = $csv[$i][47];
                         $sale->number_of_women = $csv[$i][48];
-                        $sale->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
+                        $sale->group_id = blank($csv[$i][4]) ? $csv[$i][12] : $csv[$i][4];
                         $sale->save();
 
                         $arrear = new Arrear();
@@ -379,7 +379,6 @@ class SaleController extends Controller
                         $arrear->interest_in_arrears = $csv[$i][44] ?? 0;
                         //outstanding interest
                         $arrear->real_outstanding_interest = $csv[$i][36] ?? 0;
-
                         $arrear->principal_arrears = $csv[$i][39];
                         $arrear->number_of_days_late = $csv[$i][41];
                         $arrear->number_of_group_members = $csv[$i][47];
@@ -392,10 +391,11 @@ class SaleController extends Controller
                         $arrear->next_repayment_principal = $csv[$i][33];
                         $arrear->next_repayment_interest = $csv[$i][34];
                         $arrear->next_repayment_date = $csv[$i][32];
-                        $arrear->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
+                        $arrear->group_id = blank($csv[$i][4]) ? $csv[$i][12] : $csv[$i][4];
                         $arrear->disbursement_date = $csv[$i][30];
                         $arrear->draw_down_balance = $csv[$i][44];
                         $arrear->savings_balance = $csv[$i][43];
+                        $arrear->group_name = $csv[$i][3];
 
                         $arrear->save();
                     } catch (\Exception $e) {

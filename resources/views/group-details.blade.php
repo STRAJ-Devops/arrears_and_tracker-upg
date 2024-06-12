@@ -24,7 +24,7 @@
 
     <div id="customer-details" class="card mt-3 d-none">
         <div class="card-header text-white" style="background-color: orange">
-            Customer Details
+            Group Details
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center">
@@ -68,7 +68,7 @@
 
                 setTimeout(function() {
                     $.ajax({
-                        url: 'customer-details', // Adjust the URL as needed
+                        url: 'get-group-details', // Adjust the URL as needed
                         type: 'GET',
                         data: {
                             customer_id: searchCustomerID,
@@ -96,19 +96,17 @@
                                     var customerCard = `
                 <div class="card mt-3">
                     <div class="card-header text-white" style="background-color: orange">
-                        Customer Details
+                        Group Member
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                             <div>
                                 <h5 class="card-title">Customer Name: ${customer.names}</h5>
-                                <p class="card-text"><strong>Draw Down Balance:</strong> ${Number(customer.draw_down_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${Number(customer.savings_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Amount Due Today:</strong> ${Number(customer.amount_due).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)} /=</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id} /=</p>
+                                <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
+                                <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.phone)}</p>
+                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
+                                <p class="card-text"><strong>Group Name:</strong> ${customer.group_name}</p>
                             </div>
                         </div>
                     </div>

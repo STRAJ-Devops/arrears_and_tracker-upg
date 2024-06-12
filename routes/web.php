@@ -56,7 +56,9 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('account-balance', function(){
         return view('account-balance');
     });
-
+    Route::get('group-details', function(){
+        return view('group-details');
+    });
     Route::get('products', [ProductController::class, 'index'])->name('products');
 
     Route::get('targets', [TargetController::class, 'index'])->name('targets');
@@ -111,6 +113,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
     Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
+    Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
 
     Route::get('/login', function () {
         return view('dashboard');

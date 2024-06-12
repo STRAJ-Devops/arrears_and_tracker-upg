@@ -7,7 +7,6 @@ use App\Models\Branch;
 use App\Models\BranchTarget;
 use App\Models\Product;
 use App\Models\Sale;
-
 class DashboardController extends Controller
 {
     public function index()
@@ -35,7 +34,6 @@ class DashboardController extends Controller
         $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
         $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
-
         $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
