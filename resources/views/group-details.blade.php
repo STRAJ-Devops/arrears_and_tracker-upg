@@ -2,10 +2,24 @@
 
 @section('content')
     <div>
-        <form action="" class="d-flex">
-            <input type="text" class="form-control shadow-none me-2" id="search-customer"
-                placeholder="Enter Customer ID e.g 123456 or phone eg. 785065399 or full name">
-            <button type="button" class="btn btn-outline-primary" id="search-button">Search</button>
+        <form class="row g-3 align-items-center">
+            <div class="col-auto">
+                <label for="search-by" class="col-form-label">Search By:</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select shadow-none" id="search-by" name="search-by">
+                    <option value="customer_id">Customer ID</option>
+                    <option value="phone">Phone</option>
+                    <option value="group_id">Group ID</option>
+                    <option value="group_name">Group Name</option>
+                </select>
+            </div>
+            <div class="col-8">
+                <input type="text" class="form-control" id="search-customer">
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-primary btn-block p-1 mt-3" id="search-button">Search</button>
+            </div>
         </form>
     </div>
 
@@ -23,7 +37,7 @@
     </div>
 
     <div id="customer-details" class="card mt-3 d-none">
-        <div class="card-header text-white" style="background-color: orange">
+        <div class="card-header text-white bg-warning">
             Group Details
         </div>
         <div class="card-body">
@@ -72,6 +86,7 @@
                         type: 'GET',
                         data: {
                             customer_id: searchCustomerID,
+                            search_by: $('#search-by').val()
                         },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -94,24 +109,24 @@
                                 // Loop through each customer detail and append it to the container
                                 response.forEach(function(customer) {
                                     var customerCard = `
-                <div class="card mt-3">
-                    <div class="card-header text-white" style="background-color: orange">
-                        Group Member
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
-                            <div>
-                                <h5 class="card-title">Customer Name: ${customer.names}</h5>
-                                <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
-                                <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.phone)}</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
-                                <p class="card-text"><strong>Group Name:</strong> ${customer.group_name}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+                                        <div class="card mt-3">
+                                            <div class="card-header text-white bg-warning">
+                                                Group Member
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
+                                                    <div>
+                                                        <h5 class="card-title">Customer Name: ${customer.names}</h5>
+                                                        <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
+                                                        <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.phone)}</p>
+                                                        <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
+                                                        <p class="card-text"><strong>Group Name:</strong> ${customer.group_name}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
                                     $('#customer-details').append(customerCard);
                                 });
                             } else {
@@ -120,7 +135,6 @@
                                     '<p>Not Found</p>');
                             }
                         },
-
                         error: function() {
                             // Hide spinner
                             $('#spinner').addClass('d-none');
@@ -129,7 +143,7 @@
                                 '<p>Not Found</p>');
                         }
                     });
-                }, 5000); // Delay the AJAX call by 10 seconds
+                }, 5000); // Delay the AJAX call by 5 seconds
             });
         });
     </script>

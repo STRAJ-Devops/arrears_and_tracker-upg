@@ -29,7 +29,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "sub_county": ["Sub County", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "village": ["Village", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
-            "client": ["Names", "Phone", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late", "actions"],
+            "client": ["Customer ID","Names", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late", "actions"],
             "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
         };
 
@@ -103,8 +103,8 @@ $(document).ready(function () {
 
                         var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
                         var row = [
+                            item.group_key,
                             item.names,
-                            item.phone_number,
                             numberOfCommentsHtml,
                             item.amount_disbursed.toLocaleString(), // Pad with comma after every three digits
                             item.total_outstanding_principal.toLocaleString(), // Pad with comma after every three digits

@@ -30,6 +30,11 @@ class IncentiveController extends Controller
             foreach ($incentives as $staffId => $incentive) {
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();
+
+                //check if officer branch_id is 1000 and just continue. this is to eliminate head office staff
+                if ($officer->branch_id == 1000) {
+                    continue;
+                }
                 if ($this->determineQualifiers($incentive)) {
                     if (array_key_exists('outstanding_principal_sgl', $incentive)) {
                         //incentive amount for PAR

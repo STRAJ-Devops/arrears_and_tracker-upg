@@ -1,13 +1,27 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div>
-        <form action="" class="d-flex">
-            <input type="text" class="form-control shadow-none me-2" id="search-customer"
-                placeholder="Enter Customer ID e.g 123456 or phone eg. 785065399 or full name">
-            <button type="button" class="btn btn-outline-primary" id="search-button">Search</button>
-        </form>
-    </div>
+<div>
+    <form action="" class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="search-by" class="col-form-label">Search By:</label>
+        </div>
+        <div class="col-auto">
+            <select class="form-select shadow-none" id="search-by" name="search-by">
+                <option value="customer_id">Customer ID</option>
+                <option value="phone">Phone</option>
+                <option value="group_id">Group ID</option>
+                <option value="name">Names</option>
+            </select>
+        </div>
+        <div class="col-8">
+            <input type="text" class="form-control" id="search-customer">
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-primary btn-block p-1 mt-3" id="search-button">Search</button>
+        </div>
+    </form>
+</div>
 
     <!-- Show the number of results -->
     <div id="result-count" class="mt-3 d-none">
@@ -72,6 +86,7 @@
                         type: 'GET',
                         data: {
                             customer_id: searchCustomerID,
+                            search_by: $('#search-by').val()
                         },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -107,8 +122,8 @@
                                 <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${Number(customer.savings_balance).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Amount Due Today:</strong> ${Number(customer.amount_due).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)} /=</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id} /=</p>
+                                <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)}</p>
+                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
                             </div>
                         </div>
                     </div>
