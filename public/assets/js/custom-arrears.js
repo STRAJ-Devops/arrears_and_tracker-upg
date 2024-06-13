@@ -306,6 +306,9 @@ $(document).ready(function () {
                 data: {
                     customer_id: customerId
                 },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
                     var comments = response.comments;
                     var commentsContainer = $('#comments-container');
@@ -384,6 +387,8 @@ $(document).ready(function () {
                         icon: 'success',
                         confirmButtonText: 'Ok',
                     });
+                    //clear the comment field
+                    $('#comment').val('');
                     $('#commentModal').modal('hide');
                     // Populate initial table headers
                     var initialGroup = $('#staff').val();

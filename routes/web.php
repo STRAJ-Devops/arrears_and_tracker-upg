@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [CommentController::class, 'showAllComments'])->name('showAllComments');
+    Route::get('comments', [CommentController::class, 'index'])->name('comments');
 
     Route::get('monitors', [MonitorController::class, 'index'])->name('monitors');
     Route::get('create-monitor', [MonitorController::class, 'create'])->name('create-monitor');
@@ -124,9 +125,6 @@ Route::get('download-template', [SaleController::class, 'downloadTemplate'])->na
 Route::get('officers', [OfficerController::class, 'getOfficers'])->name('officers');
 
 Route::group(['middleware' => 'guest'], function () {
-
-    Route::get('comments', [CommentController::class, 'index'])->name('comments');
-
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);
