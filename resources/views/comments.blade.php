@@ -1,9 +1,9 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-<div id="spinner" class="spinner-overlay">
-    <div class="spinner"></div>
-</div>
+    <div id="spinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
     <div>
         <div class="card">
             <div class="table-responsive">
@@ -26,5 +26,5 @@
 @endsection
 
 @push('dashboard')
-<script src="{{ asset('assets/js/custom-comments.js') }}"></script>
+    <script src="{{ asset('assets/js/custom-comments.js') }}"></script>
 @endpush

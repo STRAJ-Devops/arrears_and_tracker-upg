@@ -59,6 +59,20 @@
             /* Adjust as needed */
         }
     }
-.export-button{
-    color: white;
-}
+
+    .export-button {
+        color: white;
+    }
+
+
+    /* set inactive tab text to orange */
+    .nav-tabs .nav-link, .custom-navbar .nav-item .nav-link {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .nav-tabs .nav-link:hover, .custom-navbar .nav-item .nav-link:hover{
+        color: orange;
+        font-weight: lighter;
+
+    }

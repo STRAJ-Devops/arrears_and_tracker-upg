@@ -143,6 +143,9 @@ class IncentiveController extends Controller
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
             $record['net_client_growth'] = $netClientGrowth;
 
+            //add a flag that indicates the record is for individual
+            $record['incentive_type'] = "individual";
+
             $incentives[$staffId] = $record;
         }
 
@@ -167,6 +170,8 @@ class IncentiveController extends Controller
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['records_for_unique_group_id_group']);
 
             $record['net_client_growth'] = $netClientGrowth;
+            //add a flag that indicates the record is for group
+            $record['incentive_type'] = "group";
             $incentives[$staffId] = $record;
         }
 
@@ -175,6 +180,8 @@ class IncentiveController extends Controller
             $record['previous_outstanding_principal_sgl'] = $previousMonthOutstandingPrincipal;
             $record['net_portifolio_growth'] = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_sgl']);
             $record['net_client_growth'] = 0;
+            //add a flag that indicates the record is for sgl
+            $record['incentive_type'] = "fast";
             $incentives[$staffId] = $record;
         }
 
