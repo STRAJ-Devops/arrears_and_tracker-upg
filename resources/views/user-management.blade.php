@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header bg-warning text-light">Users</div>
+                <div class="card-header text-light">Users</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">

@@ -656,6 +656,26 @@ class IncentiveController extends Controller
     public function settings()
     {
         $incentiveSettings = IncentiveSettings::first();
+        //convert all the attributes to double
+        $incentiveSettings->max_cap_portifolio = doubleval($incentiveSettings->max_cap_portifolio);
+        $incentiveSettings->min_cap_portifolio = doubleval($incentiveSettings->min_cap_portifolio);
+        $incentiveSettings->max_cap_client = doubleval($incentiveSettings->max_cap_client);
+        $incentiveSettings->min_cap_client = doubleval($incentiveSettings->min_cap_client);
+        $incentiveSettings->max_incentive = doubleval($incentiveSettings->max_incentive);
+        $incentiveSettings->max_cap_portifolio_individual = doubleval($incentiveSettings->max_cap_portifolio_individual);
+        $incentiveSettings->max_cap_portifolio_group = doubleval($incentiveSettings->max_cap_portifolio_group);
+        $incentiveSettings->min_cap_client_individual = doubleval($incentiveSettings->min_cap_client_individual);
+        $incentiveSettings->min_cap_client_group = doubleval($incentiveSettings->min_cap_client_group);
+        $incentiveSettings->max_par_individual = doubleval($incentiveSettings->max_par_individual);
+        $incentiveSettings->max_par_group = doubleval($incentiveSettings->max_par_group);
+        $incentiveSettings->max_par_fast = doubleval($incentiveSettings->max_par_fast);
+        $incentiveSettings->max_llr_group = doubleval($incentiveSettings->max_llr_group);
+        $incentiveSettings->max_llr_individual = doubleval($incentiveSettings->max_llr_individual);
+        $incentiveSettings->max_llr_fast = doubleval($incentiveSettings->max_llr_fast);
+        $incentiveSettings->min_cap_number_of_groups_fast = doubleval($incentiveSettings->min_cap_number_of_groups_fast);
+        // min cap portifolio for sgl
+        $incentiveSettings->min_cap_portifolio_fast = doubleval($incentiveSettings->min_cap_portifolio_fast);
+
         return view('incentive-settings', compact('incentiveSettings'));
     }
 

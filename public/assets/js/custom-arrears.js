@@ -29,7 +29,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "sub_county": ["Sub County", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "village": ["Village", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
-            "client": ["Customer ID","Names", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late", "actions"],
+            "client": ["Customer ID", "Names", "comments", "Amount Disbursed", "Outstanding Principal", "Principle arrears", "Interest Arrears", "Total Arrears", "Number Of Days Late", "actions"],
             "age": ["Age Bracket", "Number of clients", "Principle Arrears", "Interest Arrears", "Total Arrears"],
         };
 
@@ -112,7 +112,7 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.total_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.number_of_days_late.toLocaleString(),
-                            '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
+                            '<button class="btn btn-primary comment-button" data-customer-id="' + item.customer_id + '" data-nodl="' + item.number_of_days_late.toLocaleString() + '"><i class="fa fa-commenting" aria-hidden="true"></i></button>'
                         ];
 
 
@@ -289,9 +289,14 @@ $(document).ready(function () {
         $('#arrears tbody').on('click', '.comment-button', function () {
             // Retrieve the arrear id from the data attribute of the clicked button
             var customerId = $(this).data('customer-id');
+
+            var number_of_days_late = $(this).data('nodl');
             console.log(customerId);
             // Set the arrear id value in the hidden input field
             $('#customer_id').val(customerId);
+
+            // Set the number of days late in the hidden input field
+            $('#nodl').val(number_of_days_late);
             // Show the modal with the comment box or perform any other action
             $('#commentModal').modal('show');
 
@@ -365,6 +370,9 @@ $(document).ready(function () {
             // Retrieve the custome_id value from the hidden input field
             var customerId = $('#customer_id').val();
             console.log(customerId);
+
+            var number_of_days_late = $('#nodl').val();
+            console.log(number_of_days_late);
             // Retrieve other form field values if needed
             var comment = $('#comment').val();
 
@@ -377,7 +385,8 @@ $(document).ready(function () {
                 },
                 data: {
                     customer_id: customerId,
-                    comment: comment
+                    comment: comment,
+                    number_of_days_late: number_of_days_late
                 },
                 success: function (response) {
                     //show a swal alert

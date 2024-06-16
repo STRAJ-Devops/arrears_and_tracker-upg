@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">Add New User</div>
+                    <div class="card-header text-light">Add New User</div>
                     <div class="card-body">
                         <a href="{{ url('user-management') }}" title="Back"><button class="button2"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

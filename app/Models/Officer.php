@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Spatie\Permission\Traits\HasRoles;
 
 class Officer extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $primaryKey = 'staff_id';
 
@@ -29,7 +29,9 @@ class Officer extends Authenticatable
 
     protected $hidden = [
         'password', 'remember_token',
-      ];
+    ];
+
+    protected $guard_name = 'officer'; // Ensure this matches your guard name
 
     //an officer has many arrears
     public function arrears()

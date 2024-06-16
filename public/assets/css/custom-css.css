@@ -76,3 +76,27 @@
         font-weight: lighter;
 
     }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .dataTables_wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .card-header {
+        background-color: orange !important;
+    }
+
+    .btn-warning{
+        background-color: orange !important;
+        border-color: orange !important;
+        color: white !important;
+    }
+
+    .btn-outline-warning{
+        color: orange !important;
+        border-color: orange !important;
+    }

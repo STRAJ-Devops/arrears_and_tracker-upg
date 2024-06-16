@@ -5,9 +5,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">Edit User #{{ $user->staff_id }}</div>
+                    <div class="card-header text-light">Edit User #{{ $user->staff_id }}</div>
                     <div class="card-body">
-                        <a href="{{ url('/admin/assignment') }}" title="Back"><button class="button2"><i
+                        <a href="{{ url('user-management') }}" title="Back"><button class="button2"><i
                                     class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />

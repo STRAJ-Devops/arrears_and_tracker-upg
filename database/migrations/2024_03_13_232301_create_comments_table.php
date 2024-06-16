@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreign('customer_id')->references('customer_id')->on('customers');
 
             $table->text('comment');
+
+            $table->integer('number_of_days_late');
             $table->timestamps();
         });
     }

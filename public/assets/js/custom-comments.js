@@ -6,7 +6,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $("#content").show();
             $("#spinner").hide();
-          },
+        },
         //export buttons
         dom: "Bfrtip",
         //style the buttons
@@ -50,6 +50,9 @@ $(document).ready(function () {
             },
             {
                 data: "comment",
+            },
+            {
+                data: "number_of_days_late"
             },
             {
                 // Define a custom render function for the date column

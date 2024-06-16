@@ -60,7 +60,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button type="button" class="btn btn-primary btn-lg" id="amortization-schedule-submit">Calculate</button>
+                <button type="button" class="btn btn-warning btn-lg text-light" id="amortization-schedule-submit">Calculate</button>
             </div>
         </div>
     </div>

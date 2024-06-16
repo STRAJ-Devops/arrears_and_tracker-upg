@@ -32,6 +32,7 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->comment = $request->comment;
         $comment->customer_id = $request->customer_id;
+        $comment->number_of_days_late = $request->number_of_days_late;
         $comment->staff_id = auth()->user()->staff_id;
         $comment->save();
 

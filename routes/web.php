@@ -24,6 +24,7 @@ use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,10 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::get('edit-user/{id}', [OfficerController::class, 'edit'])->name('edit-user');
     Route::patch('update-user/{id}', [OfficerController::class, 'update'])->name('update-user');
     Route::delete('delete-user/{id}', [OfficerController::class, 'destroy'])->name('delete-user');
+    Route::resource('roles', RoleController::class);
+    Route::get('edit-role/{id}', [RoleController::class, 'edit'])->name('edit-role');
+    Route::patch('update-role/{id}', [RoleController::class, 'update'])->name('update-role');
+
     Route::get('account-balance', function(){
         return view('account-balance');
     });

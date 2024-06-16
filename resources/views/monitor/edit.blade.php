@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">Edit assignment #{{ $assignment->id }}</div>
+                    <div class="card-header bg-warning text-light">Edit assignment #{{ $assignment->id }}</div>
                     <div class="card-body">
                         <a href="{{ url('/admin/assignment') }}" title="Back"><button class="button2"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

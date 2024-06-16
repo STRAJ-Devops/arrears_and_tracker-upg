@@ -12,7 +12,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["staff_id", "customer_id", "comment"];
+    protected $fillable = ["staff_id", "customer_id", "comment", "number_of_days_late"];
 
     public function customer()
     {

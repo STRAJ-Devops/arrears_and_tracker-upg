@@ -16,7 +16,7 @@
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
                                     <select class="form-control staff" id="staff">
-                                        @if ((Auth::user()->user_type == 5 || 4))
+                                        @if (Auth::user()->user_type == 5 || 4)
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="region_id">Region</option>
@@ -79,6 +79,10 @@
                 <div class="modal-body">
                     <!-- Hidden input field to store the customer_id value -->
                     <input type="hidden" id="customer_id" name="customer_id">
+
+                    <!-- Hidden input field to store the customer_id value -->
+                    <input type="hidden" id="nodl" name="number_of_days_late">
+
                     <!-- Add your comment form fields here -->
                     <!-- For example, a textarea for entering the comment -->
                     <div class="form-group">

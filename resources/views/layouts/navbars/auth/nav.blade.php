@@ -57,8 +57,8 @@
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="d-flex flex-column m-3">
-                                <img src="../assets/img/avatar.png" class="avatar avatar-sm  me-3 ">
-                                <h6 class="text-sm font-weight-normal">{{auth()->user()->names}}</h6>
+                            <img src="../assets/img/avatar.png" class="avatar avatar-sm  me-3 ">
+                            <h6 class="text-sm font-weight-normal">{{ auth()->user()->names }}</h6>
                         </div>
                     </a>
 

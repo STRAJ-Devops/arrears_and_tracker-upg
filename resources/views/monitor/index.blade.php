@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div>
-                <a href="{{ route('create-monitor') }}" class="btn btn-primary">Add</a>
+                <a href="{{ route('create-monitor') }}" class="btn btn-warning">Add</a>
 
             </div>
     </div>

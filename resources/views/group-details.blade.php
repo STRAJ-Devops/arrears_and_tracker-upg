@@ -15,10 +15,10 @@
                 </select>
             </div>
             <div class="col-8">
-                <input type="text" class="form-control" id="search-customer">
+                <input type="text" class="form-control shadow-none" id="search-customer">
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-outline-primary btn-block p-1 mt-3" id="search-button">Search</button>
+                <button type="button" class="btn btn-outline-warning btn-block p-1 mt-3" id="search-button">Search</button>
             </div>
         </form>
     </div>
