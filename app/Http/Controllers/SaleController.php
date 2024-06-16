@@ -231,7 +231,7 @@ class SaleController extends Controller
                     try {
                         // Extracting region_id from $csv[$i][0]
                         $regionData = explode('-', $csv[$i][0]);
-                        $region_id = $regionData[0];
+                        $region_id = blank($regionData[0]) ? 3 : $regionData[0];
 
                         // Extracting product_id from $csv[$i][1]
                         $branchData = explode('-', $csv[$i][1]);
