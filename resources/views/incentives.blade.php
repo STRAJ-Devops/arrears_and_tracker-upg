@@ -35,7 +35,7 @@
                         </div>
                     </div>
 
-                    <div class="table-responsive">
+                    <div class="table-responsive incentives-table">
                         <table id="Incentives-general" class="table">
                             <thead>
                                 <tr>

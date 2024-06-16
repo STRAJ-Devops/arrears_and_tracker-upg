@@ -77,7 +77,7 @@
 
     }
 
-    .table-responsive {
+    .table-responsive .incentives-table {
         overflow-x: auto;
     }
 
