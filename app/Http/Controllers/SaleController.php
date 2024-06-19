@@ -10,6 +10,7 @@ use App\Models\PreviousEndMonth;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Sub_County;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -226,6 +227,9 @@ class SaleController extends Controller
                 //truncate the sales and arrears table
                 Sale::truncate();
                 Arrear::truncate();
+                if ($this->isLastDayOfMonth()) {
+                    PreviousEndMonth::truncate();
+                }
 
                 for ($i = 5; $i < count($csv); $i++) {
                     try {
@@ -398,14 +402,51 @@ class SaleController extends Controller
                         $arrear->group_name = $csv[$i][3];
 
                         $arrear->save();
+                        if ($this->isLastDayOfMonth()) {
+                            $previous_end_month = new PreviousEndMonth();
+                            $previous_end_month->staff_id = $staff_id;
+                            $previous_end_month->branch_id = $branch_id;
+                            $previous_end_month->region_id = $region_id;
+                            $previous_end_month->product_id = $product_id;
+                            $previous_end_month->district_id = $district_id;
+                            $previous_end_month->subcounty_id = $subcounty_id;
+                            $previous_end_month->village_id = $village_id;
+                            $previous_end_month->outsanding_principal = $csv[$i][35];
+                            //this is is the interest in arrears
+                            $previous_end_month->outstanding_interest = $csv[$i][40];
+                            //this is add column to the arrears table
+                            $previous_end_month->interest_in_arrears = $csv[$i][44] ?? 0;
+                            $previous_end_month->principal_arrears = $csv[$i][39];
+                            $previous_end_month->number_of_days_late = $csv[$i][41];
+                            $previous_end_month->number_of_group_members = $csv[$i][47];
+                            $previous_end_month->lending_type = $csv[$i][20] ?? 'Unknown';
+                            $previous_end_month->par = $csv[$i][42];
+                            $previous_end_month->gender = $csv[$i][19] ?? 'Unknown';
+                            $previous_end_month->customer_id = $customer->customer_id;
+                            $previous_end_month->amount_disbursed = $csv[$i][27];
+                            $previous_end_month->next_repayment_principal = $csv[$i][33];
+                            $previous_end_month->next_repayment_interest = $csv[$i][34];
+                            $previous_end_month->next_repayment_date = $csv[$i][32];
+                            $previous_end_month->group_id = blank($csv[$i][7]) ? $csv[$i][12] : $csv[$i][7];
+
+                            $previous_end_month->save();
+                        }
+
                     } catch (\Exception $e) {
                         return response()->json(['error' => 'Failed to process CSV. Please ensure the file format is correct.', 'exception' => $e->getMessage()], 400);
                     }
                 }
             }
         }
+
         // Return a success message upon successful import
         return response()->json(['message' => 'Sales and arrears imported successfully.'], 200);
+    }
+
+    public function isLastDayOfMonth()
+    {
+        $today = Carbon::now();
+        return $today->isLastOfMonth();
     }
 
     public function importPreviousEndMonthSales(Request $request)
@@ -744,11 +785,5 @@ class SaleController extends Controller
             }
         }
         return response()->json(['message' => 'Records imported successfully.'], 200);
-    }
-
-    public function downloadTemplate()
-    {
-        $file = public_path('uploads/1713367015_End.csv');
-        return response()->download($file);
     }
 }

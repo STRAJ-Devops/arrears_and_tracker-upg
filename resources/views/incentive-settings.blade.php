@@ -34,7 +34,8 @@
                                             <label for="max_par" class="col-md-4 col-form-label text-md-right">Maximum
                                                 PAR</label>
                                             <div class="col-md-6">
-                                                <input type="number" step="any" name="max_par" id="max_par" class="form-control"
+                                                <input type="number" step="any" name="max_par" id="max_par"
+                                                    class="form-control"
                                                     value="{{ number_format($incentiveSettings->max_par, 2, '.', ',') }}"
                                                     required>
                                             </div>
@@ -168,25 +169,29 @@
                                         <label for="max_cap_portifolio_individual"
                                             class="col-md-4 col-form-label text-md-right">Outstanding Principal</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_cap_portifolio_individual" id="max_cap_portifolio_individual"
-                                                class="form-control number_format"
+                                            <input type="text" name="max_cap_portifolio_individual"
+                                                id="max_cap_portifolio_individual" class="form-control number_format"
                                                 value="{{ number_format($incentiveSettings->max_cap_portifolio_individual, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="min_cap_client_individual" class="col-md-4 col-form-label text-md-right">Minimum Number Of Clients</label>
+                                        <label for="min_cap_client_individual"
+                                            class="col-md-4 col-form-label text-md-right">Minimum Number Of Clients</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" name="min_cap_client_individual" id="min_cap_client_individual" class="form-control"
+                                            <input type="number" step="any" name="min_cap_client_individual"
+                                                id="min_cap_client_individual" class="form-control"
                                                 value="{{ number_format($incentiveSettings->min_cap_client_individual, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="max_par_individual" class="col-md-4 col-form-label text-md-right">Maximum
+                                        <label for="max_par_individual"
+                                            class="col-md-4 col-form-label text-md-right">Maximum
                                             PAR</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" name="max_par_individual" id="max_par_individual" class="form-control"
+                                            <input type="number" step="any" name="max_par_individual"
+                                                id="max_par_individual" class="form-control"
                                                 value="{{ number_format($incentiveSettings->max_par_individual, 2, '.', ',') }}"
                                                 required>
                                         </div>
@@ -195,8 +200,7 @@
                                         <label for="max_llr_individual"
                                             class="col-md-4 col-form-label text-md-right">Maximum LLR</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_llr_individual"
-                                                id="max_llr_individual"
+                                            <input type="text" name="max_llr_individual" id="max_llr_individual"
                                                 value="{{ number_format($incentiveSettings->max_llr_individual, 2, '.', ',') }}"
                                                 class="form-control" required>
                                         </div>
@@ -231,16 +235,18 @@
                                         <label for="max_cap_portifolio_group"
                                             class="col-md-4 col-form-label text-md-right">Outstanding Principal</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_cap_portifolio_group" id="max_cap_portifolio_group"
-                                                class="form-control number_format"
+                                            <input type="text" name="max_cap_portifolio_group"
+                                                id="max_cap_portifolio_group" class="form-control number_format"
                                                 value="{{ number_format($incentiveSettings->max_cap_portifolio_group, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="min_cap_client_group" class="col-md-4 col-form-label text-md-right">Minimum Number Of Clients</label>
+                                        <label for="min_cap_client_group"
+                                            class="col-md-4 col-form-label text-md-right">Minimum Number Of Clients</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" name="min_cap_client_group" id="min_cap_client_group" class="form-control"
+                                            <input type="number" step="any" name="min_cap_client_group"
+                                                id="min_cap_client_group" class="form-control"
                                                 value="{{ number_format($incentiveSettings->min_cap_client_group, 2, '.', ',') }}"
                                                 required>
                                         </div>
@@ -249,17 +255,17 @@
                                         <label for="max_par_group" class="col-md-4 col-form-label text-md-right">Maximum
                                             PAR</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" name="max_par_group" id="max_par_group" class="form-control"
+                                            <input type="number" step="any" name="max_par_group" id="max_par_group"
+                                                class="form-control"
                                                 value="{{ number_format($incentiveSettings->max_par_group, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="max_llr_group"
-                                            class="col-md-4 col-form-label text-md-right">Maximum LLR</label>
+                                        <label for="max_llr_group" class="col-md-4 col-form-label text-md-right">Maximum
+                                            LLR</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_llr_group"
-                                                id="max_llr_group"
+                                            <input type="text" name="max_llr_group" id="max_llr_group"
                                                 value="{{ number_format($incentiveSettings->max_llr_group, 2, '.', ',') }}"
                                                 class="form-control" required>
                                         </div>
@@ -294,17 +300,17 @@
                                         <label for="max_par_fast" class="col-md-4 col-form-label text-md-right">Maximum
                                             PAR</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" name="max_par_fast" id="max_par_fast" class="form-control"
+                                            <input type="number" step="any" name="max_par_fast" id="max_par_fast"
+                                                class="form-control"
                                                 value="{{ number_format($incentiveSettings->max_par_fast, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="max_llr_fast"
-                                            class="col-md-4 col-form-label text-md-right">Maximum LLR</label>
+                                        <label for="max_llr_fast" class="col-md-4 col-form-label text-md-right">Maximum
+                                            LLR</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_llr_fast"
-                                                id="max_llr_fast"
+                                            <input type="text" name="max_llr_fast" id="max_llr_fast"
                                                 value="{{ number_format($incentiveSettings->max_llr_fast, 2, '.', ',') }}"
                                                 class="form-control" required>
                                         </div>
@@ -335,9 +341,9 @@
                                             class="col-md-4 col-form-label text-md-right">Maximum
                                             Cap</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_cap_portifolio_fast" id="max_cap_portifolio_fast"
-                                                class="form-control number_format"
-                                                value="{{ number_format((float)$incentiveSettings->max_cap_portifolio_fast, 2, '.', ',') }}"
+                                            <input type="text" name="max_cap_portifolio_fast"
+                                                id="max_cap_portifolio_fast" class="form-control number_format"
+                                                value="{{ number_format((float) $incentiveSettings->max_cap_portifolio_fast, 2, '.', ',') }}"
                                                 required>
                                         </div>
                                     </div>
@@ -346,8 +352,8 @@
                                             class="col-md-4 col-form-label text-md-right">Minimum
                                             Cap</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="min_cap_portifolio_fast" id="min_cap_portifolio_fast"
-                                                class="form-control number_format"
+                                            <input type="text" name="min_cap_portifolio_fast"
+                                                id="min_cap_portifolio_fast" class="form-control number_format"
                                                 value="{{ number_format($incentiveSettings->min_cap_portifolio_fast, 2, '.', ',') }}"
                                                 required>
                                         </div>

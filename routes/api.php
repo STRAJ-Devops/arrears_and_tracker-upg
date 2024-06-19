@@ -22,7 +22,7 @@ Route::post('customer-details', [CustomerController::class, 'customer'])->name('
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('dashboard', [DashboardController::class, 'index']);
-    Route::get('incentives', [IncentiveController::class, 'calculateIncentive']);
+    Route::get('incentives', [App\Http\Controllers\API\IncentiveController::class, 'calculateIncentive']);
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');
     Route::post('sales', [SaleController::class, 'group_by'])->name('sales-group-by');
     Route::post('expected', [App\Http\Controllers\API\ExpectedController::class, 'group_by'])->name('expected-group-by');
