@@ -15,7 +15,7 @@
                             <div class="col-md-9">
                                 <div class="form-group d-flex">
                                     <label for="staff" class="mr-2">Group By</label>
-                                    <select class="form-control staff" id="staff">
+                                    <select class="form-control staff shadow-none" id="staff">
                                         @if (Auth::user()->user_type == 5 || 4)
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
@@ -48,7 +48,8 @@
                             <tbody>
                             <tfoot align="right">
                                 <tr>
-                                    <th colspan="2">Over all total</th>
+                                    <th colspan="1">Over all total</th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>

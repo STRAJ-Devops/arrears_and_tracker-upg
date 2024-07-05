@@ -1,31 +1,38 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <main class="main-content d-flex justify-content-center align-items-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body px-4 pt-4 pb-2">
-                            <h2 class="text-center mb-4">Upload Previous End Month Sales</h2>
-                            <form id="uploadForm" enctype="multipart/form-data" method="post">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="file" class="form-label">Choose File:</label>
-                                    <input type="file" name="upload_template_file" id="file" class="form-control">
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Upload</button>
-                            </form>
-                            <div id="progress" class="progress mt-3" style="display: none;">
-                                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body px-4 pt-4 pb-2">
+                        <h2 class="text-center mb-4">Upload Previous End Month Sales</h2>
+                        <form id="uploadForm" enctype="multipart/form-data" method="post">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Choose File:</label>
+                                <input type="file" name="upload_template_file" id="file" class="form-control">
                             </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                                </div>
+
+                                <div class="col">
+                                    <a href="{{ url('truncate-previous-end-month-sales') }}" class="btn btn-danger btn-block text-light" title="Add Branch Targets">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Truncate
+                                    </a>
+                                </div>
+                            </div>                        </form>
+                        <div id="progress" class="progress mt-3" style="display: none;">
+                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
+                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 @endsection
 
 @push('dashboard')

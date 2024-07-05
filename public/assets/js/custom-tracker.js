@@ -272,7 +272,10 @@ $(document).ready(function () {
                         {
                             extend: 'pdf',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#group-by').val())
+                            messageTop: generateMessageTop($('#group-by').val()),
+                            customize: function (doc) {
+                                doc.styles.tableHeader.fillColor = '#FFA500';
+                            }
                         },
                         {
                             extend: 'print',

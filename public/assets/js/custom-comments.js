@@ -25,6 +25,9 @@ $(document).ready(function () {
                 extend: "pdf",
                 className: "btn btn-warning btn-small text-white",
                 messageTop: "Comments about Arrears",
+                customize: function (doc) {
+                    doc.styles.tableHeader.fillColor = '#FFA500';
+                }
             },
             {
                 extend: "print",

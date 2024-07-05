@@ -9,6 +9,7 @@
             <div class="col-2">
                 <select class="form-select shadow-none" id="search-by" name="search-by">
                     <option value="customer_id">Customer ID</option>
+                    <option value="name">Officer Name</option>
                     <option value="phone">Phone</option>
                     <option value="group_id">Group ID</option>
                     <option value="group_name">Group Name</option>
@@ -82,7 +83,7 @@
 
                 setTimeout(function() {
                     $.ajax({
-                        url: 'get-group-details', // Adjust the URL as needed
+                        url: 'get-written-off-details', // Adjust the URL as needed
                         type: 'GET',
                         data: {
                             customer_id: searchCustomerID,
@@ -108,6 +109,15 @@
 
                                 // Loop through each customer detail and append it to the container
                                 response.forEach(function(customer) {
+                                    const principalWOF = Number(customer.principal_written_off.replace(/,/g, ''));
+                                    const interestWOF = Number(customer.interest_written_off.replace(/,/g, ''));
+
+                                    const totalWOF = principalWOF + interestWOF;
+
+                                    const principalPaid = Number(customer.principal_paid.replace(/,/g, ''));
+                                    const interestPaid = Number(customer.interest_paid.replace(/,/g, ''));
+                                    const totalPaid = principalPaid + interestPaid;
+                                    console.log(totalPaid);
                                     var customerCard = `
                                         <div class="card mt-3">
                                             <div class="card-header text-white bg-warning">
@@ -117,11 +127,18 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
-                                                        <h5 class="card-title">Customer Name: ${customer.names}</h5>
+                                                        <h5 class="card-title">Customer Name: ${customer.customer_name}</h5>
                                                         <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
-                                                        <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.phone)}</p>
+                                                        <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.customer_phone_number)}</p>
                                                         <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
                                                         <p class="card-text"><strong>Group Name:</strong> ${customer.group_name}</p>
+                                                        <p class="card-text"><strong>Write Off Date:</strong> ${customer.write_off_date}</p>
+                                                        <p class="card-text"><strong>Principal WOF:</strong> ${customer.principal_written_off}</p>
+                                                        <p class="card-text"><strong>Interest WOF:</strong> ${customer.interest_written_off}</p>
+                                                        <p class="card-text"><strong>Total WOF:</strong> ${totalWOF.toLocaleString()}</p>
+                                                        <p class="card-text"><strong>Principal Paid:</strong> ${customer.principal_paid}</p>
+                                                        <p class="card-text"><strong>Interest Paid:</strong> ${customer.interest_paid}</p>
+                                                        <p class="card-text"><strong>Total Paid:</strong> ${totalPaid.toLocaleString()}</p>
                                                     </div>
                                                 </div>
                                             </div>

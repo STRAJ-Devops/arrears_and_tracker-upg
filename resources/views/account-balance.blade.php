@@ -3,21 +3,21 @@
 @section('content')
 <div>
     <form action="" class="row g-3 align-items-center">
-        <div class="col-auto">
+        <div class="col-1">
             <label for="search-by" class="col-form-label">Search By:</label>
         </div>
-        <div class="col-auto">
+        <div class="col-2">
             <select class="form-select shadow-none" id="search-by" name="search-by">
                 <option value="customer_id">Customer ID</option>
                 <option value="phone">Phone</option>
                 <option value="group_id">Group ID</option>
-                <option value="name">Names</option>
+                <option value="group_name">Group Name</option>
             </select>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <input type="text" class="form-control shadow-none" id="search-customer">
         </div>
-        <div class="col-auto">
+        <div class="col-2">
             <button type="button" class="btn btn-outline-warning btn-block p-1 mt-3" id="search-button">Search</button>
         </div>
     </form>

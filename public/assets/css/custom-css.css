@@ -66,12 +66,14 @@
 
 
     /* set inactive tab text to orange */
-    .nav-tabs .nav-link, .custom-navbar .nav-item .nav-link {
+    .nav-tabs .nav-link,
+    .custom-navbar .nav-item .nav-link {
         color: orange;
         font-weight: bold;
     }
 
-    .nav-tabs .nav-link:hover, .custom-navbar .nav-item .nav-link:hover{
+    .nav-tabs .nav-link:hover,
+    .custom-navbar .nav-item .nav-link:hover {
         color: orange;
         font-weight: lighter;
 
@@ -81,22 +83,33 @@
         overflow-x: auto;
     }
 
-    .dataTables_wrapper {
+    /* .dataTables_wrapper {
         width: 100%;
         overflow-x: auto;
-    }
+    } */
 
     .card-header {
         background-color: orange !important;
     }
 
-    .btn-warning{
+    .btn-warning {
         background-color: orange !important;
         border-color: orange !important;
         color: white !important;
     }
 
-    .btn-outline-warning{
+    .btn-outline-warning {
         color: orange !important;
         border-color: orange !important;
     }
+
+    /* Hide scrollbar for all elements */
+    body,
+    html {
+        overflow-y: hidden;
+        /* Hide vertical scrollbar */
+    }
+
+    .form-control:focus {
+        border-color: orange !important;
+      }

@@ -333,6 +333,9 @@ $(document).ready(function () {
                             className: 'export-button',
                             messageTop: generateMessageTop($('#staff').val()),
                             orientation: 'landscape',
+                            customize: function (doc) {
+                                doc.styles.tableHeader.fillColor = '#FFA500';
+                            }
                         },
                         {
                             extend: 'print',

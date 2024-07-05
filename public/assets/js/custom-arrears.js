@@ -257,7 +257,7 @@ $(document).ready(function () {
                         {
                             extend: 'csv',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#staff').val())
+                            messageTop: generateMessageTop($('#staff').val()),
                         },
                         {
                             extend: 'excel',
@@ -267,12 +267,15 @@ $(document).ready(function () {
                         {
                             extend: 'pdf',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#staff').val())
+                            messageTop: generateMessageTop($('#staff').val()),
+                            customize: function (doc) {
+                                doc.styles.tableHeader.fillColor = '#FFA500';
+                            }
                         },
                         {
                             extend: 'print',
                             className: 'export-button',
-                            messageTop: generateMessageTop($('#staff').val())
+                            messageTop: generateMessageTop($('#staff').val()),
                         }
                     ], // List of buttons in the dropdown
                     className: 'btn btn-warning dropdown-toggle btn-lg text-white' // Bootstrap button classes

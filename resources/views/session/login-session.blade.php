@@ -16,16 +16,16 @@
                 <div class="card-body">
                   <form role="form" method="POST" action="/session">
                     @csrf
-                    <label>Username</label>
+                    <label class="text-dark h5">Username</label>
                     <div class="mb-3">
-                      <input type="text" class="form-control" name="username" id="username" placeholder="Username" aria-label="Email" aria-describedby="email-addon">
+                      <input type="text" class="form-control shadow-none" name="username" id="username" placeholder="Username" aria-label="Email" aria-describedby="email-addon">
                       @error('email')
                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                       @enderror
                     </div>
-                    <label>Password</label>
+                    <label class="text-dark h5">Password</label>
                     <div class="mb-3">
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                      <input type="password" class="form-control shadow-none" name="password" id="password" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                       @error('password')
                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                       @enderror
@@ -35,7 +35,7 @@
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn bg-warning w-100 mt-4 mb-0">Sign in</button>
+                      <button type="submit" class="btn bg-warning w-100 mt-4 mb-0 text-light">Sign in</button>
                     </div>
                   </form>
                 </div>

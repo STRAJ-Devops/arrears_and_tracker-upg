@@ -76,4 +76,13 @@ class ProductTargetController extends Controller
         // Return a success message upon successful import
         return response()->json(['message' => 'Product targets imported successfully.'], 200);
     }
+
+    /**
+     * download product targets template
+     */
+    public function downloadTemplate()
+    {
+        $template = public_path('assets/templates/product_targets_template.csv');
+        return response()->download($template);
+    }
 }

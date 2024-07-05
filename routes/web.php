@@ -25,6 +25,7 @@ use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\WrittenOffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,9 @@ Route::group(['middleware' => 'auth:officer'], function () {
 
     Route::get('previous-end-month-sales-uploader', [PreviousEndMonthSalesController::class, 'index'])->name('previous-end-month-sales-uploader');
 
+    Route::get('written-off-customers-uploader', [WrittenOffController::class, 'writtenOffUploader'])->name('written-off-customers-uploader');
+
+
     Route::get('regions', [RegionController::class, 'index'])->name('regions');
 
     Route::get('arrears', [ArrearController::class, 'index'])->name('arrears');
@@ -105,6 +109,7 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('upload-product-targets', [ProductTargetController::class, 'import'])->name('upload-product-targets');
     Route::post('upload-sales-targets', [SaleController::class, 'import'])->name('upload-sales-targets');
     Route::post('upload-previous-end-month-sales', [SaleController::class, 'importPreviousEndMonthSales'])->name('upload-end-month-sales');
+    Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
 
     Route::post('add-comment', [CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [CommentController::class, 'getComments'])->name('allComments');
@@ -120,7 +125,15 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
     Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
     Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
+    Route::get('get-written-off-details', [WrittenOffController::class, 'customer'])->name('get-written-off-details');
 
+    Route::get('truncate-arrears-and-sales', [SaleController::class, 'truncateArrearsAndSales'])->name('truncate-arrears-and-sales');
+    Route::get('truncate-written-offs', [WrittenOffController::class, 'truncateWrittenOffs'])->name('truncate-written-offs');
+
+    Route::get('truncate-previous-end-month-sales', [SaleController::class, 'truncatePreviousEndMonth'])->name('truncate-previous-end-month-sales');
+    Route::get('download-product-targets-template', [ProductTargetController::class, 'downloadTemplate'])->name('download-product-targets-template');
+    Route::get('download-branch-targets-template', [BranchTargetController::class, 'downloadTemplate'])->name('download-branch-targets-template');
+    Route::get('written-off-customers', [WrittenOffController::class, 'index'])->name('written-off-customers');
     Route::get('/login', function () {
         return view('dashboard');
     })->name('sign-up');

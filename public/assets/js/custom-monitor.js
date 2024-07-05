@@ -146,6 +146,9 @@ $(document).ready(function () {
                     extend: "pdf",
                     className: "btn btn-warning btn-small",
                     messageTop: "Sales Activity",
+                    customize: function (doc) {
+                        doc.styles.tableHeader.fillColor = '#FFA500';
+                    }
                 },
                 {
                     extend: "print",

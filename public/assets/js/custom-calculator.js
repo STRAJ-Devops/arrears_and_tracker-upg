@@ -11,28 +11,28 @@
                     <div class="form-group">
                         <label for="amortization-schedule-amount">Loan Amount</label>
                         <div class="input-group">
-                            <input type="text" class="form-control number_format" id="amortization-schedule-amount" placeholder="e.g. 3800" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control number_format shadow-none" id="amortization-schedule-amount" placeholder="e.g. 3800" aria-describedby="basic-addon2">
                             <span class="input-group-text" id="basic-addon2">UGX</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-interest">Annual Interest</label>
                         <div class="input-group">
-                            <input type="text" class="form-control number_format" id="amortization-schedule-interest" placeholder="e.g. 32" aria-describedby="basic-addon3">
+                            <input type="text" class="form-control number_format shadow-none" id="amortization-schedule-interest" placeholder="e.g. 32" aria-describedby="basic-addon3">
                             <span class="input-group-text" id="basic-addon3">%</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-duration">Duration</label>
                         <div class="input-group">
-                            <input type="text" class="form-control number_format" id="amortization-schedule-duration" placeholder="e.g. 48" aria-describedby="basic-addon4">
+                            <input type="text" class="form-control number_format shadow-none" id="amortization-schedule-duration" placeholder="e.g. 48" aria-describedby="basic-addon4">
                             <span class="input-group-text" id="basic-addon4">Month(s)</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-grace">Grace Period</label>
                         <div class="input-group">
-                            <input type="text" class="form-control number_format" id="amortization-schedule-grace" placeholder="e.g. 0" aria-describedby="basic-addon5">
+                            <input type="text" class="form-control number_format shadow-none" id="amortization-schedule-grace" placeholder="e.g. 0" aria-describedby="basic-addon5">
                             <span class="input-group-text" id="basic-addon5">Month(s)</span>
                         </div>
                     </div>
@@ -45,15 +45,15 @@
                     <h3>Loan Start Date</h3>
                     <div class="form-group">
                         <label for="amortization-schedule-month">Start Month</label>
-                        <input type="text" class="form-control border rounded-3" id="amortization-schedule-month" placeholder="e.g. 12">
+                        <input type="text" class="form-control border rounded-3 shadow-none" id="amortization-schedule-month" placeholder="e.g. 12">
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-day">Start Day</label>
-                        <input type="text" class="form-control border rounded-3" id="amortization-schedule-day" placeholder="e.g. 28">
+                        <input type="text" class="form-control border rounded-3 shadow-none" id="amortization-schedule-day" placeholder="e.g. 28">
                     </div>
                     <div class="form-group">
                         <label for="amortization-schedule-year">Start Year</label>
-                        <input type="text" class="form-control border rounded-3" id="amortization-schedule-year" placeholder="e.g. 2014">
+                        <input type="text" class="form-control border rounded-3 shadow-none" id="amortization-schedule-year" placeholder="e.g. 2014">
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
         $('#' + settings.controlsID).append(controlsHtml);
 
         //set the commas padding in the input fields
-        $('.number_format').on('keyup', function (event) {
+        $('.number_format shadow-none').on('keyup', function (event) {
             var selection = window.getSelection().toString();
 
             if (selection !== '') {

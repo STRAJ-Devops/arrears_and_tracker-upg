@@ -141,6 +141,8 @@
                 </a>
             </li>
 
+
+
             @if (Auth::user()->user_type == 5)
                 <li class="nav-item pb-2">
                     <a class="nav-link {{ Request::is('show-all-comments') ? 'active' : '' }}"
@@ -166,6 +168,18 @@
                     <span class="nav-link-text ms-1">Incentives</span>
                 </a>
             </li>
+            <li class="nav-item pb-2">
+                <a class="nav-link {{ Request::is('written-off-customers') ? 'active' : '' }}"
+                    href="{{ url('written-off-customers') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-car ps-2 pe-2 text-center text-dark {{ Request::is('written-off-customers') ? 'text-white' : 'text-dark' }} "
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Written Off Customers</span>
+                </a>
+            </li>
             @if (Auth::user()->user_type == 5)
                 <li class="nav-item mt-2">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">General Settings</h6>
@@ -182,8 +196,7 @@
                     </a>
                 </li>
                 <li class="nav-item pb-2">
-                    <a class="nav-link {{ Request::is('branches') ? 'active' : '' }}"
-                        href="{{ url('branches') }}">
+                    <a class="nav-link {{ Request::is('branches') ? 'active' : '' }}" href="{{ url('branches') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i style="font-size: 1rem;"
@@ -194,8 +207,7 @@
                     </a>
                 </li>
                 <li class="nav-item pb-2">
-                    <a class="nav-link {{ Request::is('products') ? 'active' : '' }}"
-                        href="{{ url('products') }}">
+                    <a class="nav-link {{ Request::is('products') ? 'active' : '' }}" href="{{ url('products') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i style="font-size: 1rem;"
@@ -218,8 +230,7 @@
                     </a>
                 </li>
                 <li class="nav-item pb-2">
-                    <a class="nav-link {{ Request::is('roles') ? 'active' : '' }}"
-                        href="{{ url('roles') }}">
+                    <a class="nav-link {{ Request::is('roles') ? 'active' : '' }}" href="{{ url('roles') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i style="font-size: 1rem;"
@@ -294,6 +305,18 @@
                                 aria-hidden="true"></i>
                         </div>
                         <span class="nav-link-text ms-1">Previous End Month Sales</span>
+                    </a>
+                </li>
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('written-off-customers-uploader') ? 'active' : '' }}"
+                        href="{{ url('written-off-customers-uploader') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ Request::is('written-off-customers-uploader') ? 'text-white' : 'text-dark' }} "
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Written Off Customers</span>
                     </a>
                 </li>
             @endif

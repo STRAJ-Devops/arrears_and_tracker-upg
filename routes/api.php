@@ -8,6 +8,7 @@ use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\IncentiveController;
 use App\Http\Controllers\API\SaleController;
 use App\Http\Controllers\API\MonitorController;
+use App\Http\Controllers\WrittenOffController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -36,5 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
+    Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
+
 
 });

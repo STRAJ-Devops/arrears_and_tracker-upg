@@ -80,4 +80,13 @@ class BranchTargetController extends Controller
         // Return a success message upon successful import
         return response()->json(['message' => 'Branch targets imported successfully.'], 200);
     }
+
+    /**
+     * Download the branch targets template
+     */
+    public function downloadTemplate()
+    {
+        $file = public_path('assets\templates\branch_targets_template.csv');
+        return response()->download($file);
+    }
 }

@@ -13,7 +13,11 @@
                             </a>
                         </div>
 
-                        {{-- delete branch targets --}}
+                        <div class="col">
+                            <a href="{{ url('download-product-targets-template') }}" class="btn btn-warning btn-block text-light" title="Add Branch Targets">
+                                <i class="fa fa-download" aria-hidden="true"></i> Download Template
+                            </a>
+                        </div>
 
                     </div>
 

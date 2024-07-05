@@ -47,6 +47,9 @@ $(document).ready(function () {
                         className: "btn btn-warning btn-small text-light",
                         messageTop: "Officer Incentives",
                         orientation: "landscape",
+                        customize: function (doc) {
+                            doc.styles.tableHeader.fillColor = '#FFA500';
+                        }
                     },
                     {
                         extend: "print",

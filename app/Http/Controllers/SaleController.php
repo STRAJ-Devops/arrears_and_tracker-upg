@@ -786,4 +786,30 @@ class SaleController extends Controller
         }
         return response()->json(['message' => 'Records imported successfully.'], 200);
     }
+
+    /**
+     * truncate arrears and sales
+     */
+
+     public function truncateArrearsAndSales()
+     {
+        try{
+            Sale::truncate();
+            Arrear::truncate();
+            return back()->with('success', 'Arrears and sales truncated successfully.');
+        }catch(\Exception $e){
+            return back()->with('error', 'Failed to truncate arrears and sales. Please try again.');
+        }
+
+     }
+
+        public function truncatePreviousEndMonth()
+        {
+            try{
+                PreviousEndMonth::truncate();
+                return back()->with('success', 'Previous end month records truncated successfully.');
+            }catch(\Exception $e){
+                return back()->with('error', 'Failed to truncate previous end month records. Please try again.');
+            }
+        }
 }

@@ -12,6 +12,11 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
                     </div>
+                    <div class="col">
+                        <a href="{{ url('download-branch-targets-template') }}" class="btn btn-warning btn-block text-light" title="Add Branch Targets">
+                            <i class="fa fa-download" aria-hidden="true"></i> Download Template
+                        </a>
+                    </div>
                 </div>
 
 
