@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'officer.auth' => \App\Http\Middleware\OfficerAuthMiddleware::class,
+        'revalidate' => \App\Http\Middleware\RevalidateBackHistory::class,
     ];
 
     protected $middlewareAliases = [

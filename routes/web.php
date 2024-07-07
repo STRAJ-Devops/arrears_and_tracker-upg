@@ -37,18 +37,13 @@ use App\Http\Controllers\WrittenOffController;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
-Route::group(['middleware' => 'auth:officer'], function () {
-
+Route::middleware('revalidate','auth:officer')->group(function () {
     Route::get('/', [HomeController::class, 'home']);
-
     Route::get('/loan-calculator', function () {
         return view('calculator')->with('title', 'Loan Calculator');
     })->name('loan-calculator');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::get('branches', [BranchController::class, 'index'])->name('branches');
-
     Route::get('user-management', [OfficerController::class, 'index'])->name('user-management');
     Route::get('create-user', [OfficerController::class, 'create'])->name('create-user');
     Route::post('store-user', [OfficerController::class, 'store'])->name('store-user');
@@ -58,7 +53,6 @@ Route::group(['middleware' => 'auth:officer'], function () {
     Route::resource('roles', RoleController::class);
     Route::get('edit-role/{id}', [RoleController::class, 'edit'])->name('edit-role');
     Route::patch('update-role/{id}', [RoleController::class, 'update'])->name('update-role');
-
     Route::get('account-balance', function(){
         return view('account-balance');
     });
