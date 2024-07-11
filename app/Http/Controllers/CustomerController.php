@@ -121,7 +121,8 @@ class CustomerController extends Controller
                 customers.names,
                 arrears.group_id,
                 arrears.group_name,
-                arrears.customer_id
+                arrears.customer_id,
+                customers.phone,
             ')
             ->where('arrears.lending_type', 'Group')
             ->where(function ($query) use ($customer_id, $group_id) {
