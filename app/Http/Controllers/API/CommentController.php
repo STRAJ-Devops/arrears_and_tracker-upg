@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    //get all comments
+    public function index()
+    {
+        //get comments where request customer_id
+        $comments = Comment::where('customer_id', request()->customer_id)->get();
+
+        return response()->json(['comments' => $comments], 200);
+    }
     //store a new comment
     public function store(Request $request)
     {
