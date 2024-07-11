@@ -18,8 +18,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'authenticate');
 });
 
-Route::post('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
-Route::post('group-details', [CustomerController::class, 'group'])->name('group-details');
+Route::post('customer-details', [App\Http\Controllers\API\CustomerController::class, 'customer'])->name('customer-details');
+Route::post('group-details', [App\Http\Controllers\API\CustomerController::class, 'group'])->name('group-details');
 
 
 Route::middleware('auth:sanctum')->group(function () {
