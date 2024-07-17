@@ -23,7 +23,7 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    IF(groups.group_name IS NULL, NULL, arrears.group_id) as group_id,
+                    IF(arrears.group_name IS NULL, NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                     (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
                 ->where('customers.customer_id', $customer_id)
@@ -36,7 +36,7 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    IF(groups.group_name IS NULL, NULL, arrears.group_id) as group_id,
+                    IF(arrears.group_name IS NULL, NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                     (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
                 ->where('customers.phone', 'like', '%' . $customer_id . '%')
@@ -49,7 +49,7 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    IF(groups.group_name IS NULL, NULL, arrears.group_id) as group_id,
+                    IF(arrears.group_name IS NULL, NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                     (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
                 ->where('customers.names', 'like', '%' . $customer_id . '%')
@@ -63,7 +63,7 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    IF(groups.group_name IS NULL, NULL, arrears.group_id) as group_id,
+                    IF(arrears.group_name IS NULL, NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                     (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
                 ->where('arrears.group_id', $customer_id)
