@@ -123,7 +123,7 @@ class ExpectedController extends Controller
             $nameField = 'officer';
         }
 
-        $previous_arrears = $this->group_previous_days($request);
+        // $previous_arrears = $this->group_previous_days($request);
 
         // Initialize data array
         $data = [];
