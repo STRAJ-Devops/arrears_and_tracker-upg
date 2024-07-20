@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('incentives', [App\Http\Controllers\API\IncentiveController::class, 'calculateIncentive']);
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');
     Route::post('sales', [SaleController::class, 'group_by'])->name('sales-group-by');
-    Route::post('expected', [App\Http\Controllers\API\ExpectedController::class, 'group_by'])->name('expected-group-by');
+    Route::post('expected', [App\Http\Controllers\ExpectedController::class, 'group_by'])->name('expected-group-by');
     Route::post('add-comment', [App\Http\Controllers\API\CommentController::class, 'store'])->name('add-comment');
     Route::get('get-all-comments', [App\Http\Controllers\API\CommentController::class, 'getComments'])->name('allComments');
     Route::get('show-all-comments', [App\Http\Controllers\API\CommentController::class, 'index'])->name('showAllComments');

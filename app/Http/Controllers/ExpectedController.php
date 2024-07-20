@@ -128,18 +128,25 @@ class ExpectedController extends Controller
         // Initialize data array
         $data = [];
 
+
         // dd($arrears);
         // Iterate through grouped arrears and calculate totals
         foreach ($arrears as $key => $arrear) {
+            //check if group key=3015
+            // if($arrear->first()->$groupKey == 3015){
+            //     dd($arrear);
+            // } else {
+            //     continue;
+            // }
             //check if the key exists in the previous arrears and sum the $total_principal_arrears, $total_interest_arrears
             $previous_principal_arrears = 0;
             $previous_interest_arrears = 0;
             $previous_outstanding_principal = 0;
-            if (isset($previous_arrears[$key])) {
-                $previous_principal_arrears = $previous_arrears[$key]->sum('principal_arrears');
-                $previous_interest_arrears = $previous_arrears[$key]->sum('outstanding_interest');
-                $previous_outstanding_principal = $previous_arrears[$key]->sum('outsanding_principal');
-            }
+            // if (isset($previous_arrears[$key])) {
+            //     $previous_principal_arrears = $previous_arrears[$key]->sum('principal_arrears');
+            //     $previous_interest_arrears = $previous_arrears[$key]->sum('outstanding_interest');
+            //     $previous_outstanding_principal = $previous_arrears[$key]->sum('outsanding_principal');
+            // }
             $total_principle_arrears = $arrear->sum('principal_arrears')+$previous_principal_arrears;
             $total_interest_arrears = $arrear->sum('outstanding_interest')+$previous_interest_arrears;
             $total_outstanding_principal = $arrear->sum('outsanding_principal')+$previous_outstanding_principal;
@@ -162,6 +169,7 @@ class ExpectedController extends Controller
                 'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
                 'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
                 'group_key' => $key,
+                'branch_id' => $arrear->first()->branch_id,
                 'expected_principal' => $expectedPrincipal,
                 'expected_interest' => $expectedInterest,
                 'expected_total' => $expected_total ?? 0,

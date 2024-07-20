@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     if ($('#staff').val() === undefined) {
         var today = new Date();
-        filterByDate(today);
+        // filterByDate(today);
         $('#today').addClass('active'); // Highlight the "Today" button
 
     }
@@ -42,7 +42,8 @@ $(document).ready(function () {
     function filterByDate(date) {
         //convert the date to the format "10-Mar-24"
         var formattedDate = $.datepicker.formatDate("dd-M-y", date);
-        table.column(11).search(formattedDate).draw(); // Assuming next repayment date is in column index 10
+        //search for rows with formattedDate or '' column 11
+        table.column(11).search(formattedDate).draw();
     }
 
 
@@ -52,16 +53,16 @@ $(document).ready(function () {
     function populateTableHeaders(group) {
         var headers = {
             // define headers that belong to the institution
-            "staff_id": ["Officer ID", "Names", "Clients", "Expected Principal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "branch_id": ["Branch", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "region_id": ["Region", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "loan_product": ["Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "gender": ["Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "district": ["District", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "sub_county": ["Sub County", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "village": ["Village", "Name", "Clients", "Expected PRincipal", "Expected Interest", "Expected Total", "Clients in Arrears", "Next Repayment Date"],
-            "client": ["Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "DDA", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Expected Amount", "Next Repayment Date", "Number of Days in Arrears"],
-            "age": ["Age Bracket", "Number of clients", "Expected PRincipal", "Expected Interest", "Expected Total"],
+            "staff_id": ["Branch ID", "Officer ID", "Names", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "branch_id": ["Branch", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "region_id": ["Region", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "loan_product": ["Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "gender": ["Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "district": ["District", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "sub_county": ["Sub County", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "village": ["Village", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
+            "client": ["Branch ID", "Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "DDA", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Expected Amount"],
+            "age": ["Age Bracket", "Number of clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total"],
         };
 
         // Get the corresponding headers for the selected group
@@ -99,61 +100,58 @@ $(document).ready(function () {
                         var row = [
                             item.group_key,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
-                            '',
-                            '',
-                            '',
-                            '',
-                            '',
                             '',
                             '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
+                        table.columns([9, 10, 11]).visible(false);
                     } else if (group === 'loan_product') {
                         var row = [
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
-                            '',
-                            '',
-                            '',
-                            '',
-                            '',
                             '',
                             '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
+                        table.columns([9, 10, 11]).visible(false);
                     } else if (group === 'gender') {
                         var row = [
                             item.group_key,
-                            item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
-                            '',
-                            '',
-                            '',
-                            '',
-                            '',
                             '',
                             '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([5, 6, 7, 8, 9, 10, 11, 12]).visible(false);
+                        table.columns([9, 10, 11]).visible(false);
                     } else if (group === 'client') {
                         var row = [
+                            item.branch_id,
                             item.customer_id,
                             item.names,
                             item.phone_number,
@@ -168,30 +166,25 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
 
                             item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
-
-                            item.next_repayment_date ? item.next_repayment_date : new Date().toISOString().slice(0, 10),
-                            ''
                         ];
-                        table.columns([12]).visible(false);
                     } else {
                         var row = [
                             item.group_key,
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.total_principle_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_principal.toLocaleString(), // Pad with comma after every three digits
+                            item.next_repayment_interest.toLocaleString(), // Pad with comma after every three digits
+                            item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
                             '',
-                            '',
-                            '',
-                            '',
-                            '',
-                            ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([7, 8, 9, 10, 11, 12]).visible(false);
+                        table.columns([11]).visible(false);
                     }
                     rows.push(row);
                 });
@@ -260,7 +253,6 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
-                { title: "" },
                 { title: "" }
             ],
             //show sortable headers with arrows
@@ -293,7 +285,6 @@ $(document).ready(function () {
                     $(api.column(8).footer()).html(sum(api.column(8).data())); // Total
                     $(api.column(9).footer()).html(sum(api.column(9).data())); // Total
                     $(api.column(10).footer()).html(sum(api.column(10).data())); // Total
-                    $(api.column(12).footer()).html(sum(api.column(12).data())); // Total
                 } else {
                     // Calculate total for each column
                     //check if group is client
