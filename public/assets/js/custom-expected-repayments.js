@@ -169,6 +169,7 @@ $(document).ready(function () {
                         ];
                     } else {
                         var row = [
+                            item.branch_id,
                             item.group_key,
                             item.names,
                             item.total_clients.toLocaleString(), // Pad with comma after every three digits
@@ -180,7 +181,6 @@ $(document).ready(function () {
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
-                            '',
                         ];
 
                         //hide the last 3 columns
