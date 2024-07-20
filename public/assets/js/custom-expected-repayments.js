@@ -272,9 +272,6 @@ $(document).ready(function () {
                     return total.toLocaleString(); // Format total with commas
                 };
 
-
-
-
                 if (($('#staff').val() ? $('#staff').val() : 'client') === 'client') {
                     $(api.column(2).footer()).html(""); // Expected PRincipal
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest

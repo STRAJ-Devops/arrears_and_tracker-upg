@@ -68,7 +68,8 @@
         $('#' + settings.controlsID).append(controlsHtml);
 
         //set the commas padding in the input fields
-        $('.number_format shadow-none').on('keyup', function (event) {
+        $('.number_format').on('keyup', function (event) {
+            console.log('key up');
             var selection = window.getSelection().toString();
 
             if (selection !== '') {
