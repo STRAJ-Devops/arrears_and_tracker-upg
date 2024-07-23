@@ -211,8 +211,9 @@ $(document).ready(function () {
 
         // Initialize DataTable
         var table = $('#branch-performance').DataTable({
-            //define
-            responsive: false,
+            //align items to the center
+            columnDefs: [{ className: 'dt-center', targets: '_all' }],
+            fixedColumns: true,
             columns: columns,
             order: [[6, 'desc']],
             //show sortable headers with arrows

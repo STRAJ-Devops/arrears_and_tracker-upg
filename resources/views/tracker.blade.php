@@ -33,7 +33,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table align-items-center justify-content-center mb-0" id="branch-performance">
+                                <table class="display responsive" id="branch-performance">
                                     <tbody>
                                     <tfoot align="right">
                                         <tr>

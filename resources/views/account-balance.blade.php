@@ -10,8 +10,7 @@
             <select class="form-select shadow-none" id="search-by" name="search-by">
                 <option value="customer_id">Customer ID</option>
                 <option value="phone">Phone</option>
-                <option value="group_id">Group ID</option>
-                <option value="group_name">Group Name</option>
+                <option value="name">Name</option>
             </select>
         </div>
         <div class="col-7">
@@ -123,7 +122,7 @@
                                 <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Amount Due Today:</strong> ${Number(customer.amount_due).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)}</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
+                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id??'N/A'}</p>
                             </div>
                         </div>
                     </div>

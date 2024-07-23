@@ -11,22 +11,24 @@ class CustomerController extends Controller
     {
         $customer_id = $request->customer_id;
         $search_by = $request->search_by;
-
+        $today = date('d-M-y');
         //check if search_by is customer_id, phone or name
 
         if ($search_by == 'customer_id') {
             $customer_details = DB::table('customers')
-                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-                ->selectRaw('
-                    customers.names,
-                    customers.phone,
-                    arrears.draw_down_balance,
-                    arrears.savings_balance,
-                    arrears.group_id,
-                    (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
-                ->where('customers.customer_id', $customer_id)
-                ->get();
+            ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+            ->selectRaw('
+                customers.names,
+                customers.phone,
+                arrears.draw_down_balance,
+                arrears.savings_balance,
+                IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
+                (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
+                (arrears.principal_arrears + arrears.outstanding_interest +
+                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
+            ->where('customers.customer_id', $customer_id)
+            ->get();
+
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
@@ -35,9 +37,10 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    arrears.group_id,
+                    IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
+                    (arrears.principal_arrears + arrears.outstanding_interest +
+                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('customers.phone', 'like', '%' . $customer_id . '%')
                 ->get();
         } elseif ($search_by == 'name') {
@@ -48,9 +51,10 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    arrears.group_id,
+                    IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
+                    (arrears.principal_arrears + arrears.outstanding_interest +
+                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('customers.names', 'like', '%' . $customer_id . '%')
                 ->get();
         } else if ($search_by == 'group_id') {
@@ -62,9 +66,10 @@ class CustomerController extends Controller
                     customers.phone,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
-                    arrears.group_id,
+                    IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest) as amount_due')
+                    (arrears.principal_arrears + arrears.outstanding_interest +
+                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('arrears.group_id', $customer_id)
                 ->get();
 

@@ -113,3 +113,7 @@
     .form-control:focus {
         border-color: orange !important;
       }
+
+      .dt-center{
+        text-align: center;
+      }
