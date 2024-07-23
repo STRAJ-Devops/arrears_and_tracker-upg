@@ -16,8 +16,8 @@ class CustomerController extends Controller
 
         if ($search_by == 'customer_id') {
             $customer_details = DB::table('customers')
-            ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-            ->selectRaw('
+                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                ->selectRaw('
                 customers.names,
                 customers.phone,
                 arrears.draw_down_balance,
@@ -26,8 +26,8 @@ class CustomerController extends Controller
                 (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                 (arrears.principal_arrears + arrears.outstanding_interest +
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
-            ->where('customers.customer_id', $customer_id)
-            ->get();
+                ->where('customers.customer_id', $customer_id)
+                ->get();
 
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
