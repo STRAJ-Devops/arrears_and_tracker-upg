@@ -28,6 +28,7 @@ class CustomerController extends Controller
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('customers.customer_id', $customer_id)
                 ->get();
+                //new update
 
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
