@@ -547,7 +547,7 @@ class IncentiveController extends Controller
         $maximumIncentive = IncentiveSettings::first()->max_incentive;
         $amount = 0;
         if (($par / 100) <= ($maxPar / 100)) {
-            $amount = ROUND(ROUND(($maxPar / 100) - ($par / 100), 0) / ($maxPar / 100), 0) * ($parPercentage / 100) * $maximumIncentive;
+            $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
         }
 
         return ROUND($amount, 2);
