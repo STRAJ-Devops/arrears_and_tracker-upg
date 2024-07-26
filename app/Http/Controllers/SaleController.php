@@ -13,6 +13,8 @@ use App\Models\Sub_County;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -23,7 +25,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = date('M-y');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date');
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {
@@ -230,6 +232,25 @@ class SaleController extends Controller
                 if ($this->isLastDayOfMonth()) {
                     PreviousEndMonth::truncate();
                 }
+
+                //get the first row of the csv file and the first column and get the string after at
+                $first_row = $csv[0];
+                $first_column = $first_row[0];
+                $first_column = Str::after($first_column, 'at');
+                //remove spaces at the beginning and at the end of the string
+                $first_column = trim($first_column);
+
+                //add - where there is a space
+                $first_column = str_replace(' ', '-', $first_column);
+
+                //convert to date
+                $current_date = Carbon::parse($first_column)->format('M-y');
+
+                //create or update the where id = 1
+                DB::table('upload_date')->updateOrInsert(
+                    ['id' => 1],
+                    ['upload_date' => $current_date]
+                );
 
                 for ($i = 5; $i < count($csv); $i++) {
                     try {

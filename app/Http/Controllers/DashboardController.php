@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\BranchTarget;
 use App\Models\Product;
 use App\Models\Sale;
+use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index()
@@ -28,7 +29,7 @@ class DashboardController extends Controller
         $number_of_children = Sale::sum('number_of_children');
 
         // Get the current month abbreviation like "Mar-24"
-        $currentMonthYear = date('M-y');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date');
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
