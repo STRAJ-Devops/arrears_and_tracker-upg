@@ -17,9 +17,11 @@ class CustomerController extends Controller
         if ($search_by == 'customer_id') {
             $customer_details = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                ->join('products', 'arrears.product_id', '=', 'products.product_id')
                 ->selectRaw('
                 customers.names,
                 customers.phone,
+                products.product_name,
                 arrears.draw_down_balance,
                 arrears.savings_balance,
                 IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
@@ -33,9 +35,11 @@ class CustomerController extends Controller
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                ->join('products', 'arrears.product_id', '=', 'products.product_id')
                 ->selectRaw('
                     customers.names,
                     customers.phone,
+                    products.product_name,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
                     IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
@@ -47,9 +51,11 @@ class CustomerController extends Controller
         } elseif ($search_by == 'name') {
             $customer_details = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                ->join('products', 'arrears.product_id', '=', 'products.product_id')
                 ->selectRaw('
                     customers.names,
                     customers.phone,
+                    products.product_name,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
                     IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
@@ -62,9 +68,11 @@ class CustomerController extends Controller
 
             $customer_details = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                ->join('products', 'arrears.product_id', '=', 'products.product_id')
                 ->selectRaw('
                     customers.names,
                     customers.phone,
+                    products.product_name,
                     arrears.draw_down_balance,
                     arrears.savings_balance,
                     IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,

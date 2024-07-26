@@ -117,6 +117,7 @@
                             <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                             <div>
                                 <h5 class="card-title">Customer Name: ${customer.names}</h5>
+                                <p class="card-text"><strong>Product:</strong> ${customer.product_name}</p>
                                 <p class="card-text"><strong>Draw Down Balance:</strong> ${Number(customer.draw_down_balance).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${Number(customer.savings_balance).toLocaleString()} /=</p>
                                 <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
