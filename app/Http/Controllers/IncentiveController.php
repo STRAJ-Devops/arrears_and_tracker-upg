@@ -577,14 +577,14 @@ class IncentiveController extends Controller
 
         //if $actual is less than  50000000
         if (($actual > $min) && ($actual < $max)) {
-            $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * ($portifolioPercentage / 100) * $maximumIncentive;
+            $amount = (ROUND(($actual - $min) / ($max - $min), 0)) * ($portifolioPercentage / 100) * $maximumIncentive;
         }
         //greater than 40000000
         if ($actual >= $max) {
             $amount = ($portifolioPercentage / 100) * $maximumIncentive;
         }
 
-        return ROUND($amount, 2);
+        return ROUND($amount, 0);
     }
 
     //net portifolio growth for SGL incentive
