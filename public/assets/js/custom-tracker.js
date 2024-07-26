@@ -4,7 +4,6 @@ $(document).ready(function () {
 
     // Initialize DataTable
     table = drawTable($('#group-by').val());
-    console.log($('#group-by').val());
     // Populate initial table headers
     var initialGroup = $('#group-by').val();
     populateTableHeaders(initialGroup);

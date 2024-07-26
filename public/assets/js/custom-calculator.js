@@ -69,7 +69,6 @@
 
         //set the commas padding in the input fields
         $('.number_format').on('keyup', function (event) {
-            console.log('key up');
             var selection = window.getSelection().toString();
 
             if (selection !== '') {
@@ -185,7 +184,6 @@
                 i++;
             }
             if ($.fn.DataTable.isDataTable('#loan-schedule')) {
-                console.log('table exists');
                 //remove the table
                 $('#loan-schedule').DataTable().destroy();
             }

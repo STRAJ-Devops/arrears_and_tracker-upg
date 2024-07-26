@@ -185,9 +185,6 @@ var config = {
                 color: 'white',
                 // display percentage with two decimal points
                 formatter: function (value, context) {
-                    console.log(context);
-                    console.log(totalSales)
-                    console.log(totalTargets)
                     var percentage = 0;
                     if (context.dataIndex === 0) {
                         percentage = ((totalSales / totalTargets) * 100).toFixed(2);

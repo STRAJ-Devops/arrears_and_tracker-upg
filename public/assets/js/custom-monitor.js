@@ -2,7 +2,6 @@ $(document).ready(function () {
     var table;
     table = getMonitors();
     var tabEl = document.querySelectorAll('button[data-bs-toggle="pill"]');
-    //console.log(tabEl)
     for (i = 0; i < tabEl.length; i++) {
         tabEl[i].addEventListener("shown.bs.tab", function (event) {
             const activated_pane = document.querySelector(
@@ -11,7 +10,6 @@ $(document).ready(function () {
             const deactivated_pane = document.querySelector(
                 event.relatedTarget.getAttribute("data-bs-target")
             );
-            console.log(activated_pane.id);
             //remove existing table
             $("#monitor-table").DataTable().destroy();
             getMonitors(activated_pane.id);

@@ -117,7 +117,6 @@
                                     const principalPaid = Number(customer.principal_paid.replace(/,/g, ''));
                                     const interestPaid = Number(customer.interest_paid.replace(/,/g, ''));
                                     const totalPaid = principalPaid + interestPaid;
-                                    console.log(totalPaid);
                                     var customerCard = `
                                         <div class="card mt-3">
                                             <div class="card-header text-white bg-warning">

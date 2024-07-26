@@ -17,7 +17,6 @@ $(document).ready(function () {
     table = drawTable();
     // Populate initial table headers
     var initialGroup = $('#staff').val() ? $('#staff').val() : 'client';
-    console.log($('#staff').val());
     populateTableHeaders(initialGroup);
     fetchData(initialGroup);
 
@@ -70,7 +69,6 @@ $(document).ready(function () {
 
         //clean any existing columns
         table.columns().header().to$().empty();
-        // console.log(table.columns(0).header());
         $.each(selectedHeaders, function (index, header) {
             table.columns(index).header().to$().text(header);
         });
@@ -273,7 +271,6 @@ $(document).ready(function () {
                 };
 
                 if (($('#staff').val() ? $('#staff').val() : 'client') === 'client') {
-                    console.log($('#staff').val());
                     $(api.column(2).footer()).html(""); // Expected PRincipal
                     $(api.column(3).footer()).html(""); // Expected PRincipal
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
@@ -348,7 +345,6 @@ $(document).ready(function () {
         $('#arrears tbody').on('click', '.comment-button', function () {
             // Retrieve the arrear id from the data attribute of the clicked button
             var customerId = $(this).data('customer-id');
-            console.log(customerId);
             // Set the arrear id value in the hidden input field
             $('#customer_id').val(customerId);
             // Show the modal with the comment box or perform any other action
@@ -407,7 +403,6 @@ $(document).ready(function () {
         $('#arrears tbody').on('click', '.view-comments', function () {
             // Retrieve the arrear id from the data attribute of the clicked button
             var customerId = $(this).data('customer-id');
-            console.log(customerId);
             // Call the fetchComments function with the retrieved customerId
             fetchComments(customerId);
             // Show the modal with the comment box or perform any other action
@@ -420,7 +415,6 @@ $(document).ready(function () {
         $('#submitComment').click(function () {
             // Retrieve the custome_id value from the hidden input field
             var customerId = $('#customer_id').val();
-            console.log(customerId);
             // Retrieve other form field values if needed
             var comment = $('#comment').val();
 
