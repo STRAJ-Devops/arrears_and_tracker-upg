@@ -123,7 +123,7 @@ class ExpectedController extends Controller
             $nameField = 'officer';
         }
 
-        // $previous_arrears = $this->group_previous_days($request);
+        $previous_arrears = $this->group_previous_days($request);
 
         // Initialize data array
         $data = [];
@@ -142,14 +142,17 @@ class ExpectedController extends Controller
             $previous_principal_arrears = 0;
             $previous_interest_arrears = 0;
             $previous_outstanding_principal = 0;
-            // if (isset($previous_arrears[$key])) {
-            //     $previous_principal_arrears = $previous_arrears[$key]->sum('principal_arrears');
-            //     $previous_interest_arrears = $previous_arrears[$key]->sum('outstanding_interest');
-            //     $previous_outstanding_principal = $previous_arrears[$key]->sum('outsanding_principal');
-            // }
-            $total_principle_arrears = $arrear->sum('principal_arrears')+$previous_principal_arrears;
-            $total_interest_arrears = $arrear->sum('outstanding_interest')+$previous_interest_arrears;
-            $total_outstanding_principal = $arrear->sum('outsanding_principal')+$previous_outstanding_principal;
+            if (isset($previous_arrears[$key])) {
+                $previous_principal_arrears = $previous_arrears[$key]->sum('principal_arrears');
+                $previous_interest_arrears = $previous_arrears[$key]->sum('outstanding_interest');
+                $previous_outstanding_principal = $previous_arrears[$key]->sum('outsanding_principal');
+            }
+            $present_principal_arrears = $arrear->sum('principal_arrears');
+            $present_interest_arrears = $arrear->sum('outstanding_interest');
+            $present_outstanding_principal = $arrear->sum('outsanding_principal');
+            $total_principle_arrears = $present_principal_arrears + $previous_principal_arrears;
+            $total_interest_arrears = $present_interest_arrears + $previous_interest_arrears;
+            $total_outstanding_principal = $present_outstanding_principal + $previous_outstanding_principal;
             //remember that add column is named as interest_in_arrears
             $add = $arrear->sum('interest_in_arrears');
             $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
@@ -188,6 +191,12 @@ class ExpectedController extends Controller
                 'total_payment_amount' => $total_payment_amount,
                 'number_of_days_late' => $arrear->first()->number_of_days_late,
                 'add_per_customer' => $add,
+                'previous_principal_in_arrears' => $previous_principal_arrears,
+                'previous_interest_in_arrears' => $previous_interest_arrears,
+                'previous_outstanding_principal' => $previous_outstanding_principal,
+                'present_principal_in_arrears' => $present_principal_arrears,
+                'present_interest_in_arrears' => $present_interest_arrears,
+                'present_outstanding_principal' => $present_outstanding_principal,
             ];
         }
 
@@ -202,23 +211,23 @@ class ExpectedController extends Controller
         // Check if request has group as parameter
         if ($request->has('group')) {
             if ($request->group == 'staff_id') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', 'not like', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
             } else if ($request->group == 'branch_id') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('branch_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('branch_id');
             } else if ($request->group == 'region_id') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('region_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('region_id');
             } else if ($request->group == 'loan_product') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('product_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('product_id');
             } else if ($request->group == 'gender') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('gender');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('gender');
             } else if ($request->group == 'district') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('district_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('district_id');
             } else if ($request->group == 'sub_county') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('subcounty_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('subcounty_id');
             } else if ($request->group == 'village') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('village_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('village_id');
             } else if ($request->group == 'age') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy(function ($arrear) {
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy(function ($arrear) {
                     $age = $arrear->number_of_days_late;
                     if ($age >= 1 && $age <= 30) {
                         return '1-30';
@@ -237,14 +246,14 @@ class ExpectedController extends Controller
                     }
                 });
             } else if ($request->group == 'client') {
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('customer_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('customer_id');
             } else {
                 // Default to group by staff_id
-                $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
+                $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
             }
         } else {
             // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = Arrear::where('number_of_days_late', '>', 0)->where('next_repayment_date', '!=', '')->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
+            $arrears = Arrear::where('next_repayment_date', '!=', '')->orWhere('next_repayment_date', '!=', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
         }
 
         return $arrears;
