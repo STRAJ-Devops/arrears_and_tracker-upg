@@ -274,7 +274,6 @@ $(document).ready(function () {
 
                 if (($('#staff').val() ? $('#staff').val() : 'client') === 'client') {
                     $(api.column(2).footer()).html(""); // Expected PRincipal
-                    $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
                     $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
                     $(api.column(6).footer()).html(sum(api.column(6).data())); // Par
