@@ -273,7 +273,9 @@ $(document).ready(function () {
                 };
 
                 if (($('#staff').val() ? $('#staff').val() : 'client') === 'client') {
+                    console.log($('#staff').val());
                     $(api.column(2).footer()).html(""); // Expected PRincipal
+                    $(api.column(3).footer()).html(""); // Expected PRincipal
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
                     $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
                     $(api.column(6).footer()).html(sum(api.column(6).data())); // Par
@@ -281,10 +283,11 @@ $(document).ready(function () {
                     $(api.column(8).footer()).html(sum(api.column(8).data())); // Total
                     $(api.column(9).footer()).html(sum(api.column(9).data())); // Total
                     $(api.column(10).footer()).html(sum(api.column(10).data())); // Total
+                    $(api.column(11).footer()).html(sum(api.column(11).data())); // Total
                 } else {
                     // Calculate total for each column
                     //check if group is client
-                    $(api.column(2).footer()).html(sum(api.column(2).data())); // Expected PRincipal
+                    // $(api.column(2).footer()).html(sum(api.column(2).data())); // Expected PRincipal
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Expected Interest
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Expected Total
                     $(api.column(5).footer()).html(sum(api.column(5).data())); // Clients in Arrears
