@@ -95,4 +95,10 @@ class Officer extends Authenticatable
     {
         return $this->hasMany(Monitor::class, 'staff_id', 'staff_id');
     }
+
+    //officerTarget relationship
+    public function officerTarget()
+    {
+        return $this->hasOne(OfficerTarget::class, 'officer_id', 'staff_id');
+    }
 }

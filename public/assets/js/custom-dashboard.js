@@ -1,56 +1,57 @@
-//graph for product sales and targets
-var productLabels = productLabels;
-var data = {
-    labels: productLabels,
-    datasets: [
-        {
-            label: 'Sales',
-            backgroundColor: 'green',
-            borderColor: 'green',
-            data: productSales
-        },
-        {
-            label: 'Target',
-            backgroundColor: 'red',
-            borderColor: 'red',
-            data: productTargets
-        }
-    ]
-}
-
-var config = {
-    type: 'bar',
-    data: data,
-    options: {
-        responsive: true,
-        scales: {
-            x: {
-                stacked: true,
+if (userRole === 5) {
+    //graph for product sales and targets
+    var productLabels = productLabels;
+    var data = {
+        labels: productLabels,
+        datasets: [
+            {
+                label: 'Sales',
+                backgroundColor: 'green',
+                borderColor: 'green',
+                data: productSales
             },
-            y: {
-                stacked: true
+            {
+                label: 'Target',
+                backgroundColor: 'red',
+                borderColor: 'red',
+                data: productTargets
             }
-        },
-        plugins: {
-            title: {
-                display: true,
-                text: 'Product Sales and Targets'
-            },
+        ]
+    }
 
-            datalabels: {
-                color: 'white',
-                formatter: function (value, context) {
-                    return "";
+    var config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
                 },
+                y: {
+                    stacked: true
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Product Sales and Targets'
+                },
+
+                datalabels: {
+                    color: 'white',
+                    formatter: function (value, context) {
+                        return "";
+                    },
+                }
             }
-        }
-    },
-};
+        },
+    };
 
 
-new Chart(document.getElementById('product-sales-targets'), config);
+    new Chart(document.getElementById('product-sales-targets'), config);
 
-
+}
 var data = {
     labels: branchLabels,
     datasets: [

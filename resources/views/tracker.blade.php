@@ -19,7 +19,8 @@
                                                 <option value="products">Product</option>
                                                 <option value="branches-loans">Branch->Loan Disbursed</option>
                                                 <option value="branches-clients">Branch->Clients</option>
-                                                <option value="officers">Officer</option>
+                                                <option value="officers-loans">Officer->Loan Disbursed</option>
+                                                <option value="officers-clients">Officer->Clients</option>
                                                 <option value="regions-loans">Region->Loan Disbursed</option>
                                                 <option value="regions-clients">Region->Clients</option>
                                             </select>

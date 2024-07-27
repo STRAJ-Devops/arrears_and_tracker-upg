@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Arrear;
 use App\Models\Branch;
 use App\Models\BranchTarget;
+use App\Models\OfficerTarget;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,7 @@ class DashboardController extends Controller
         $number_of_children = Sale::sum('number_of_children');
 
         // Get the current month abbreviation like "Mar-24"
-        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
 
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
@@ -47,6 +48,17 @@ class DashboardController extends Controller
 
         $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
 
+        //get portifolio performance percentage
+        //get officer target amount
+        $officer_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_amount')??0;
+        $officer_actual = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->sum('disbursement_amount');
+        $officer_performance = $officer_target == 0 ? 0 : (($officer_actual / $officer_target) * 100);
+
+        //get client performance percentage
+        //get number of clients target
+        $clients_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_numbers')??0;
+        $clients_actual = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
+        $clients_performance = $clients_target == 0 ? 0 : (($clients_actual / $clients_target) * 100);
         // Get product labels and targets
         $productData = Product::with('productTarget')->get();
         $brachData = Branch::with('branchTarget')->get();
@@ -113,6 +125,8 @@ class DashboardController extends Controller
             'branch_targets' => $branchTargetsList,
             'branch_sales' => $branchSalesList,
             'sgl' => $sgl,
+            'officer_performance' => number_format($officer_performance),
+            'clients_performance' => number_format($clients_performance),
         ];
 
         return view('dashboard', compact('data'));

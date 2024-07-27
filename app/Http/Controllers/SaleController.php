@@ -25,7 +25,7 @@ class SaleController extends Controller
 
     public function group_by(Request $request)
     {
-        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {
@@ -106,18 +106,49 @@ class SaleController extends Controller
                             'score' => round($percentage, 0),
                         ];
                     }
-                } else if ($request->group == 'officers') {
+                } else if ($request->group == 'officers-loans' || $request->group == 'officers-clients') {
                     $sales = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->get()->groupBy('staff_id');
                     $data = [];
                     foreach ($sales as $key => $sale) {
                         $staff_name = $sale->first()->officer->names;
                         $total_disbursement_amount = $sale->sum('disbursement_amount');
-                        $number_of_clients = $sale->count();
+                        $number_of_clients = $sale->sum('number_of_group_members');
+                        //get officer target amount and number of clients
+                        $target_amount = $sale->first()->officer->officerTarget->target_amount ?? 0;
+                        $target_clients = $sale->first()->officer->officerTarget->target_numbers ?? 0;
+
+                        //balance
+                        $balance_loans = $target_amount - $total_disbursement_amount;
+
+                        //balance clients
+                        $balance_clients = $target_clients - $number_of_clients;
+
+                        //actual balance
+                        $balance = $request->group == 'officers-loans' ? $balance_loans : $balance_clients;
+
+                        //%centage score for loans
+                        if ($target_amount <= 0) {
+                            $percentage = 0;
+                        } else {
+                            $percentage = ($total_disbursement_amount / $target_amount) * 100;
+                        }
+
+                        //%centage score for clients
+                        if($target_clients==0){
+                            $percentage_clients = 0;
+                        } else {
+                            $percentage_clients = ($number_of_clients / $target_clients) * 100;
+                        }
                         $data[] = [
                             'staff_id' => $key,
                             'names' => $staff_name,
                             'total_disbursement_amount' => $total_disbursement_amount,
                             'number_of_clients' => $number_of_clients,
+                            'target_amount' => $target_amount,
+                            'balance' => $balance,
+                            'target_clients' => $target_clients,
+                            'actual_clients' => $number_of_clients,
+                            'score' => $request->group == 'officers-loans' ? round($percentage, 0) : round($percentage_clients, 0),
                         ];
                     }
                 } else if ($request->group == 'regions-loans' || $request->group == 'regions-clients') {

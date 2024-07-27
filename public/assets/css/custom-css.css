@@ -117,3 +117,19 @@
       .dt-center{
         text-align: center;
       }
+
+      .progress-bar-custom {
+        height: 40px; /* Adjust height here */
+        line-height: 40px; /* Match line-height with height */
+        font-size: .9rem; /* Adjust font size if needed */
+        color: #fff; /* Text color */
+        text-align: center;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .targets-div .bg-gradient-warning {
+        background: linear-gradient(135deg, #25972e 0%, #8bc34a 100%);
+      }
+      .targets-div .bg-gradient-info {
+        background: linear-gradient(135deg, #17a2b8 0%, #0d6efd 100%);
+      }

@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
     public function group_by(Request $request)
     {
-        $currentMonthYear = date('M-y');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
         try {
             if ($request->has('group')) {
                 if ($request->group == 'branches-loans' || $request->group == 'branches-clients') {

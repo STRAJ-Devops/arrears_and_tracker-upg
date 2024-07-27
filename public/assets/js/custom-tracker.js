@@ -21,12 +21,13 @@ $(document).ready(function () {
     // Function to populate table headers
     function populateTableHeaders(group) {
         var headers = {
-            "branches-loans": ["Branch", "Region", "Actual Volume","Target Volume", "Variance", "%score"],
+            "branches-loans": ["Branch", "Region", "Actual Volume", "Target Volume", "Variance", "%score"],
             "branches-clients": ["Branch", "Region", "Actual Clients", "Target Clients", "Variance", "%score"],
             "products": ["Product", "Actual Clients", "Actual Volume", "Target Volume", "Variance", "%score"],
             "regions-loans": ["Region ID", "Region Name", "Actual Volume", "Target Volume", "Variance", "%score"],
             "regions-clients": ["Region ID", "Region Name", "Actual Clients", "Target Clients", "Variance", "%score"],
-            "officers": ["Officer ID", "Names", "Volume Disbursed", "Number Of Clients"],
+            "officers-loans": ["Officer ID", "Names", "Target Volume", "Actual Volume", "Variance", "%score"],
+            "officers-clients": ["Officer ID", "Names", "Target Clients", "Actual Clients", "Variance", "%score"],
         };
 
         // Get the corresponding headers for the selected group
@@ -85,7 +86,7 @@ $(document).ready(function () {
                             ''
                         ];
                         table.columns([6, 7]).visible(false);
-                    }else if (group === 'branches-clients') {
+                    } else if (group === 'branches-clients') {
                         table.order([5, 'desc']);
                         var row = [
                             item.branch_name,
@@ -112,7 +113,7 @@ $(document).ready(function () {
                             ''
                         ];
                         table.columns([6, 7]).visible(false);
-                    }else if (group === 'regions-clients') {
+                    } else if (group === 'regions-clients') {
                         table.order([5, 'desc']);
                         var row = [
                             item.region_id,
@@ -126,19 +127,34 @@ $(document).ready(function () {
                         ];
                         table.columns([6, 7]).visible(false);
 
-                    } else {
-                        table.order([3, 'desc']);
+                    } else if (group === 'officers-loans') {
+                        table.order([5, 'desc']);
                         var row = [
                             item.staff_id,
                             item.names,
+                            item.target_amount,
                             item.total_disbursement_amount.toLocaleString(),
-                            item.number_of_clients.toLocaleString(),
-                            '',
-                            '',
+                            item.balance,
+                            item.score,
                             '',
                             ''
                         ];
-                        table.columns([4, 5, 6, 7]).visible(false);
+                        table.columns([6, 7]).visible(false);
+                    } else if (group === 'officers-clients') {
+
+                        table.order([5, 'desc']);
+                        var row = [
+                            item.staff_id,
+                            item.names,
+                            item.target_clients,
+                            item.actual_clients.toLocaleString(),
+                            item.balance,
+                            item.score,
+                            '',
+                            ''
+                        ];
+
+                        table.columns([6, 7]).visible(false);
                     }
                     table.row.add(row).draw();
                 });
@@ -237,7 +253,7 @@ $(document).ready(function () {
                 } else if (groupedby === 'officers') {
                     $(api.column(2).footer()).html(sum(api.column(2).data())); // Volume Disbursed
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Number of Clients
-                }else if (groupedby === 'products') {
+                } else if (groupedby === 'products') {
                     $(api.column(2).footer()).html(sum(api.column(2).data())); // Actual Volume
                     $(api.column(3).footer()).html(sum(api.column(3).data())); // Actual Clients
                     $(api.column(4).footer()).html(sum(api.column(4).data())); // Target Volume

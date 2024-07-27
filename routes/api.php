@@ -22,7 +22,6 @@ Route::post('customer-details', [App\Http\Controllers\API\CustomerController::cl
 Route::post('group-details', [App\Http\Controllers\API\CustomerController::class, 'group'])->name('group-details');
 Route::post('written-of-customer-details', [App\Http\Controllers\API\WrittenOffController::class, 'customer'])->name('group-details');
 
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('dashboard', [DashboardController::class, 'index']);
@@ -41,6 +40,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
     Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
-
-
 });
