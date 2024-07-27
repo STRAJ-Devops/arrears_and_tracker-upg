@@ -258,19 +258,7 @@ class SaleController extends Controller
                 $xls_file = public_path('uploads/' . $file_name);
                 $csv_name = time() . '.csv';
                 $csv_file = public_path('uploads/' . $csv_name);
-                $process = new Process(
-                    [
-                        'libreoffice',
-                        '--headless',
-                        '--convert-to',
-                        'csv',
-                        $xls_file,
-                        '--outdir',
-                        public_path('uploads')
-                    ]
-                    );
-
-                $process->run();
+                $process = Process::run('libreoffice --headless --convert-to csv ' . $xls_file . ' --outdir ' . public_path('uploads'));
 
                 $file_name = $csv_name;
             }
