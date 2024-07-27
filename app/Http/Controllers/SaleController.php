@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Illuminate\Support\Str;
 
@@ -260,18 +260,17 @@ class SaleController extends Controller
                 $csv_file = public_path('uploads/' . $csv_name);
                 $process = new Process(
                     [
-                        'ssconvert',
+                        'libreoffice',
+                        '--headless',
+                        '--convert-to',
+                        'csv',
                         $xls_file,
-                        $csv_file,
+                        '--outdir',
+                        public_path('uploads')
                     ]
                     );
 
                 $process->run();
-
-                // check if the process was successful
-                if (!$process->isSuccessful()) {
-                    throw new ProcessFailedException($process);
-                }
 
                 $file_name = $csv_name;
             }
