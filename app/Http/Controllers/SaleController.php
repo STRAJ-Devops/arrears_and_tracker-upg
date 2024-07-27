@@ -256,7 +256,8 @@ class SaleController extends Controller
             if ($file->getClientOriginalExtension() == 'xls') {
                 //use ssconvert to convert the xls file to csv
                 $xls_file = public_path('uploads/' . $file_name);
-                $csv_file = public_path('uploads/' . time() . '.csv');
+                $csv_name = time() . '.csv';
+                $csv_file = public_path('uploads/' . $csv_name);
                 $process = new Process(
                     [
                         'ssconvert',
@@ -271,6 +272,8 @@ class SaleController extends Controller
                 if (!$process->isSuccessful()) {
                     throw new ProcessFailedException($process);
                 }
+
+                $file_name = $csv_name;
             }
             //read the csv file
             $file = public_path('uploads/' . $file_name);
