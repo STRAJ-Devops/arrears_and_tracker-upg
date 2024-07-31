@@ -27,7 +27,7 @@ use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\OfficerTargetController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WrittenOffController;
-use App\Models\Officer;
+use App\Http\Controllers\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +75,9 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::get('regions', [RegionController::class, 'index'])->name('regions');
 
     Route::get('arrears', [ArrearController::class, 'index'])->name('arrears');
+
+    Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::post('calender', [CalendarController::class, 'getcalender']);
 
     Route::get('branch-targets-uploader', [BranchTargetController::class, 'index'])->name('branch-targets-uploader');
     Route::get('upload-branch-targets', [BranchTargetController::class, 'uploadBranchTargets']);
