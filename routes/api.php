@@ -40,4 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
     Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
+    Route::get('calendar', [App\Http\Controllers\API\CalendarController::class, 'getcalender'])->name('calendar');
+
 });
