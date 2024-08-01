@@ -93,18 +93,19 @@
                 </a>
             </li>
 
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Request::is('calendar') ? 'active' : '' }}"
-                    href="{{ url('calendar') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-calendar ps-2 pe-2 text-center text-dark {{ Request::is('calendar') ? 'text-white' : 'text-dark' }} "
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Calendar</span>
-                </a>
-            </li>
+            @if (Auth::user()->user_type != 5)
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Request::is('calendar') ? 'active' : '' }}" href="{{ url('calendar') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fas fa-lg fa-calendar ps-2 pe-2 text-center text-dark {{ Request::is('calendar') ? 'text-white' : 'text-dark' }} "
+                                aria-hidden="true"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Calendar</span>
+                    </a>
+                </li>
+            @endif
 
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Request::is('loan-calculator') ? 'active' : '' }}"

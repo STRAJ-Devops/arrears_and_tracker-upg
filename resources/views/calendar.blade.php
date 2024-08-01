@@ -45,7 +45,7 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl[0], {
                 //set initial view to month
-                
+
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',

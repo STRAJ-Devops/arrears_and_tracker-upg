@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Arrear;
+// Add Carbon
+use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
@@ -15,25 +15,11 @@ class CalendarController extends Controller
 
     public function getcalender(Request $request)
     {
-
-        $events = array(
-            array(
-                'title' => 'Event 1 343',
-                'start' => '2024-02-12'
-            ),
-            array(
-                'title' => 'Event 2',
-                'start' => '2024-02-15',
-                'end' => '2024-02-17'
-            )
-            // Add more events as needed
-        );
-
         $events = [];
 
         $arrears = Arrear::join('customers', 'arrears.customer_id', '=', 'customers.customer_id')
-        ->select('arrears.next_repayment_date', 'arrears.customer_id', 'customers.names as customer_name')
-        ->get();
+            ->select('arrears.next_repayment_date', 'arrears.customer_id', 'customers.names as customer_name')
+            ->get();
 
         foreach ($arrears as $arrear) {
             //if $arrear->next_repayment_date is "", set it to today
@@ -54,4 +40,5 @@ class CalendarController extends Controller
         header('Content-Type: application/json');
         echo json_encode($events);
     }
+
 }
