@@ -31,6 +31,6 @@ class CalendarController extends Controller
             ]);
         }
 
-        return response()->json($events);
+        return response()->json(["status"=>true, "data"=>$events]);
     }
 }
