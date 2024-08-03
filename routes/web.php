@@ -111,7 +111,7 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::post('upload-branch-targets', [BranchTargetController::class, 'import'])->name('upload-targets');
     Route::post('upload-officer-targets', [OfficerTargetController::class, 'import'])->name('upload-officer-targets');
     Route::post('upload-product-targets', [ProductTargetController::class, 'import'])->name('upload-product-targets');
-    Route::post('upload-sales-targets', [SaleController::class, 'import'])->name('upload-sales-targets');
+    Route::post('upload-sales-targets', [SaleController::class, 'convertXlsToCsv'])->name('upload-sales-targets');
     Route::post('upload-previous-end-month-sales', [SaleController::class, 'importPreviousEndMonthSales'])->name('upload-end-month-sales');
     Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
 
