@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('check:file')->everyMinute();
+        //run uploads:check after 1 minute
+        $schedule->command('uploads:check')->everyMinute();
     }
 
     /**

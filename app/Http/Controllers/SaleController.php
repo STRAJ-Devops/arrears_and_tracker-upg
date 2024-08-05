@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ConvertHtmlToCsvJob;
 use App\Models\Arrear;
 use App\Models\Branch;
 use App\Models\District;
@@ -14,9 +15,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Jobs\UploadCsvToRemoteStorage;
 
 class SaleController extends Controller
 {
@@ -238,7 +239,7 @@ class SaleController extends Controller
         ini_set('memory_limit', '-1');
         // Validate the uploaded file
         $request->validate([
-            'upload_template_file' => 'required|csv'
+            'upload_template_file' => 'required',
         ], [
             'upload_template_file.required' => 'Please upload a file.',
             'upload_template_file.mimes' => 'The uploaded file must be a valid CSV file.',
@@ -252,6 +253,16 @@ class SaleController extends Controller
         if (!$save) {
             return response()->json(['error' => 'Failed to save file. Please try again.'], 400);
         } else {
+            // Check if the file is a CSV
+            if ($file->getClientOriginalExtension() == 'xls') {
+                //use ssconvert to convert the xls file to csv
+                $xls_file = public_path('uploads/' . $file_name);
+                $csv_name = time() . '.csv';
+                $csv_file = public_path('uploads/' . $csv_name);
+                $process = Process::run('libreoffice --headless --convert-to csv ' . $xls_file . ' --outdir ' . public_path('uploads'));
+
+                $file_name = $csv_name;
+            }
             //read the csv file
             $file = public_path('uploads/' . $file_name);
             $csv = array_map('str_getcsv', file($file));
@@ -265,7 +276,7 @@ class SaleController extends Controller
 
             //get the first row of the csv file and the first column and get the string after at
             $first_row = $csv[0];
-            $first_column = $first_row[0];
+            $first_column = $first_row[1];
             $first_column = Str::after($first_column, 'at');
             //remove spaces at the beginning and at the end of the string
             $first_column = trim($first_column);
@@ -838,50 +849,6 @@ class SaleController extends Controller
     }
 
     /**
-     * import an xls file
-     */
-    public function convertXlsToCsv(Request $request)
-    {
-        // Validate the request to ensure a file is uploaded
-        $request->validate([
-            'upload_template_file' => 'required|file|mimes:html'
-        ]);
-
-        // Handle the uploaded file
-        $file = $request->file('upload_template_file');
-        $inputFilePath = $file->path();
-        $outputFileName = 'output-file.csv';
-        $outputFilePath = storage_path('app/public/' . $outputFileName);
-
-        // Use LibreOffice or another tool to convert the HTML to CSV
-        $process = new Process([
-            'libreoffice',
-            '--headless',
-            '--convert-to', 'csv',
-            '--outdir',
-            storage_path('app/public/'),
-            $inputFilePath
-        ]);
-
-        try {
-            $process->mustRun();
-        } catch (ProcessFailedException $exception) {
-            return response()->json(['error' => 'Conversion failed: ' . $exception->getMessage()], 500);
-        }
-
-        // Rename the output file if necessary
-        if (file_exists($outputFilePath)) {
-            rename(storage_path('app/public/' . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '.csv'), $outputFilePath);
-        }
-
-        // Return the CSV file for download
-        return response()->download($outputFilePath, $outputFileName, [
-            'Content-Type' => 'text/csv'
-        ]);
-
-    }
-
-    /**
      * truncate arrears and sales
      */
 
@@ -905,6 +872,19 @@ class SaleController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to truncate previous end month records. Please try again.');
         }
+    }
+
+    /**
+     * Convert from html to csv
+     */
+    public function convertHtmlToCsv(Request $request)
+    {
+// Path to the input HTML file
+        $filePath = public_path('uploads/excel.xls');
+        //chain 2 jobs
+        ConvertHtmlToCsvJob::dispatch($filePath);
+        // Optional: Return a success message or redirect
+        return response()->json(['message' => 'HTML converted to CSV successfully.']);
     }
 
 }

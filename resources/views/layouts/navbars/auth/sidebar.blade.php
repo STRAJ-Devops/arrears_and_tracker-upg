@@ -319,7 +319,7 @@
                                 class="fas fa-lg fa-upload ps-2 pe-2 text-center text-dark {{ Request::is('arrears-and-sales-uploader') ? 'text-white' : 'text-dark' }} "
                                 aria-hidden="true"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Arrears and Sales</span>
+                        <span class="nav-link-text ms-1">Daily Uploads</span>
                     </a>
                 </li>
 
