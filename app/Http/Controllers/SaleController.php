@@ -874,17 +874,4 @@ class SaleController extends Controller
         }
     }
 
-    /**
-     * Convert from html to csv
-     */
-    public function convertHtmlToCsv(Request $request)
-    {
-// Path to the input HTML file
-        $filePath = public_path('uploads/excel.xls');
-        //chain 2 jobs
-        ConvertHtmlToCsvJob::dispatch($filePath);
-        // Optional: Return a success message or redirect
-        return response()->json(['message' => 'HTML converted to CSV successfully.']);
-    }
-
 }
