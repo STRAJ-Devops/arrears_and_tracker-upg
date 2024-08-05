@@ -83,6 +83,9 @@ class ConvertHtmlToCsvJob implements ShouldQueue
         //delete the xls file
         // unlink($this->filePath);
 
+        //delete the xls file
+        unlink($this->filePath);
+
         //upload the output csv file
         UploadCsvToRemoteStorage ::dispatch($csvFile);
     }

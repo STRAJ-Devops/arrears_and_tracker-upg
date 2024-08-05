@@ -293,6 +293,9 @@ class UploadCsvToRemoteStorage implements ShouldQueue
 
                 //file uploaded using mail, FileUploaded.php
                 Mail::to('nwilberforce256@gmail.com')->send(new FileUploaded());
+
+                //remove the .csv
+                unlink($file);
             }
 
             public function isLastDayOfMonth()
