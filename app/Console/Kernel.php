@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //run uploads:check at 4:00 am every morning
-        $schedule->command('uploads:check')->dailyAt('04:00');
+        //run uploads:check at every minute
+        $schedule->command('uploads:check')->everyMinute();
     }
 
     /**
