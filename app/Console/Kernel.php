@@ -24,8 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //run uploads:check at every minute
-        $schedule->command('uploads:check')->everyMinute();
+        //run uploads:check at 6:20pm, east africa time
+        $schedule->command('uploads:check')
+            ->timezone('Africa/Nairobi')
+            ->at('18:20');
     }
 
     /**
