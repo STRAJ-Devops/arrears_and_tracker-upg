@@ -31,7 +31,6 @@ class DashboardController extends Controller
 
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
-
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
