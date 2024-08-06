@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         //run uploads:check at 6:20pm, east africa time
         $schedule->command('uploads:check')
             ->timezone('Africa/Nairobi')
-            ->at('18:40');
+            ->at('18:30');
     }
 
     /**
