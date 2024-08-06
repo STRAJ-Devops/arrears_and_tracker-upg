@@ -848,6 +848,22 @@ class SaleController extends Controller
         return response()->json(['message' => 'Records imported successfully.'], 200);
     }
 
+    public function fileUpload()
+    {
+        //validate the file to be :html
+        request()->validate([
+            'file' => 'required|mimes:html',
+        ]);
+
+        //save the file to public in uploads folder
+        $file = request()->file('file');
+
+        $file->move(public_path('uploads'), $file->getClientOriginalName());
+
+        //resturn a success message with response 200
+        return response()->json(['message' => 'File uploaded successfully.'], 200);
+    }
+
     /**
      * truncate arrears and sales
      */
