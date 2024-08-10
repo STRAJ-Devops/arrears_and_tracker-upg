@@ -47,7 +47,7 @@ $(document).ready(function () {
     function fetchData(group) {
         // Fetch data based on the selected group
         $.ajax({
-            url: "/arrears-group-by",
+            url: "/maturity-loans-group-by",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -286,138 +286,6 @@ $(document).ready(function () {
 
         // Add the export buttons to the container
         table.buttons().container().appendTo($('#export-buttons'));
-
-        // Attach click event handler to comment buttons
-        $('#arrears tbody').on('click', '.comment-button', function () {
-            // Retrieve the arrear id from the data attribute of the clicked button
-            var customerId = $(this).data('customer-id');
-
-            var number_of_days_late = $(this).data('nodl');
-            // Set the arrear id value in the hidden input field
-            $('#customer_id').val(customerId);
-
-            // Set the number of days late in the hidden input field
-            $('#nodl').val(number_of_days_late);
-            // Show the modal with the comment box or perform any other action
-            $('#commentModal').modal('show');
-
-        });
-
-        // Function to fetch comments for a specific custome_id
-        function fetchComments(customerId) {
-            // Make a GET request to fetch comments
-            $.ajax({
-                url: "/comments", // Replace with your server endpoint
-                type: "GET",
-                data: {
-                    customer_id: customerId
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    var comments = response.comments;
-                    var commentsContainer = $('#comments-container');
-                    commentsContainer.empty(); // Clear existing comments
-
-                    // Loop through comments and append them to the container with styling
-                    comments.forEach(function (comment) {
-                        var commentBox = $('<div class="comment-box mb-3 p-3 rounded shadow-sm"></div>');
-
-                        // Add comment content with styling
-                        var commentContent = $('<p class="comment-text mb-0"></p>')
-                            .text(comment.comment)
-                            .css({
-                                fontSize: '16px', // Adjust font size as desired
-                                lineHeight: '1.5', // Set line spacing for readability
-                                fontFamily: 'sans-serif', // Use a user-friendly font
-                                color: '#333' // Set text color for clarity
-                            });
-
-                        // Optional: Add user information (if available)
-                        if (comment.created_at) {
-                            var userSpan = $('<span class="user-info mr-2"></span>')
-                                .text(formatDate(comment.created_at) + ': ');
-                            commentBox.prepend(userSpan);
-                        }
-
-                        commentBox.append(commentContent);
-                        commentsContainer.append(commentBox);
-                    });
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    console.error("Error fetching comments:", xhr.responseText);
-                }
-            });
-        }
-
-
-        // Attach click event handler to view comments
-        $('#arrears tbody').on('click', '.view-comments', function () {
-            // Retrieve the arrear id from the data attribute of the clicked button
-            var customerId = $(this).data('customer-id');
-            // Call the fetchComments function with the retrieved customerId
-            fetchComments(customerId);
-            // Show the modal with the comment box or perform any other action
-            $('#viewCommentsModal').modal('show');
-        });
-
-
-
-        // Add an event listener to the submit button in the modal
-        $('#submitComment').click(function () {
-            // Retrieve the custome_id value from the hidden input field
-            var customerId = $('#customer_id').val();
-
-            var number_of_days_late = $('#nodl').val();
-            // Retrieve other form field values if needed
-            var comment = $('#comment').val();
-
-            // Make an AJAX request to submit the form data
-            $.ajax({
-                url: '/add-comment', // Replace with your server endpoint
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    customer_id: customerId,
-                    comment: comment,
-                    number_of_days_late: number_of_days_late
-                },
-                success: function (response) {
-                    //show a swal alert
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'Comment added successfully',
-                        icon: 'success',
-                        confirmButtonText: 'Ok',
-                    });
-                    //clear the comment field
-                    $('#comment').val('');
-                    $('#commentModal').modal('hide');
-                    // Populate initial table headers
-                    var initialGroup = $('#staff').val();
-                    populateTableHeaders(initialGroup);
-                    fetchData(initialGroup);
-
-                },
-                error: function (xhr, status, error) {
-                    //show a swal alert
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Error submitting comment',
-                        icon: 'error',
-                        confirmButtonText: 'Ok'
-                    });
-                    // Handle any errors that occur during the AJAX request
-                    console.error('Error submitting comment:', xhr.responseText);
-                    // Optionally, display an error message to the user
-                }
-            });
-        });
-
 
         return table;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Monitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MonitorController extends Controller
 {
@@ -84,9 +85,9 @@ class MonitorController extends Controller
     public function show($id)
     {
 
-        $monitor = Monitor::findOrFail($id);
-
-        return view('monitor.show', compact('monitor'));
+        $monitor = DB::table('monitors')->where('id', $id)->join('officers', 'monitors.staff_id', '=', 'officers.staff_id')->first();
+        $monitor_comments = DB::table('sales_activity_comments')->where('sales_activity_id', $id)->join('officers', 'sales_activity_comments.officer_id', '=', 'officers.staff_id')->get();
+        return view('monitor.show', compact('monitor', 'monitor_comments'));
     }
 
     /**
@@ -162,5 +163,21 @@ class MonitorController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function add_comment()
+    {
+        try{
+        $save = DB::table('sales_activity_comments')->insert([
+            'sales_activity_id' => request()->get('sales_activity_id'),
+            'officer_id' => auth()->user()->staff_id,
+            'comment' => request()->get('comment'),
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+    }catch(\Exception $e){
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+        return response()->json(['comment' => $save], 200);
     }
 }

@@ -166,6 +166,10 @@ $(document).ready(function () {
             columns: [
                 {
                     data: "name",
+                    // render a link to the monitor's profile
+                    render: function (data, type, row) {
+                        return '<a href="/monitor-details/' + row.id + '">' + data + "</a>";
+                    },
                 },
                 {
                     data: "phone",
@@ -206,7 +210,7 @@ $(document).ready(function () {
                             return (
                                 '<button class="btn btn-primary btn-apply" data-apply-id="' +
                                 row.id +
-                                '">Appraise</button>'
+                                '">Apply</button>'
                             );
                         }
                     },

@@ -89,6 +89,8 @@ return new class extends Migration
 
             $table->string('group_name')->nullable();
 
+            $table->string('maturity_date')->nullable();
+
             $table->timestamps();
         });
     }

@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Jobs\ConvertHtmlToCsvJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Bus;
+
 
 
 class CheckUploads extends Command

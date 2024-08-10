@@ -245,6 +245,7 @@ class UploadCsvToRemoteStorage implements ShouldQueue
                         $arrear->draw_down_balance = $csv[$i][44];
                         $arrear->savings_balance = $csv[$i][43];
                         $arrear->group_name = $csv[$i][3];
+                        $arrear->maturity_date = $csv[$i][31];
 
                         $arrear->save();
                         if ($this->isLastDayOfMonth()) {

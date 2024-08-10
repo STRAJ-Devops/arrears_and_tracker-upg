@@ -195,6 +195,18 @@
                     <span class="nav-link-text ms-1">Written Off Customers</span>
                 </a>
             </li>
+            <li class="nav-item pb-2">
+                <a class="nav-link {{ Request::is('maturity-loans') ? 'active' : '' }}"
+                    href="{{ url('maturity-loans') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-car ps-2 pe-2 text-center text-dark {{ Request::is('maturity-loans') ? 'text-white' : 'text-dark' }} "
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Maturity Loans</span>
+                </a>
+            </li>
             @if (Auth::user()->user_type == 5)
                 <li class="nav-item mt-2">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">General Settings</h6>

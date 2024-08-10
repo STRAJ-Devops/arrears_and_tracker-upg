@@ -28,6 +28,7 @@ use App\Http\Controllers\OfficerTargetController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WrittenOffController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\MaturityLoanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,9 @@ Route::middleware('revalidate','auth:officer')->group(function () {
 
     Route::get('arrears', [ArrearController::class, 'index'])->name('arrears');
 
+    Route::get('maturity-loans', [MaturityLoanController::class, 'index'])->name('maturity-loans');
+
+
     Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
     Route::post('calender', [CalendarController::class, 'getcalender']);
 
@@ -106,6 +110,7 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::post('/user-profile', [InfoUserController::class, 'store']);
 
     Route::post('arrears-group-by', [ArrearController::class, 'group_by'])->name('arrears-group-by');
+    Route::post('maturity-loans-group-by', [MaturityLoanController::class, 'group_by'])->name('maturity-loans-group-by');
     Route::post('sales-group-by', [SaleController::class, 'group_by'])->name('sales-group-by');
 
     Route::post('upload-branch-targets', [BranchTargetController::class, 'import'])->name('upload-targets');
@@ -125,8 +130,13 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::post('store-monitor', [MonitorController::class, 'store'])->name('store-monitor');
     Route::get('edit-monitor/{id}', [MonitorController::class, 'edit'])->name('edit-monitor');
     Route::get('get-monitors', [MonitorController::class, 'getMonitors'])->name('get-monitors');
+    // view monitor details
+    Route::get('monitor-details/{id}', [MonitorController::class, 'show'])->name('monitor-details');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
     Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
+    // add-activity comment
+    Route::post('add-activity-comment', [MonitorController::class, 'add_comment'])->name('add-activity-comment');
+
     Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
     Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
     Route::get('get-written-off-details', [WrittenOffController::class, 'customer'])->name('get-written-off-details');
