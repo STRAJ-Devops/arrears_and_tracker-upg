@@ -17,23 +17,24 @@
                                 <h5 class="mb-0">Filter By</h5>
                             </div>
                             <div class="col-md-3">
+                                
                                 <select id="branchFilter" class="form-control shadow-none">
                                     <option value="">All Branches</option>
                                     <!-- Populate dynamically -->
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <select id="productFilter" class="form-control">
                                     <option value="">All Products</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="text" id="clientIdFilter" class="form-control shadow-none" placeholder="Client ID">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="text" id="phoneFilter" class="form-control shadow-none" placeholder="Phone Number">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="text" id="maturityDateFilter" class="form-control datepicker shadow-none" placeholder="Maturity Date">
                             </div>
                         </div>

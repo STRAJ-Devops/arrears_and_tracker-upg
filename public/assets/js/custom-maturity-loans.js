@@ -88,7 +88,12 @@ $(document).ready(function () {
     function populateDropdown(selector, items) {
         var dropdown = $(selector);
         dropdown.empty(); // Clear existing options
-        dropdown.append('<option value="">All</option>'); // Default option
+        // decide to say all branches or all products
+        if (selector == '#branchFilter') {
+            dropdown.append('<option value="">All Branches</option>'); // Default option
+        } else {
+            dropdown.append('<option value="">All Products</option>'); // Default option
+        }
 
         $.each(items, function (index, item) {
             dropdown.append('<option value="' + item + '">' + item + '</option>');
