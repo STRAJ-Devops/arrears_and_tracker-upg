@@ -38,6 +38,8 @@
 @endsection
 
 @push('dashboard')
+
+    <script src="{{ asset('assets/js/custom-reverb.js') }}" type="module"></script>
     <style>
         .main-content {
             height: 100vh;

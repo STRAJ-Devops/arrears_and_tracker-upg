@@ -38,9 +38,19 @@ class ImportSalesAndArrearsJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('Importing sales and arrears data from CSV file...');
         // Get the file path
         $file = public_path('uploads/' . $this->file_name);
-
+        //iif the file does not exist, return an error
+        if (!file_exists($file)) {
+           //prnt an error in the cmd
+            Log::error('File does not exist');
+            //return an error
+            return response()->json(['error' => 'File does not exist'], 404);
+        } else {
+            //file found
+            Log::info('File found');
+        }
         // Read the CSV file
         $csv = array_map('str_getcsv', file($file));
 
@@ -51,26 +61,36 @@ class ImportSalesAndArrearsJob implements ShouldQueue
             PreviousEndMonth::truncate();
         }
 
+        Log::info('truncated arrears...');
+
+
         // Get the first row of the CSV file and the first column to get the string after "at"
         $first_row = $csv[0];
-        $first_column = trim(str_replace(' ', '-', \Illuminate\Support\Str::after($first_row[0], 'at')));
+        $first_column = trim(\Illuminate\Support\Str::after($first_row[0], 'at'));
+
+        $formatted_column = str_replace(' ', '-', $first_column);
 
         // Convert to date
-        $current_date = Carbon::parse($first_column)->format('M-y');
+        $current_date = Carbon::parse($formatted_column)->format('M-y');
 
         // Create or update the record where id = 1
         $upload_date = DB::table('upload_date')->updateOrInsert(
             ['id' => 1],
-            ['upload_date' => $current_date],
-            ['updated_at' => Carbon::now()]
+            ['upload_date' => $current_date]
         );
 
         if ($upload_date) {
             Log::info('The upload date has been updated successfully');
+        } else {
+            Log::error('Failed to update the upload date');
         }
 
         // Process each row in the CSV file starting from row 5
         for ($i = 5; $i < count($csv); $i++) {
+            if($i==15){
+                
+                event(new ImportCompleted('Sales and arrears import completed successfully.'));
+            }
             try {
                 // Extracting region_id from $csv[$i][0]
                 $regionData = explode('-', $csv[$i][0]);
@@ -181,10 +201,10 @@ class ImportSalesAndArrearsJob implements ShouldQueue
                 $customer_id_column = $csv[$i][7] == '' ? $csv[$i][12] : $csv[$i][7];
                 //get the customer data and save it to get the customer_id
                 //check if the customer exists by checking $csv[$i][7] or $csv[$i][12]
-                $customer = \App\Models\Customer::where('customer_id', $customer_id_column)->first();
+                $customer = Customer::where('customer_id', $customer_id_column)->first();
                 //if the customer does not exist, create a new customer
                 if (!$customer) {
-                    $customer = new \App\Models\Customer();
+                    $customer = new Customer();
                     $customer->customer_id = $customer_id_column;
                     $customer->names = $csv[$i][8] ?? "Unknown";
                     $customer->phone = $csv[$i][9] ?? 'Unknown';
@@ -273,9 +293,12 @@ class ImportSalesAndArrearsJob implements ShouldQueue
                 }
 
             } catch (\Exception $e) {
+                Log::error('Failed to process CSV. Please ensure the file format is correct. ' . $e->getMessage());
                 return response()->json(['error' => 'Failed to process CSV. Please ensure the file format is correct.', 'exception' => $e->getMessage()], 400);
             }
         }
+
+
         // After processing is done
         event(new ImportCompleted('Sales and arrears import completed successfully.'));
     }

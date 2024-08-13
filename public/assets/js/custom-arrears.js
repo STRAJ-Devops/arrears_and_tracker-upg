@@ -47,7 +47,7 @@ $(document).ready(function () {
     function fetchData(group) {
         // Fetch data based on the selected group
         $.ajax({
-            url: "/maturity-loans-group-by",
+            url: "/arrears-group-by",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

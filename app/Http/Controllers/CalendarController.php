@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Arrear;
 // Add Carbon
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CalendarController extends Controller
 {
@@ -17,11 +18,12 @@ class CalendarController extends Controller
     {
         $events = [];
 
-        $arrears = Arrear::join('customers', 'arrears.customer_id', '=', 'customers.customer_id')
-            ->select('arrears.next_repayment_date', 'arrears.customer_id', 'customers.names as customer_name')
-            ->get();
+        $arrear_groups = Arrear::where('lending_type', 'Group')
+        ->groupBy('group_id', 'next_repayment_date')
+        ->select('group_id', 'next_repayment_date', DB::raw('count(*) as group_count'))
+        ->get();
 
-        foreach ($arrears as $arrear) {
+        foreach ($arrear_groups as $arrear) {
             //if $arrear->next_repayment_date is "", set it to today
             if ($arrear->next_repayment_date == "") {
                 $arrear->next_repayment_date = date('Y-m-d');
@@ -31,7 +33,7 @@ class CalendarController extends Controller
             //then convert it back to string
 
             array_push($events, [
-                'title' => $arrear->customer_id . ' - ' . $arrear->customer_name,
+                'title' => $arrear->group_count . ' Group(s) to repay',
                 'start' => $next_repayment_date,
                 'end' => $next_repayment_date,
                 'className' => 'bg-warning',

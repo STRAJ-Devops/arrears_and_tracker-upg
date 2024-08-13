@@ -10,56 +10,36 @@
             <div class="card mb-4">
                 <div id="export-buttons-branch-performance"></div> <!-- Container for export buttons -->
                 <div class="card-body px-0 pt-0 pb-2">
-                    <div class="table-responsive p-0">
-                        <div class="row card-header pb-0 d-flex justify-content-between">
-                            <div class="col-md-9">
-                                <div class="form-group d-flex">
-                                    <label for="staff" class="mr-2">Group By</label>
-                                    <select class="form-control staff shadow-none" id="staff">
-                                        @if (Auth::user()->user_type == 5 || 4)
-                                            <option value="staff_id">Officer</option>
-                                            <option value="branch_id">Branch</option>
-                                            <option value="region_id">Region</option>
-                                            <option value="loan_product">Loan Product</option>
-                                            <option value="gender">Gender</option>
-                                            <option value="district">District</option>
-                                            <option value="sub_county">Sub County</option>
-                                            <option value="age">Age</option>
-                                            <option value="village">Village</option>
-                                            <option value="client">Client</option>
-                                        @elseif (Auth::user()->user_type == 1)
-                                            <option value="staff_id">Officer</option>
-                                            <option value="branch_id">Branch</option>
-                                            <option value="client">Client</option>
-                                        @endif
-                                    </select>
-                                </div>
+                    <div class="filters p-3">
+                        <div class="row">
+                            {{-- filter by heading --}}
+                            <div class="col-12">
+                                <h5 class="mb-0">Filter By</h5>
                             </div>
-                            <div class="col-md-3 text-center"> <!-- Added text-center class -->
-                                <div class="form-group">
-                                    <div class="d-flex justify-content-center">
-                                        <!-- Changed class to justify-content-center -->
-                                        <div id="export-buttons"></div> <!-- Container for export buttons -->
-                                    </div>
-                                </div>
+                            <div class="col-md-3">
+                                <select id="branchFilter" class="form-control shadow-none">
+                                    <option value="">All Branches</option>
+                                    <!-- Populate dynamically -->
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="productFilter" class="form-control">
+                                    <option value="">All Products</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="clientIdFilter" class="form-control shadow-none" placeholder="Client ID">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="phoneFilter" class="form-control shadow-none" placeholder="Phone Number">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" id="maturityDateFilter" class="form-control datepicker shadow-none" placeholder="Maturity Date">
                             </div>
                         </div>
+                    </div>
+                    <div class="table-responsive p-0">
                         <table id="maturity-loans" class="display responsive" style="width:100%">
-                            <tbody>
-                            <tfoot align="right">
-                                <tr>
-                                    <th colspan="1">Over all total</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -69,10 +49,6 @@
 
     @push('dashboard')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            var logged_user = {!! json_encode($logged_user) !!};
-        </script>
-
         <script src="{{ asset('assets/js/custom-maturity-loans.js') }}"></script>
     @endpush
 @endsection
