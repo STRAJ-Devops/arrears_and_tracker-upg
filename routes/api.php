@@ -43,5 +43,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('get-expected-repayments', [App\Http\Controllers\ExpectedController::class, 'group_by']);
     Route::post('upload-written-off-customers', [WrittenOffController::class, 'importWrittenOffs'])->name('upload-written-off-customers');
     Route::get('calendar', [App\Http\Controllers\API\CalendarController::class, 'getcalender'])->name('calendar');
-
+    Route::get('maturities', [App\Http\Controllers\API\MaturityLoanController::class, 'group_by'])->name('maturities');
 });

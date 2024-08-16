@@ -3,6 +3,9 @@
 @section('content')
 
     <div class="card">
+        <div class="card-header text-center text-light">
+            <h4>Upcoming Number of Groups To Repay</h4>
+        </div>
         <div class="card-body">
             <div id="calendar"></div>
         </div>

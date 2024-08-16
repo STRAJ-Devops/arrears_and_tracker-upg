@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Arrear;
 use Illuminate\Support\Facades\DB;
 
-
 class MaturityLoanController extends Controller
 {
-    public function index()
-    {
-        return view('maturity-loans');
-    }
     public function group_by(Request $request)
     {
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date') ?? date('M-y');
