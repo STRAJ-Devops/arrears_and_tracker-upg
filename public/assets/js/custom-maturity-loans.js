@@ -16,7 +16,7 @@ $(document).ready(function () {
 
     function populateTableHeaders(group) {
         var headers = {
-            "staff_id": ["Branch", "Client ID", "Names", "Phone Number", "Loan Product Name", "Loan amount Closing", "Maturity Date"],
+            "staff_id": ["Branch", "Client ID", "Names", "Phone Number", "Loan Product Name", "Loan Amount", "Maturity Date"],
         };
 
         var selectedHeaders = headers[group];
@@ -48,7 +48,7 @@ $(document).ready(function () {
                         item.names == "" ? 'N/A' : item.names,
                         item.phone == "" ? 'N/A' : item.phone,
                         item.product_name,
-                        '1000000',
+                        item.amount_disbursed.toLocaleString(),
                         item.maturity_date,
                     ];
 
