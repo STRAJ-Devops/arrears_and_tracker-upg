@@ -33,6 +33,6 @@ class ImportCompleted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('import-status');
+        return new PrivateChannel('import-status.1');
     }
 }

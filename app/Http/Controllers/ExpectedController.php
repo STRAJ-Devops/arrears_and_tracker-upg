@@ -129,7 +129,7 @@ class ExpectedController extends Controller
         $data = [];
 
         // Iterate through grouped arrears and calculate totals
-        foreach ($previous_arrears as $key => $arrear) {
+        foreach ($arrears as $key => $arrear) {
             //check if the key exists in the previous arrears and sum the $total_principal_arrears, $total_interest_arrears
             $previous_principal_arrears = 0;
             $previous_interest_arrears = 0;
@@ -137,7 +137,7 @@ class ExpectedController extends Controller
             $total_next_repayment_principal = 0;
             $total_next_repayment_interest = 0;
             $number_of_clients = 0;
-            if (isset($arrears[$key])) {
+            if (isset($previous_arrears[$key])) {
                 $previous_principal_arrears = $arrears[$key]->sum('principal_arrears');
                 $previous_interest_arrears = $arrears[$key]->sum('outstanding_interest');
                 $previous_outstanding_principal = $arrears[$key]->sum('outsanding_principal');
