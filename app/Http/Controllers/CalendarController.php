@@ -28,10 +28,6 @@ class CalendarController extends Controller
         $event_data = [];
 
         foreach ($arrear_groups as $arrear) {
-            // If next_repayment_date is empty, set it to today
-            if ($arrear->next_repayment_date == "") {
-                $arrear->next_repayment_date = date('Y-m-d');
-            }
             // Convert the next_repayment_date to "Y-m-d"
             $next_repayment_date = date('Y-m-d', strtotime($arrear->next_repayment_date));
 
