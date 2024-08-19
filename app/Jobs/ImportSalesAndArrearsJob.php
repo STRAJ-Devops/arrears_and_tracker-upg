@@ -9,10 +9,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use App\Events\ImportCompleted;
+use App\Mail\FileUploaded;
 use Carbon\Carbon;
 use App\Models\{Sale, Arrear, PreviousEndMonth, Branch, Officer, Product, District, Sub_County, Customer};
+
+use Illuminate\Support\Facades\Mail;
+
 
 class ImportSalesAndArrearsJob implements ShouldQueue
 {
@@ -301,7 +303,7 @@ class ImportSalesAndArrearsJob implements ShouldQueue
             }
         }
 
-
+        Mail::to('visionfundugandalmms@gmail.com')->send(new FileUploaded());
         // After processing is done
         // broadcast(new ImportCompleted('Sales and arrears import completed successfully.'));
     }
