@@ -94,10 +94,6 @@ class ImportSalesAndArrearsJob implements ShouldQueue
 
         // Process each row in the CSV file starting from row 5
         for ($i = 5; $i < count($csv); $i++) {
-            if($i==15){
-                event(new ImportCompleted('Sales and arrears import completed successfully.', $this->staff_id));
-                break;
-            }
             try {
                 // Extracting region_id from $csv[$i][0]
                 $regionData = explode('-', $csv[$i][0]);
