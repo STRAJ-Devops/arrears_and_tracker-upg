@@ -60,7 +60,7 @@ $(document).ready(function () {
             "district": ["District", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
             "sub_county": ["Sub County", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
             "village": ["Village", "Name", "Clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total", "Clients in Arrears"],
-            "client": ["Branch ID", "Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "DDA", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Expected Amount"],
+            "client": ["Branch ID", "Customer ID", "Customer Name", "Phone Number", "Disbursement Amount", "Outstanding Principal", "DDA", "Next Repayment Principal", "Next Repayment Interest", "Principal In Arrears", "Interest In Arrears", "Total Expected Amount", "Maturity Date"],
             "age": ["Age Bracket", "Number of clients", "Next Repayment Principal", "Principal In Arrears", "Total Expected Principal", "Next Repayment Interest", "Interest In Arrears", "Total Expected Interest", "Expected Total"],
         };
 
@@ -90,7 +90,7 @@ $(document).ready(function () {
                 var data = response.data;
                 var tbody = $('#arrears tbody');
                 var rows = [];
-                table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true, true]);
+                table.columns().visible([true, true, true, true, true, true, true, true, true, true, true, true, true, true])
                 table.clear().draw(); // Clear existing data before populating and redraw
 
                 $.each(data, function (index, item) {
@@ -107,11 +107,12 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([9, 10, 11]).visible(false);
+                        table.columns([9, 10, 11, 12]).visible(false);
                     } else if (group === 'loan_product') {
                         var row = [
                             item.names,
@@ -125,11 +126,12 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([9, 10, 11]).visible(false);
+                        table.columns([9, 10, 11, 12]).visible(false);
                     } else if (group === 'gender') {
                         var row = [
                             item.group_key,
@@ -142,11 +144,13 @@ $(document).ready(function () {
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             '',
                             '',
+                            '',
+                            '',
                             ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([9, 10, 11]).visible(false);
+                        table.columns([9, 10, 11, 12]).visible(false);
                     } else if (group === 'client') {
                         var row = [
                             item.branch_id,
@@ -164,6 +168,7 @@ $(document).ready(function () {
                             item.total_interest_arrears.toLocaleString(), // Pad with comma after every three digits
 
                             item.total_payment_amount.toLocaleString(), // Pad with comma after every three digits
+                            item.maturity_date??'N/A'
                         ];
                     } else {
                         var row = [
@@ -179,10 +184,11 @@ $(document).ready(function () {
                             item.expected_interest.toLocaleString(), // Pad with comma after every three digits
                             item.expected_total.toLocaleString(), // Pad with comma after every three digits
                             item.clients_in_arrears.toLocaleString(), // Pad with comma after every three digits
+                            ''
                         ];
 
                         //hide the last 3 columns
-                        table.columns([11]).visible(false);
+                        table.columns([11,12]).visible(false);
                     }
                     rows.push(row);
                 });
@@ -251,6 +257,7 @@ $(document).ready(function () {
                 { title: "" },
                 { title: "" },
                 { title: "" },
+                { title: "" },
                 { title: "" }
             ],
             //show sortable headers with arrows
@@ -295,7 +302,7 @@ $(document).ready(function () {
         });
 
         // Set initial visibility for columns
-        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true, true, true, true];
+        var initialColumnsVisibility = [true, true, true, true, true, true, true, true, true, true, true, true, true, true];
         table.columns().visible(initialColumnsVisibility);
 
         new $.fn.dataTable.Buttons(table, {

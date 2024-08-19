@@ -1,45 +1,64 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body px-4 pt-4 pb-2">
-                            <h2 class="text-center mb-4">Upload Sales and Arrears</h2>
-                            <form id="uploadForm" enctype="multipart/form-data" method="post">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="file" class="form-label">Choose File:</label>
-                                    <input type="file" name="upload_template_file" id="file" class="form-control">
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-primary btn-block">Upload</button>
-                                    </div>
-
-                                    <div class="col">
-                                        <a href="{{ url('truncate-arrears-and-sales') }}" class="btn btn-danger btn-block text-light" title="Add Branch Targets">
-                                            <i class="fa fa-trash" aria-hidden="true"></i> Truncate
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
-                            <div id="progress" class="progress mt-3" style="display: none;">
-                                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body px-4 pt-4 pb-2">
+                        <h2 class="text-center mb-4">Upload Sales and Arrears</h2>
+                        <form id="uploadForm" enctype="multipart/form-data" method="post">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Choose File:</label>
+                                <input type="file" name="upload_template_file" id="file" class="form-control">
                             </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                                </div>
 
+                                <div class="col">
+                                    <a href="{{ url('truncate-arrears-and-sales') }}"
+                                        class="btn btn-danger btn-block text-light" title="Add Branch Targets">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Truncate
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="progress" class="progress mt-3" style="display: none;">
+                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
+                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 @endsection
 
 @push('dashboard')
+<script type="module">
+    console.log('listening');
+    const userId = "{{ auth()->user()->staff_id }}";
 
-    <script src="{{ asset('assets/js/custom-reverb.js') }}" type="module"></script>
+    Echo.private(`import-status.${userId}`).listen('App.Events.ImportCompleted', (e) => {
+        console.log('listened..........');
+        Swal.fire({
+            icon: 'success',
+            title: 'Upload Successful',
+            text: e.message,
+            showConfirmButton: false,
+            timer: 10000 // Close alert after 10 seconds
+        });
+    });
+
+
+</script>
+
+
+
     <style>
         .main-content {
             height: 100vh;

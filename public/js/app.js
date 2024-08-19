@@ -2078,7 +2078,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 console.log('Hello World');
 
 // Listen for the event when the queue job completes
-Echo["private"]("import-status.".concat(1)) // Replace `userId` with the actual user ID variable
+Echo["private"]("import-status.1") // Replace `userId` with the actual user ID variable
 .listen('ImportCompleted', function (e) {
   toastr__WEBPACK_IMPORTED_MODULE_0___default().success(e.message, 'Import Completed');
   console.log(e.message);

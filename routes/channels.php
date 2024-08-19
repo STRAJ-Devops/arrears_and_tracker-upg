@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\Officer;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-
-Broadcast::channel('import-status.{userId}', function ($user) {
-    return $user->id === auth()->user()->id;
+Broadcast::channel('import-status.{id}', function (Officer $officer, $id) {
+    \Log::info("faithjdjdjd........");  // Log officer info for debugging
+    return true;
 });

@@ -252,7 +252,7 @@ class SaleController extends Controller
         }
 
         // Dispatch the job
-        ImportSalesAndArrearsJob::dispatch($file_name);
+        ImportSalesAndArrearsJob::dispatch($file_name, auth()->user()->staff_id);
 
         // Return a success message
         return response()->json(['message' => 'Sales and arrears import started successfully.'], 200);

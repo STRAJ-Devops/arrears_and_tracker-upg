@@ -19,16 +19,19 @@ class ImportSalesAndArrearsJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $file_name;
+    public $staff_id;
 
     /**
      * Create a new job instance.
      *
      * @param string $file_name
+     * @param int $staff_id
      * @return void
      */
-    public function __construct($file_name)
+    public function __construct($file_name, $staff_id)
     {
         $this->file_name = $file_name;
+        $this->staff_id = $staff_id;
     }
 
     /**
@@ -38,6 +41,10 @@ class ImportSalesAndArrearsJob implements ShouldQueue
      */
     public function handle()
     {
+        // assign all the memory to the job
+        ini_set('memory_limit', '-1');
+        //and execution time to 30  minutes
+        ini_set('max_execution_time', 1800);
         Log::info('Importing sales and arrears data from CSV file...');
         // Get the file path
         $file = public_path('uploads/' . $this->file_name);
@@ -88,8 +95,8 @@ class ImportSalesAndArrearsJob implements ShouldQueue
         // Process each row in the CSV file starting from row 5
         for ($i = 5; $i < count($csv); $i++) {
             if($i==15){
-                
-                event(new ImportCompleted('Sales and arrears import completed successfully.'));
+                event(new ImportCompleted('Sales and arrears import completed successfully.', $this->staff_id));
+                break;
             }
             try {
                 // Extracting region_id from $csv[$i][0]
@@ -300,7 +307,7 @@ class ImportSalesAndArrearsJob implements ShouldQueue
 
 
         // After processing is done
-        event(new ImportCompleted('Sales and arrears import completed successfully.'));
+        // broadcast(new ImportCompleted('Sales and arrears import completed successfully.'));
     }
 
     private function isLastDayOfMonth()

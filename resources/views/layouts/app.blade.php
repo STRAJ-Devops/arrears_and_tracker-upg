@@ -38,6 +38,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
