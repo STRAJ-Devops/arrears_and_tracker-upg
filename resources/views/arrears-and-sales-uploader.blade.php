@@ -39,7 +39,7 @@
 @endsection
 
 @push('dashboard')
-<script type="module">
+{{-- <script type="module">
     console.log('listening');
     const userId = "{{ auth()->user()->staff_id }}";
 
@@ -55,7 +55,7 @@
     });
 
 
-</script>
+</script> --}}
 
 
 
