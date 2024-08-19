@@ -97,6 +97,12 @@ class ConvertHtmlToCsvJob implements ShouldQueue
                     $date = Carbon::createFromFormat('d M Y', $csv[$i][32])->format('d-M-y');
                     $csv[$i][32] = $date;
                 }
+
+                // Convert and update column 32 if it exists
+                if (isset($csv[$i][31])) {
+                    $date = Carbon::createFromFormat('d M Y', $csv[$i][31])->format('d-M-y');
+                    $csv[$i][31] = $date;
+                }
             } catch (\Exception $e) {
                 // Handle the error, e.g., log the issue, skip the row, etc.
                 // For now, just skip invalid dates
