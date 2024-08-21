@@ -24,6 +24,8 @@ Route::post('written-of-customer-details', [App\Http\Controllers\API\WrittenOffC
 //upload template file
 Route::post('daily-upload', [App\Http\Controllers\API\SaleController::class, 'fileUpload'])->name('upload-template');
 
+Route::post('deploy', [App\Http\Controllers\DeploymentController::class, 'deploy']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('dashboard', [DashboardController::class, 'index']);
