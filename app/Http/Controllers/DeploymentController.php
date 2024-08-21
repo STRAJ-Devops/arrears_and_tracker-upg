@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Process;
 
 class DeploymentController extends Controller
 {
     public function deploy()
     {
-        //excute the shell script in public folder called deploy.sh
-        $output = shell_exec('sh '.base_path().'/public/deploy.sh');
+        //run deploy.sh in public folder
+        $process = Process::run(['sh', 'deploy.sh']);
 
         return response()->json([
-            'message' => 'deployed successfully',
-            'output' => $output
-        ], 200);
+            'message' => 'Deployment in progress',
+            'output' => $process->output(),
+            'success' => $process->successful(),
+            'failed' => $process->failed(),
+        ]);
     }
 }
