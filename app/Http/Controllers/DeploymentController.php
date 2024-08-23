@@ -8,8 +8,10 @@ class DeploymentController extends Controller
 {
     public function deploy()
     {
+        $deployScript = public_path('deploy.sh');
+
         //run deploy.sh in public folder
-        $process = Process::run(['sh', 'deploy.sh']);
+        $process = Process::run(['sh', $deployScript]);
 
         return response()->json([
             'message' => 'Deployment in progress',

@@ -39,15 +39,83 @@
     </select>
 </div>
 
+{{-- create a drop down for regions --}}
+<div class="form-group" id="regionDropdown">
+    <label for="region_id" class="control-label">{{ 'Region' }}</label>
+    <select class="form-control shadow-none" name="region_id" id="region_id">
+        @foreach ($regions as $region)
+            <option value="{{ $region->region_id }}"
+                {{ isset($user->region_id) && $user->region_id == $region->region_id ? 'selected' : '' }}>
+                {{ $region->region_name }}</option>
+        @endforeach
+    </select>
+</div>
+
+{{-- create a drop down for branches --}}
+<div class="form-group" id="branchDropdown">
+    <label for="branch_id" class="control-label">{{ 'Branch' }}</label>
+    <select class="form-control shadow-none" name="branch_id" id="branch_id">
+        @foreach ($branches as $branch)
+            <option value="{{ $branch->branch_id }}"
+                {{ isset($user->branch_id) && $user->branch_id == $branch->branch_id ? 'selected' : '' }}>
+                {{ $branch->branch_name }}</option>
+        @endforeach
+    </select>
+</div>
+
 <div class="form-group">
     <label for="password" class="control-label">{{ 'Password' }}</label>
     <input class="form-control" name="password" type="text" id="password"
         value="{{ isset($user->un_hashed_password) ? $user->un_hashed_password : '' }}">
     @if ($errors->has('password'))
-
         <span class="text-danger">{{ $errors->first('password') }}</span>
     @endif
 </div>
 <div class="form-group">
     <input class="button4" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>
+
+@push('dashboard')
+    <script>
+        $(document).ready(function() {
+            console.log('ready');
+            // hide the region dropdown initially
+            $('#regionDropdown').hide();
+            $('#user_type').on('change', function() {
+                var role = $(this).val();
+
+                // Hide all dropdowns initially
+                $('#branchDropdown').hide();
+                $('#regionDropdown').hide();
+
+                if (role == 1 || role == 2) {
+                    //hide region dropdown if role is 1 or 2 and show branch dropdown
+                    $('#branchDropdown').show();
+
+                    //if region dropdown is visible, hide it
+                    $('#regionDropdown').hide();
+
+                    //remove the drop down from the form
+                    $('#region_id').remove();
+                } else if (role == 3) {
+                    //show region dropdown if role is 3
+                    $('#regionDropdown').show();
+
+                    //if branch dropdown is visible, hide it
+                    $('#branchDropdown').hide();
+
+                    //remove the drop down from the form
+                    $('#branch_id').remove();
+                } else {
+                    //hide both dropdowns if role is not 1, 2 or 3
+                    $('#branchDropdown').hide();
+                    $('#regionDropdown').hide();
+
+                    //remove the drop down from the form
+                    $('#branch_id').remove();
+                    $('#region_id').remove();
+                }
+            });
+        });
+    </script>
+@endpush
