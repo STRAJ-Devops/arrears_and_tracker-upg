@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Officer;
 use Illuminate\Http\Request;
+use App\Models\Region;
+use App\Models\Branch;
 
 class OfficerController extends Controller
 {
@@ -23,8 +25,12 @@ class OfficerController extends Controller
 
     public function create()
     {
+        //get all regions
+        $regions = Region::all();
 
-        return view('users.create');
+        //get all branches
+        $branches = Branch::all();
+        return view('users.create', compact('regions', 'branches'));
     }
 
     public function store(Request $request)
@@ -39,6 +45,7 @@ class OfficerController extends Controller
             ]);
 
             $requestData = $request->all();
+            
             //un hash password
             $requestData['un_hashed_password'] = $requestData['password'];
             //hash password
