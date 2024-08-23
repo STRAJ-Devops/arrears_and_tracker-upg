@@ -1,0 +1,2 @@
+Do not run Composer as root/super user! See https://getcomposer.org/root for details
+Continue as root/super user [yes]? 
