@@ -11,7 +11,7 @@
               <div class="card mt-8">
                 <div class="card-header pb-0 text-left bg-transparent">
                   <img src="{{asset('assets/img/vfu_logo.png')}}" alt="vfu_logo" width="80%" height="80%" class="img-fluid">
-                  <p class="mb-0">Staff Login<br></p>
+                  <p class="mb-0">Staff Login Test<br></p>
                 </div>
                 <div class="card-body">
                   <form role="form" method="POST" action="/session">
