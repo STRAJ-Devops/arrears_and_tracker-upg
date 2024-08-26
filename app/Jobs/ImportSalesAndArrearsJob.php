@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Mail\FileUploaded;
 use Carbon\Carbon;
 use App\Models\{Sale, Arrear, PreviousEndMonth, Branch, Officer, Product, District, Sub_County, Customer};
+use App\Events\ImportCompleted;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -303,9 +304,9 @@ class ImportSalesAndArrearsJob implements ShouldQueue
             }
         }
 
-        Mail::to('visionfundugandalmms@gmail.com')->send(new FileUploaded());
+        // Mail::to('visionfundugandalmms@gmail.com')->send(new FileUploaded());
         // After processing is done
-        // broadcast(new ImportCompleted('Sales and arrears import completed successfully.'));
+        broadcast(new ImportCompleted('Sales and arrears import completed successfully.', $this->staff_id));
     }
 
     private function isLastDayOfMonth()

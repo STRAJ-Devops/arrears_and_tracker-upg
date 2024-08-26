@@ -15,6 +15,11 @@ use App\Models\Officer;
 */
 
 Broadcast::channel('import-status.{id}', function (Officer $officer, $id) {
-    \Log::info("faithjdjdjd........");  // Log officer info for debugging
-    return true;
+    \Log::info('Broadcasting on channel:', ['channel' => "import-status.{$id}"]);
+    return (int) $officer->staff_id === (int) $id;
+});
+
+Broadcast::channel('done.{id}', function (Officer $officer, $id) {
+    \Log::info('Broadcasting on channel:', ['channel' => "import-status.{$id}"]);
+    return (int) $officer->staff_id === (int) $id;
 });

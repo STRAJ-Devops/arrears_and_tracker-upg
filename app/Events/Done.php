@@ -2,28 +2,24 @@
 
 namespace App\Events;
 
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class ImportCompleted implements ShouldBroadcast
+class Done implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-    public $staffId;
-
     /**
      * Create a new event instance.
-     *
-     * @return void
      */
-    public function __construct($message, $staffId)
+    public function __construct()
     {
-        $this->message = $message;
-        $this->staffId = $staffId;
+        //
     }
 
     /**
@@ -33,10 +29,8 @@ class ImportCompleted implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        \Log::info('Broadcasting on channel-class:', ['channel' => "import-status.{$this->staffId}"]);
-
         return [
-            new PrivateChannel("import-status.{$this->staffId}")
+            new PrivateChannel('done.1'),
         ];
     }
 }

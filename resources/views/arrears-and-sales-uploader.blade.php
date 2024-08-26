@@ -39,23 +39,18 @@
 @endsection
 
 @push('dashboard')
-{{-- <script type="module">
+<script type="module">
     console.log('listening');
     const userId = "{{ auth()->user()->staff_id }}";
 
-    Echo.private(`import-status.${userId}`).listen('App.Events.ImportCompleted', (e) => {
-        console.log('listened..........');
-        Swal.fire({
-            icon: 'success',
-            title: 'Upload Successful',
-            text: e.message,
-            showConfirmButton: false,
-            timer: 10000 // Close alert after 10 seconds
-        });
+    console.log(userId);
+
+    Echo.private(`import-status.${userId}`).listen('ImportCompleted', (e) => {
+     console.log(e);
     });
 
 
-</script> --}}
+</script>
 
 
 
