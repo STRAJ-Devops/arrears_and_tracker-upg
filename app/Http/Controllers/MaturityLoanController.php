@@ -17,6 +17,8 @@ class MaturityLoanController extends Controller
     {
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date') ?? date('M-y');
 
+
+
         //get the next month to
         $nextMonthYear = date('M-y', strtotime($currentMonthYear . ' +1 month'));
 
