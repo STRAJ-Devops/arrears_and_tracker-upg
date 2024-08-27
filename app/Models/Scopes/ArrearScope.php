@@ -22,13 +22,13 @@ class ArrearScope implements Scope
             case 4:
                 break;
             case 3:
-                $builder->where('region_id', $user->region_id);
+                $builder->where('arrears.region_id', $user->region_id);
                 break;
             case 2:
-                $builder->where('branch_id', $user->branch_id);
+                $builder->where('arrears.branch_id', $user->branch_id);
                 break;
             case 1:
-                $builder->where('staff_id', $user->staff_id);
+                $builder->where('arrears.staff_id', $user->staff_id);
                 break;
         }
     }
