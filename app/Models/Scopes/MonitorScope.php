@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 class MonitorScope implements Scope
 {
-   /**
+    /**
      * Apply the scope to a given Eloquent query builder.
      */
     public function apply(Builder $builder, Model $model): void
@@ -24,10 +24,12 @@ class MonitorScope implements Scope
             case 4:
                 break;
             case 3:
-                $builder->where('region_id', $user->region_id);
+                $builder->join('officers', 'officers.staff_id', '=', 'monitors.staff_id')
+                    ->where('officers.region_id', $user->region_id);
                 break;
             case 2:
-                $builder->where('branch_id', $user->branch_id);
+                $builder->join('officers', 'officers.staff_id', '=', 'monitors.staff_id')
+                    ->where('officers.branch_id', $user->branch_id);
                 break;
             case 1:
                 $builder->where('staff_id', $user->staff_id);
