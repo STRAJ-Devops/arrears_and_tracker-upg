@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\Done;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,7 +14,7 @@ use App\Mail\FileUploaded;
 use Carbon\Carbon;
 use App\Models\{Sale, Arrear, PreviousEndMonth, Branch, Officer, Product, District, Sub_County, Customer};
 use App\Events\ImportCompleted;
-
+use App\Events\UploadProgress;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -97,6 +98,10 @@ class ImportSalesAndArrearsJob implements ShouldQueue
 
         // Process each row in the CSV file starting from row 5
         for ($i = 5; $i < count($csv); $i++) {
+            // just get the percentage of the progress
+            // $progress = ($i / count($csv)) * 100;
+            // broadcast the progress
+            // broadcast(new UploadProgress($progress));
             try {
                 // Extracting region_id from $csv[$i][0]
                 $regionData = explode('-', $csv[$i][0]);
@@ -304,9 +309,9 @@ class ImportSalesAndArrearsJob implements ShouldQueue
             }
         }
 
-        // Mail::to('visionfundugandalmms@gmail.com')->send(new FileUploaded());
+        Mail::to('visionfundugandalmms@gmail.com')->send(new FileUploaded());
         // After processing is done
-        broadcast(new ImportCompleted('Sales and arrears import completed successfully.', $this->staff_id));
+        broadcast(new Done());
     }
 
     private function isLastDayOfMonth()

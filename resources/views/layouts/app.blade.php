@@ -115,6 +115,41 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
+    @auth
+        <script type="module">
+            console.log('listening');
+            const userId = "{{ auth()->user()->staff_id }}";
+
+            // console.log(userId);
+
+            // Echo.private(`import-status.${userId}`).listen('ImportCompleted', (e) => {
+            //  console.log(e);
+            // });
+
+
+            Echo.channel(`done`)
+                .listen('Done', (e) => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Upload Successful',
+                        text: e.message,
+                        showConfirmButton: false,
+                        timer: 3000 // Close alert after 3 seconds
+                    });
+                });
+        </script>
+
+        {{-- <script type="module">
+            Echo.channel('upload-progress')
+                .listen('UploadProgress', (e) => {
+                    console.log('Upload Progress:', e.progress);
+
+                    // Update progress bar
+                    document.getElementById('progressBar').style.width = e.progress + '%';
+                    document.getElementById('progressBar').setAttribute('aria-valuenow', e.progress);
+                });
+        </script> --}}
+    @endauth
 </body>
 
 </html>

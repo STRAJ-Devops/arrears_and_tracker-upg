@@ -39,21 +39,6 @@
 @endsection
 
 @push('dashboard')
-<script type="module">
-    console.log('listening');
-    const userId = "{{ auth()->user()->staff_id }}";
-
-    console.log(userId);
-
-    Echo.private(`import-status.${userId}`).listen('ImportCompleted', (e) => {
-     console.log(e);
-    });
-
-
-</script>
-
-
-
     <style>
         .main-content {
             height: 100vh;
