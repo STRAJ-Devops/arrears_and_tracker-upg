@@ -17,6 +17,7 @@
                                     <label for="staff" class="mr-2">Group By</label>
                                     <select class="form-control staff shadow-none" id="staff">
                                         @if (Auth::user()->user_type == 5 || 4)
+                                            <option value="customer_id">Customer No</option>
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="region_id">Region</option>
@@ -28,6 +29,7 @@
                                             <option value="village">Village</option>
                                             <option value="client">Client</option>
                                         @elseif (Auth::user()->user_type == 1)
+                                            <option value="customer_id">Customer No</option>
                                             <option value="staff_id">Officer</option>
                                             <option value="branch_id">Branch</option>
                                             <option value="client">Client</option>

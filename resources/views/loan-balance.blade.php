@@ -1,26 +1,26 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-<div>
-    <form action="" class="row g-3 align-items-center">
-        <div class="col-1">
-            <label for="search-by" class="col-form-label">Search By:</label>
-        </div>
-        <div class="col-2">
-            <select class="form-select shadow-none" id="search-by" name="search-by">
-                <option value="customer_id">Customer ID</option>
-                <option value="phone">Phone</option>
-                <option value="name">Name</option>
-            </select>
-        </div>
-        <div class="col-7">
-            <input type="text" class="form-control shadow-none" id="search-customer">
-        </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-outline-warning btn-block p-1 mt-3" id="search-button">Search</button>
-        </div>
-    </form>
-</div>
+    <div>
+        <form action="" class="row g-3 align-items-center">
+            <div class="col-1">
+                <label for="search-by" class="col-form-label">Search By:</label>
+            </div>
+            <div class="col-2">
+                <select class="form-select shadow-none" id="search-by" name="search-by">
+                    <option value="customer_id">Customer ID</option>
+                    <option value="loan_id">Loan ID</option>
+                    {{-- <option value="officer_id">Officer ID</option> --}}
+                </select>
+            </div>
+            <div class="col-7">
+                <input type="text" class="form-control shadow-none" id="search-customer">
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-outline-warning btn-block p-1 mt-3" id="search-button">Search</button>
+            </div>
+        </form>
+    </div>
 
     <!-- Show the number of results -->
     <div id="result-count" class="mt-3 d-none">
@@ -73,6 +73,9 @@
             $('#search-button').click(function() {
                 const searchCustomerID = $('#search-customer').val();
 
+                console.log('clicked');
+                alert('start')
+
                 // Show spinner
                 $('#spinner').removeClass('d-none');
                 $('#customer-details').addClass('d-none');
@@ -81,7 +84,7 @@
 
                 setTimeout(function() {
                     $.ajax({
-                        url: 'customer-details', // Adjust the URL as needed
+                        url: 'loan-details', // Adjust the URL as needed
                         type: 'GET',
                         data: {
                             customer_id: searchCustomerID,
@@ -93,6 +96,8 @@
                         success: function(response) {
                             // Hide spinner
                             $('#spinner').addClass('d-none');
+
+                            console.log('done');
 
                             if (response.length > 0) {
                                 $('#search-result').addClass('d-none');
@@ -116,16 +121,24 @@
                         <div class="d-flex align-items-center">
                             <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                             <div>
-                                <h5 class="card-title">Customer Name: ${customer.customerName}</h5>
-                                <p class="card-text"><strong>Open Actual Bal:</strong> ${customer.openActualBal}</p>
-                                <p class="card-text"><strong>Working Bal:</strong> ${customer.workingBal}</p>
-                                <p class="card-text"><strong>Customer Number:</strong> ${customer.customerNumber}</p>
-                                <p class="card-text"><strong>Account Number:</strong> ${customer.accountNumber}</p>
+
+                                <h5 class="card-title">Customer Name: ${customer.customerId}</h5>
+                                <p class="card-text"><strong>Amount Disbursed:</strong> ${customer.drawDownAmount}</p>
+                                <p class="card-text"><strong>Outstanding Principal:</strong> ${customer.outstandingAmount} /=</p>
+                                <p class="card-text"><strong>Principal Arrears:</strong> ${customer.interestRate} </p>
+                                <p class="card-text"><strong>Interest Arrears:</strong> ${customer.loanProduct} </p>
+                                <p class="card-text"><strong>Total Arrears:</strong> ${customer.loanStatus} </p>
+                                <p class="card-text"><strong>No Of Days Late:</strong> ${customer.amountDueToday}</p>
+                                <p class="card-text"><strong>Contract Number:</strong> ${customer.contractNumber}</p>
+                                <p class="card-text"><strong>Maturity Date:</strong> ${customer.maturityDate}</p>
+                                <p class="card-text"><strong>Loan Officer:</strong> ${customer.loanOfficer}</p>
+                                <p class="card-text"><strong>Overdue Status:</strong> ${customer.overDueStatus}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+            // var customerCard = response
                                     $('#customer-details').append(customerCard);
                                 });
                             } else {

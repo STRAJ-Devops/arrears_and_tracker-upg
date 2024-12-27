@@ -28,6 +28,7 @@ use App\Http\Controllers\OfficerTargetController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WrittenOffController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MaturityLoanController;
 
 /*
@@ -58,6 +59,9 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::patch('update-role/{id}', [RoleController::class, 'update'])->name('update-role');
     Route::get('account-balance', function(){
         return view('account-balance');
+    });
+    Route::get('loan-balance', function(){
+        return view('loan-balance');
     });
     Route::get('group-details', function(){
         return view('group-details');
@@ -138,6 +142,7 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::post('add-activity-comment', [MonitorController::class, 'add_comment'])->name('add-activity-comment');
 
     Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
+    Route::get('loan-details', [LoanController::class, 'index'])->name('loan-details');
     Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
     Route::get('get-written-off-details', [WrittenOffController::class, 'customer'])->name('get-written-off-details');
     Route::get('truncate-arrears-and-sales', [SaleController::class, 'truncateArrearsAndSales'])->name('truncate-arrears-and-sales');
