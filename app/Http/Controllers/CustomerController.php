@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CustomerController extends Controller
 {
@@ -14,29 +16,30 @@ class CustomerController extends Controller
         $today = date('d-M-y');
         //check if search_by is customer_id, phone or name
 
-        if ($search_by == 'customer_id') {
-            $customer_details = DB::table('customers')
-                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-                ->join('products', 'arrears.product_id', '=', 'products.product_id')
-                ->selectRaw('
-                customers.names,
-                customers.phone,
-                products.product_name,
-                arrears.draw_down_balance,
-                arrears.savings_balance,
-                IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
-                (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                (arrears.principal_arrears + arrears.outstanding_interest +
-                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
-                ->where('customers.customer_id', $customer_id)
-                ->get();
-                //new update
+        // Fetch customer online and update Database or default to CoB data on RequestError
+        // Updated by Ahmed Abdulquyum
+        // Straj Resource Inc
 
-        } elseif ($search_by == 'phone') {
-            $customer_details = DB::table('customers')
-                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-                ->join('products', 'arrears.product_id', '=', 'products.product_id')
-                ->selectRaw('
+        try {
+            $search_criteria = ($search_by == 'customer_id') ? 'customerNo' : (($search_by == 'phone') ? 'phone' : (($search_by == 'name') ? 'name' : (($search_by == 'group_id') ? 'groupId' : null)));
+            if ($search_criteria) {
+                $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/account/'.$search_criteria.'/'.$customer_id);
+            } else {
+                return response()->json(['message' => 'Invalid search_by parameter'], 400);
+            }
+            if ($online_request->status() == 200) {
+                $response_data = $online_request->json()['data'];
+                return response()->json($response_data);
+            } else {
+                throw new Exception("");
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            if ($search_by == 'customer_id') {
+                $customer_details = DB::table('customers')
+                    ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                    ->join('products', 'arrears.product_id', '=', 'products.product_id')
+                    ->selectRaw('
                     customers.names,
                     customers.phone,
                     products.product_name,
@@ -45,45 +48,64 @@ class CustomerController extends Controller
                     IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
                     (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
                     (arrears.principal_arrears + arrears.outstanding_interest +
-                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
-                ->where('customers.phone', 'like', '%' . $customer_id . '%')
-                ->get();
-        } elseif ($search_by == 'name') {
-            $customer_details = DB::table('customers')
-                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-                ->join('products', 'arrears.product_id', '=', 'products.product_id')
-                ->selectRaw('
-                    customers.names,
-                    customers.phone,
-                    products.product_name,
-                    arrears.draw_down_balance,
-                    arrears.savings_balance,
-                    IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
-                    (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest +
-                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
-                ->where('customers.names', 'like', '%' . $customer_id . '%')
-                ->get();
-        } else if ($search_by == 'group_id') {
+                    IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
+                    ->where('customers.customer_id', $customer_id)
+                    ->get();
+                    //new update
 
-            $customer_details = DB::table('customers')
-                ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
-                ->join('products', 'arrears.product_id', '=', 'products.product_id')
-                ->selectRaw('
-                    customers.names,
-                    customers.phone,
-                    products.product_name,
-                    arrears.draw_down_balance,
-                    arrears.savings_balance,
-                    IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
-                    (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
-                    (arrears.principal_arrears + arrears.outstanding_interest +
-                IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
-                ->where('arrears.group_id', $customer_id)
-                ->get();
+            } elseif ($search_by == 'phone') {
+                $customer_details = DB::table('customers')
+                    ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                    ->join('products', 'arrears.product_id', '=', 'products.product_id')
+                    ->selectRaw('
+                        customers.names,
+                        customers.phone,
+                        products.product_name,
+                        arrears.draw_down_balance,
+                        arrears.savings_balance,
+                        IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
+                        (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
+                        (arrears.principal_arrears + arrears.outstanding_interest +
+                    IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
+                    ->where('customers.phone', 'like', '%' . $customer_id . '%')
+                    ->get();
+            } elseif ($search_by == 'name') {
+                $customer_details = DB::table('customers')
+                    ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                    ->join('products', 'arrears.product_id', '=', 'products.product_id')
+                    ->selectRaw('
+                        customers.names,
+                        customers.phone,
+                        products.product_name,
+                        arrears.draw_down_balance,
+                        arrears.savings_balance,
+                        IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
+                        (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
+                        (arrears.principal_arrears + arrears.outstanding_interest +
+                    IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
+                    ->where('customers.names', 'like', '%' . $customer_id . '%')
+                    ->get();
+            } else if ($search_by == 'group_id') {
 
-        } else {
-            return response()->json(['message' => 'Invalid search_by parameter'], 400);
+                $customer_details = DB::table('customers')
+                    ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
+                    ->join('products', 'arrears.product_id', '=', 'products.product_id')
+                    ->selectRaw('
+                        customers.names,
+                        customers.phone,
+                        products.product_name,
+                        arrears.draw_down_balance,
+                        arrears.savings_balance,
+                        IF(arrears.group_name = "", NULL, arrears.group_id) as group_id,
+                        (arrears.outsanding_principal + arrears.real_outstanding_interest) as loan_balance,
+                        (arrears.principal_arrears + arrears.outstanding_interest +
+                    IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
+                    ->where('arrears.group_id', $customer_id)
+                    ->get();
+
+            } else {
+                return response()->json(['message' => 'Invalid search_by parameter'], 400);
+            }
         }
 
         return response()->json($customer_details, 200);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Arrear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ArrearController extends Controller
 {
@@ -14,91 +15,105 @@ class ArrearController extends Controller
         return view('arrears', compact('logged_user'));
     }
 
+
     public function group_by(Request $request)
     {
-        // Check if request has group as parameter
-        if ($request->has('group')) {
-            if ($request->group == 'staff_id') {
-                $arrears = Arrear::all()->groupBy('staff_id');
-                $groupKey = 'staff_id';
-                $nameField = 'officer';
-                $nameAttribute = 'names';
-            } else if ($request->group == 'branch_id') {
-                $arrears = Arrear::all()->groupBy('branch_id');
-                $groupKey = 'branch_id';
-                $nameField = 'branch';
-                $nameAttribute = 'branch_name';
-            } else if ($request->group == 'region_id') {
-                $arrears = Arrear::all()->groupBy('region_id');
-                $groupKey = 'region_id';
-                $nameField = 'region';
-                $nameAttribute = 'region_name';
-            } else if ($request->group == 'loan_product') {
-                $arrears = Arrear::all()->groupBy('product_id');
-                $groupKey = 'product_id';
-                $nameField = 'product';
-                $nameAttribute = 'product_name';
-            } else if ($request->group == 'gender') {
-                $arrears = Arrear::all()->groupBy('gender');
-                $groupKey = 'gender';
-                $nameField = 'gender';
-                $nameAttribute = "None";
-            } else if ($request->group == 'district') {
-                $arrears = Arrear::all()->groupBy('district_id');
-                $groupKey = 'district_id';
-                $nameField = 'district';
-                $nameAttribute = 'district_name';
-            } else if ($request->group == 'sub_county') {
-                $arrears = Arrear::all()->groupBy('subcounty_id');
-                $groupKey = 'subcounty_id';
-                $nameField = 'sub_county';
-                $nameAttribute = 'subcounty_name';
-            } else if ($request->group == 'village') {
-                $arrears = Arrear::all()->groupBy('village_id');
-                $groupKey = 'village_id';
-                $nameField = 'village';
-                $nameAttribute = 'village_name';
-            } else if ($request->group == 'age') {
-                $arrears = Arrear::where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
-                    $age = $arrear->number_of_days_late;
-                    if ($age >= 1 && $age <= 30) {
-                        return '1-30';
-                    } elseif ($age >= 31 && $age <= 60) {
-                        return '31-60';
-                    } elseif ($age >= 61 && $age <= 90) {
-                        return '61-90';
-                    } elseif ($age >= 91 && $age <= 120) {
-                        return '91-120';
-                    } elseif ($age >= 121 && $age <= 150) {
-                        return '121-150';
-                    } elseif ($age >= 151 && $age <= 180) {
-                        return '151-180';
-                    } else {
-                        return '180+';
-                    }
-                });
-                $groupKey = 'age';
-                $nameField = null;
-                $nameAttribute = null;
-            } else if ($request->group == 'client') {
-                // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
-                $arrears = Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
-                $groupKey = 'client_id';
-                $nameField = 'customer';
-                $nameAttribute = 'names';
-            } else {
-                // Default to group by staff_id
-                $arrears = Arrear::all()->groupBy('staff_id');
-                $groupKey = 'staff_id';
-                $nameField = 'officer';
-                $nameAttribute = 'names';
+        $request_group = $request->group;
+
+        try {
+            //code...
+            $online_response = Http::get();
+            if ($online_response->status() == 200) {
+                $response_data = $online_response->body();
             }
-        } else {
-            // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = Arrear::all()->groupBy('staff_id');
-            $groupKey = 'staff_id';
-            $nameField = 'officer';
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            // Check if request has group as parameter
+            if ($request->has('group')) {
+                if ($request->group == 'staff_id') {
+                    $arrears = Arrear::all()->groupBy('staff_id');
+                    $groupKey = 'staff_id';
+                    $nameField = 'officer';
+                    $nameAttribute = 'names';
+                } else if ($request->group == 'branch_id') {
+                    $arrears = Arrear::all()->groupBy('branch_id');
+                    $groupKey = 'branch_id';
+                    $nameField = 'branch';
+                    $nameAttribute = 'branch_name';
+                } else if ($request->group == 'region_id') {
+                    $arrears = Arrear::all()->groupBy('region_id');
+                    $groupKey = 'region_id';
+                    $nameField = 'region';
+                    $nameAttribute = 'region_name';
+                } else if ($request->group == 'loan_product') {
+                    $arrears = Arrear::all()->groupBy('product_id');
+                    $groupKey = 'product_id';
+                    $nameField = 'product';
+                    $nameAttribute = 'product_name';
+                } else if ($request->group == 'gender') {
+                    $arrears = Arrear::all()->groupBy('gender');
+                    $groupKey = 'gender';
+                    $nameField = 'gender';
+                    $nameAttribute = "None";
+                } else if ($request->group == 'district') {
+                    $arrears = Arrear::all()->groupBy('district_id');
+                    $groupKey = 'district_id';
+                    $nameField = 'district';
+                    $nameAttribute = 'district_name';
+                } else if ($request->group == 'sub_county') {
+                    $arrears = Arrear::all()->groupBy('subcounty_id');
+                    $groupKey = 'subcounty_id';
+                    $nameField = 'sub_county';
+                    $nameAttribute = 'subcounty_name';
+                } else if ($request->group == 'village') {
+                    $arrears = Arrear::all()->groupBy('village_id');
+                    $groupKey = 'village_id';
+                    $nameField = 'village';
+                    $nameAttribute = 'village_name';
+                } else if ($request->group == 'age') {
+                    $arrears = Arrear::where('number_of_days_late', '>', '0')->get()->groupBy(function ($arrear) {
+                        $age = $arrear->number_of_days_late;
+                        if ($age >= 1 && $age <= 30) {
+                            return '1-30';
+                        } elseif ($age >= 31 && $age <= 60) {
+                            return '31-60';
+                        } elseif ($age >= 61 && $age <= 90) {
+                            return '61-90';
+                        } elseif ($age >= 91 && $age <= 120) {
+                            return '91-120';
+                        } elseif ($age >= 121 && $age <= 150) {
+                            return '121-150';
+                        } elseif ($age >= 151 && $age <= 180) {
+                            return '151-180';
+                        } else {
+                            return '180+';
+                        }
+                    });
+                    $groupKey = 'age';
+                    $nameField = null;
+                    $nameAttribute = null;
+                } else if ($request->group == 'client') {
+                    // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
+                    $arrears = Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
+                    $groupKey = 'client_id';
+                    $nameField = 'customer';
+                    $nameAttribute = 'names';
+                } else {
+                    // Default to group by staff_id
+                    $arrears = Arrear::all()->groupBy('staff_id');
+                    $groupKey = 'staff_id';
+                    $nameField = 'officer';
+                    $nameAttribute = 'names';
+                }
+            } else {
+                // Default to group by staff_id if 'group' parameter is not provided
+                $arrears = Arrear::all()->groupBy('staff_id');
+                $groupKey = 'staff_id';
+                $nameField = 'officer';
+            }
         }
+
 
         // Initialize data array
         $data = [];
