@@ -13,6 +13,7 @@ class CommentController extends Controller
         //get comments where request customer_id
         $comments = Comment::where('customer_id', request()->customer_id)->get();
 
+        // 
         return response()->json(['comments' => $comments], 200);
     }
 
