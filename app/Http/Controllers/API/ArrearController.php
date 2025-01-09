@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Arrear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ArrearController extends Controller
 {
@@ -137,5 +138,28 @@ class ArrearController extends Controller
 
         // Return JSON response with data and success message
         return response()->json(['data' => $data, 'message' => 'success'], 200);
+    }
+
+    public function online_group_by(Request $request)
+    {
+        $search_payload = $request->customer_id;
+        $search_by = $request->search_by;
+        if ($search_by == 'customer_id') {
+            $search_criteria = 'customerNo';
+        } elseif ($search_by == 'contract') {
+            $search_criteria = 'contractNo';
+        } elseif ($search_by == 'officer') {
+            $search_criteria = 'officerNo';
+        } else {
+            $search_criteria = 'customerNo';
+        }
+
+        $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/arrears/'.$search_criteria.'/'.$search_payload);
+
+        if ($online_request->successful()) {
+            return response()->json($online_request->json()['data']);
+        } else {
+            return response()->json("Not found - ".$search_criteria, 400);
+        }
     }
 }

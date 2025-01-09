@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CustomerController extends Controller
 {
@@ -12,6 +13,7 @@ class CustomerController extends Controller
         $customer_id = $request->customer_id;
         $search_by = $request->search_by;
         $today = date('d-M-y');
+
         //check if search_by is customer_id, phone or name
 
         if ($search_by == 'customer_id') {

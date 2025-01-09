@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CustomerController extends Controller
 {
@@ -151,6 +152,30 @@ class CustomerController extends Controller
         }
 
         return response()->json($customer_details, 200);
+    }
+
+    public function online_customer(Request $request)
+    {
+        // attempt to fetch data online
+        $search_by = $request->search_by;
+        $search_payload = $request->customer_id;
+        if ($search_by == 'customer_id') {
+            $search_criteria = 'customerNo';
+        } elseif ($search_by == 'phone') {
+            $search_criteria = 'phone';
+        } elseif ($search_by == 'group_id') {
+            $search_criteria = 'groupId';
+        } else {
+            $search_criteria = 'customerNo';
+        }
+
+        $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
+
+        if ($online_request->successful()) {
+            return response()->json($online_request->json()['data']);
+        } else {
+            return response()->json("Not found - ".$search_criteria, 400);
+        }
     }
 
 }
