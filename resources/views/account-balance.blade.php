@@ -81,6 +81,7 @@
                 $('#customer-details').addClass('d-none');
                 $('#search-result').addClass('d-none');
                 $('#result-count').addClass('d-none'); // Hide result count initially
+                console.log('Starting search...');
 
                 setTimeout(function() {
                     $.ajax({
@@ -97,8 +98,11 @@
                             // Hide spinner
                             $('#spinner').addClass('d-none');
                             $('#info').addClass('d-none');
+                            console.log('Online found');
+                            console.log(response);
 
                             if (response.length > 0) {
+                                console.log('Data found');
                                 $('#search-result').addClass('d-none');
                                 $('#customer-details').removeClass('d-none');
 
@@ -112,31 +116,35 @@
                                 // Loop through each customer detail and append it to the container
                                 response.forEach(function(customer) {
                                     var customerCard = `
-                <div class="card mt-3">
-                    <div class="card-header text-white" style="background-color: orange">
-                        Customer Details
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
-                            <div>
+                                        <div class="card mt-3">
+                                            <div class="card-header text-white" style="background-color: orange">
+                                                Customer Details
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
+                                                    <div>
 
-                                <p class="card-text"><strong>Product:</strong> ${customer.product}</p>
-                                <p class="card-text"><strong>Draw Down Balance:</strong> ${(customer.drawDownBalance)} </p>
-                                <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${(customer.compSavingsBal)} </p>
-                                <p class="card-text"><strong>Loan Balance:</strong> ${(customer.loanBal)} </p>
-                                <p class="card-text"><strong>Amount Due Today:</strong> ${(customer.amountDueToday)} </p>
-                                <p class="card-text"><strong>Phone:</strong> ${(customer.phoneNo??'N/A')}</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.groupId??'N/A'}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+                                                        <p class="card-text"><strong>Product:</strong> ${customer.product}</p>
+                                                        <p class="card-text"><strong>Draw Down Balance:</strong> ${(customer.drawDownBalance)} </p>
+                                                        <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${(customer.compSavingsBal)} </p>
+                                                        <p class="card-text"><strong>Loan Balance:</strong> ${(customer.loanBal)} </p>
+                                                        <p class="card-text"><strong>Amount Due Today:</strong> ${(customer.amountDueToday)} </p>
+                                                        <p class="card-text"><strong>Phone:</strong> ${(customer.phoneNo??'N/A')}</p>
+                                                        <p class="card-text"><strong>Group ID:</strong> ${customer.groupId??'N/A'}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
                                     $('#customer-details').append(customerCard);
                                 });
                             } else {
-
+                                $('#customer-details').addClass(
+                                    'd-none');
+                                $('#search-result').removeClass(
+                                    'd-none').html(
+                                    '<p>Empty response</p>');
                             }
                         },
 
@@ -180,27 +188,27 @@
                                         response.forEach(function(
                                             customer) {
                                             var customerCard = `
-                            <div class="card mt-3">
-                                <div class="card-header text-white" style="background-color: orange">
-                                    Customer Details
-                                </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
-                            <div>
-                                <h5 class="card-title">Customer Name: ${customer.names}</h5>
-                                <p class="card-text"><strong>Product:</strong> ${customer.product_name}</p>
-                                <p class="card-text"><strong>Draw Down Balance:</strong> ${Number(customer.draw_down_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${Number(customer.savings_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Amount Due Today:</strong> ${Number(customer.amount_due).toLocaleString()} /=</p>
-                                <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)}</p>
-                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id??'N/A'}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+                                                <div class="card mt-3">
+                                                    <div class="card-header text-white" style="background-color: orange">
+                                                        Customer Details
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
+                                                            <div>
+                                                                <h5 class="card-title">Customer Name: ${customer.names}</h5>
+                                                                <p class="card-text"><strong>Product:</strong> ${customer.product_name}</p>
+                                                                <p class="card-text"><strong>Draw Down Balance:</strong> ${Number(customer.draw_down_balance).toLocaleString()} /=</p>
+                                                                <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${Number(customer.savings_balance).toLocaleString()} /=</p>
+                                                                <p class="card-text"><strong>Loan Balance:</strong> ${Number(customer.loan_balance).toLocaleString()} /=</p>
+                                                                <p class="card-text"><strong>Amount Due Today:</strong> ${Number(customer.amount_due).toLocaleString()} /=</p>
+                                                                <p class="card-text"><strong>Phone:</strong> ${Number(customer.phone)}</p>
+                                                                <p class="card-text"><strong>Group ID:</strong> ${customer.group_id??'N/A'}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
                                             $('#customer-details')
                                                 .append(
                                                     customerCard
