@@ -9,43 +9,54 @@ use App\Models\OfficerTarget;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+
 class DashboardController extends Controller
 {
     public function index()
     {
+        //fetch data on request
+        $request = Http::get('https://5ac9-102-88-110-129.ngrok-free.app/crmapi/v1/dashboard/data');
+        // $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
+
+        $data = $request->successful() ? $request->json(['data']) : null;
+
+        //get the user type and staff id
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
 
-        $outstanding_principal = Arrear::sum('outsanding_principal');
+        $outstanding_principal =  (int) $data['outstandingPrincipal'] ?? Arrear::sum('outsanding_principal');
 
-        $outstanding_interest = Arrear::sum('outstanding_interest');
+        $outstanding_interest = (int) $data['interestArrears'] ?? Arrear::sum('outstanding_interest');
 
-        $principal_arrears = Arrear::sum('principal_arrears');
+        $principal_arrears = (int) $data['principalArrears'] ?? Arrear::sum('principal_arrears');
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = Arrear::where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = $data['noOfSolidarityMembers'] ?? Arrear::where('product_id', 21070)->sum('number_of_group_members');
         //add AW column
-        $number_of_female_borrowers = Sale::where('gender', 'female')->count() + Sale::where('product_id', 21070)->sum('number_of_women');
+        $number_of_female_borrowers = (int) $data['noOfWomen'] ?? Sale::where('gender', 'female')->count() + Sale::where('product_id', 21070)->sum('number_of_women');
 
-        $number_of_children = Sale::sum('number_of_children');
+        $number_of_children = (int) $data['noOfChildren'] ?? Sale::sum('number_of_children');
 
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
-        $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
-        $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
+        $total_disbursements_this_month = $data['newLoans'] ?? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
+        $number_of_clients = (int) $data['noOfClients'] ?? Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
         $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
         $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
-        $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
+        $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par') ?? 0;
 
-        $par_30_per = $outstanding_principal == 0 ? 0 : (($par_30_days / $outstanding_principal) * 100);
+        $par_30_per = 0;
+        // $par_30_per = ($outstanding_principal == 0) ? 0 : (($par_30_days / $outstanding_principal) * 100);
 
         //get pa 1 day that is sum of par for all arrears that are more than 1 day late
-        $par_1_days = Arrear::sum('par');
+        $par_1_days = Arrear::sum('par') ?? 0;
 
-        $par_1_per = $outstanding_principal == 0 ? 0 : (($par_1_days / $outstanding_principal) * 100);
+        $par_1_per = 0;
+        // $par_1_per = ($outstanding_principal == 0) ? 0 : (($par_1_days / $outstanding_principal) * 100);
 
         //get portifolio performance percentage
         //get officer target amount

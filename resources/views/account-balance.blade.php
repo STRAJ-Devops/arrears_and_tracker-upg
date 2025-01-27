@@ -99,7 +99,7 @@
                             $('#spinner').addClass('d-none');
                             $('#info').addClass('d-none');
                             console.log('Online found');
-                            console.log(response);
+                            console.log(url);
 
                             if (response.length > 0) {
                                 console.log('Data found');
