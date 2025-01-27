@@ -1,5 +1,8 @@
 @extends('layouts.user_type.auth')
 @section('content')
+
+    <div id="result"></div>
+
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
@@ -8,9 +11,8 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Outstanding Principal</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="outstanding_principal">
                                     {{ number_format($data['outstanding_principal'], 0, '.', ',') }}
-
                                 </h5>
                             </div>
                         </div>
@@ -30,7 +32,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">New Loans</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="total_disbursements">
                                     {{ number_format($data['total_disbursements'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -51,7 +53,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Principal In Arrears</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="principal_arrears">
                                     {{ number_format($data['principal_arrears'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -72,7 +74,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Interest In Arrears</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="outstanding_interest">
                                     {{ number_format($data['outstanding_interest'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -93,7 +95,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Women</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_female_borrowers">
                                     {{ number_format($data['number_of_female_borrowers'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -114,7 +116,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Children</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_children">
                                     {{ number_format($data['number_of_children'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -135,7 +137,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Clients</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_clients">
                                     {{ number_format($data['number_of_clients'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -156,7 +158,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Groups</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_groups">
                                     {{ number_format($data['number_of_groups'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -177,7 +179,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Members</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_individuals">
                                     {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -198,7 +200,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">SGL</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="sgl">
                                     {{ number_format($data['sgl'], 0, '.', ',') }}
                                 </h5>
                             </div>
@@ -219,7 +221,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>1DAY</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="par_1_days">
                                     {{ $data['par_1_days'] }}%
                                 </h5>
                             </div>
@@ -240,7 +242,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>30DAYS</p>
-                                <h5 class="font-weight-bolder mb-0 text-nowrap">
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="par_30_days">
                                     {{ $data['par_30_days'] }}%
                                 </h5>
                             </div>
@@ -266,7 +268,7 @@
                                     <div class="progress-bar bg-gradient-warning progress-bar-custom" role="progressbar"
                                         style="width: {{ $data['officer_performance'] }}%;"
                                         aria-valuenow="{{ $data['officer_performance'] }}" aria-valuemin="0"
-                                        aria-valuemax="100">
+                                        aria-valuemax="100" id="officer_performance">
                                         {{ $data['officer_performance'] }}%
                                     </div>
                                 </div>
@@ -294,7 +296,7 @@
                                     <div class="progress-bar bg-gradient-warning progress-bar-custom" role="progressbar"
                                         style="width: {{ $data['clients_performance'] }}%;"
                                         aria-valuenow="{{ $data['clients_performance'] }}" aria-valuemin="0"
-                                        aria-valuemax="100">
+                                        aria-valuemax="100" id="clients_performance">
                                         {{ $data['clients_performance'] }}%
                                     </div>
                                 </div>
@@ -323,6 +325,13 @@
             </div>
         </div>
     </div>
+    <div id="overlay" class="d-none" style="inset: 0; background-color: white; position: absolute">
+        <div id="spinner" class="text-primary d-none" role="status"
+            style="width: 3rem; height: 3rem; display: block; color: orange; margin: 0 auto;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     @if (auth()->user()->role == 5)
         <div class="row">
             <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
@@ -363,5 +372,40 @@
             var userRole = {!! json_encode(auth()->user()->role) !!};
         </script>
         <script src="{{ asset('assets/js/custom-dashboard.js?v=' . time()) }}"></script>
+
+        {{-- push api request on startup to 'dashboard' --}}
+        <script>
+            $(document).ready(function() {
+                $('#search-button').click(function() {
+                    const searchCustomerID = $('#search-customer').val();
+
+                    // Show spinner && overlay
+                    $('#spinner').addClass('d-none');
+                    $('#overlay').addClass('d-none');
+                    console.log('Starting search...');
+
+                    setTimeout(function() {
+                        $.ajax({
+                            url: '/api/online-customer-details', // Url for online data
+                            type: 'GET',
+                            data: {
+                                customer_id: searchCustomerID,
+                                search_by: $('#search-by').val()
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                // Hide spinner
+                                $('#spinner').removeClass('d-none');
+                                $('#info').removeClass('d-none');
+                                console.log('Online found');
+
+                            }
+                        })
+                    })
+                })
+            })
+        </script>
     @endpush
 @endsection
