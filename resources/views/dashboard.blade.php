@@ -1,6 +1,5 @@
 @extends('layouts.user_type.auth')
 @section('content')
-
     <div id="result"></div>
 
     <div class="row">
@@ -376,33 +375,26 @@
         {{-- push api request on startup to 'dashboard' --}}
         <script>
             $(document).ready(function() {
-                $('#search-button').click(function() {
-                    const searchCustomerID = $('#search-customer').val();
 
-                    // Show spinner && overlay
-                    $('#spinner').addClass('d-none');
-                    $('#overlay').addClass('d-none');
-                    console.log('Starting search...');
+                // Show spinner && overlay
+                $('#spinner').addClass('d-none');
+                $('#overlay').addClass('d-none');
+                console.log('Starting search...');
 
-                    setTimeout(function() {
-                        $.ajax({
-                            url: '/api/online-customer-details', // Url for online data
-                            type: 'GET',
-                            data: {
-                                customer_id: searchCustomerID,
-                                search_by: $('#search-by').val()
-                            },
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(response) {
-                                // Hide spinner
-                                $('#spinner').removeClass('d-none');
-                                $('#info').removeClass('d-none');
-                                console.log('Online found');
-
-                            }
-                        })
+                setTimeout(function() {
+                    $.ajax({
+                        url: '/api/dashboard', // Url for online data
+                        type: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // Hide spinner
+                            $('#spinner').removeClass('d-none');
+                            $('#info').removeClass('d-none');
+                            console.log('Online found');
+                            $('#outstanding_principal').innerHTML = "";
+                        }
                     })
                 })
             })
