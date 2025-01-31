@@ -4,6 +4,355 @@
 
     <div id="dashboard_body"></div>
 
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Outstanding Principal</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="outstanding_principal">
+                                    {{ number_format($data['outstanding_principal'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">New Loans</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="total_disbursements">
+                                    {{ number_format($data['total_disbursements'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Principal In Arrears</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="principal_arrears">
+                                    {{ number_format($data['principal_arrears'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Interest In Arrears</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="outstanding_interest">
+                                    {{ number_format($data['outstanding_interest'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Women</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_female_borrowers">
+                                    {{ number_format($data['number_of_female_borrowers'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Children</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_children">
+                                    {{ number_format($data['number_of_children'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Clients</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_clients">
+                                    {{ number_format($data['number_of_clients'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Groups</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_groups">
+                                    {{ number_format($data['number_of_groups'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Solidarity Members</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="number_of_individuals">
+                                    {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">SGL</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="sgl">
+                                    {{ number_format($data['sgl'], 0, '.', ',') }}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>1DAY</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="par_1_days">
+                                    {{ $data['par_1_days'] }}%
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">PAR>30DAYS</p>
+                                <h5 class="font-weight-bolder mb-0 text-nowrap" id="par_30_days">
+                                    {{ $data['par_30_days'] }}%
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mt-4 targets-div">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Portfolio Progress</p>
+                                <div class="progress" style="height: 25px">
+                                    <div class="progress-bar bg-gradient-warning progress-bar-custom" role="progressbar"
+                                        style="width: {{ $data['officer_performance'] }}%;"
+                                        aria-valuenow="{{ $data['officer_performance'] }}" aria-valuemin="0"
+                                        aria-valuemax="100" id="officer_performance">
+                                        {{ $data['officer_performance'] }}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-sm-6 mt-4 targets-div">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Number of clients Progress</p>
+                                <div class="progress" style="height: 25px">
+                                    <div class="progress-bar bg-gradient-warning progress-bar-custom" role="progressbar"
+                                        style="width: {{ $data['clients_performance'] }}%;"
+                                        aria-valuenow="{{ $data['clients_performance'] }}" aria-valuemin="0"
+                                        aria-valuemax="100" id="clients_performance">
+                                        {{ $data['clients_performance'] }}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="arrears-chart" width="300" height="150"></canvas>
+            </div>
+        </div>
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4 mt-4">
+            <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                <canvas id="targets-sales-chart" width="300" height="150"></canvas>
+            </div>
+        </div>
+    </div>
+    <div id="overlay" class="d-none"
+        style="inset: 0; background-color: white; position: absolute; width: 100vw; height: 100vh">
+        <div id="spinner" class="text-primary d-none" role="status"
+            style="width: 3rem; height: 3rem; display: block; color: orange; margin: 0 auto;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    @if (auth()->user()->role == 5)
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
+                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                    <canvas id="product-sales-targets" width="600" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (auth()->user()->role == 5)
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
+                <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
+                    <canvas id="branch-sales-targets" width="600" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @push('dashboard')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
             integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
