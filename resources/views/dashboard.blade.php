@@ -2,7 +2,53 @@
 @section('content')
     <div id="result"></div>
 
-    <div class="row">
+    <div id="dashboard_body"></div>
+
+    @push('dashboard')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+            integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            Chart.register(ChartDataLabels);
+
+            var productLabels = {!! json_encode($data['product_labels']) !!};
+            var productSales = {!! json_encode($data['product_sales']) !!};
+            var productTargets = {!! json_encode($data['product_targets']) !!};
+            var branchLabels = {!! json_encode($data['branch_labels']) !!};
+            var branchSales = {!! json_encode($data['branch_sales']) !!};
+            var branchTargets = {!! json_encode($data['branch_targets']) !!};
+            var outstandingPrincipal = {!! json_encode($data['outstanding_principal']) !!};
+            var PrincipalInArrears = {!! json_encode($data['principal_arrears']) !!};
+            var totalTargets = {!! json_encode($data['total_targets']) !!};
+            var totalSales = {!! json_encode($data['total_disbursements']) !!};
+
+            var userRole = {!! json_encode(auth()->user()->role) !!};
+        </script>
+        <script src="{{ asset('assets/js/custom-dashboard.js?v=' . time()) }}"></script>
+
+        {{-- push api request on startup to 'dashboard' --}}
+        <script>
+            $(document).ready(function() {
+
+                // Show spinner && overlay
+                $('#spinner').addClass('d-none');
+                $('#overlay').addClass('d-none');
+                console.log('Starting search...');
+
+                setTimeout(function() {
+                    $.ajax({
+                        url: '/api/dashboard', // Url for online data
+                        type: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // Hide spinner
+                            $('#spinner').removeClass('d-none');
+                            $('#info').removeClass('d-none');
+                            console.log('Online found');
+                            var dasboard_body = `<div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
@@ -324,7 +370,7 @@
             </div>
         </div>
     </div>
-    <div id="overlay" class="d-none" style="inset: 0; background-color: white; position: absolute">
+    <div id="overlay" class="d-none" style="inset: 0; background-color: white; position: absolute; width: 100vw; height: 100vh">
         <div id="spinner" class="text-primary d-none" role="status"
             style="width: 3rem; height: 3rem; display: block; color: orange; margin: 0 auto;">
             <span class="visually-hidden">Loading...</span>
@@ -348,52 +394,8 @@
                 </div>
             </div>
         </div>
-    @endif
-    @push('dashboard')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
-            integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-        <script>
-            Chart.register(ChartDataLabels);
-
-            var productLabels = {!! json_encode($data['product_labels']) !!};
-            var productSales = {!! json_encode($data['product_sales']) !!};
-            var productTargets = {!! json_encode($data['product_targets']) !!};
-            var branchLabels = {!! json_encode($data['branch_labels']) !!};
-            var branchSales = {!! json_encode($data['branch_sales']) !!};
-            var branchTargets = {!! json_encode($data['branch_targets']) !!};
-            var outstandingPrincipal = {!! json_encode($data['outstanding_principal']) !!};
-            var PrincipalInArrears = {!! json_encode($data['principal_arrears']) !!};
-            var totalTargets = {!! json_encode($data['total_targets']) !!};
-            var totalSales = {!! json_encode($data['total_disbursements']) !!};
-
-            var userRole = {!! json_encode(auth()->user()->role) !!};
-        </script>
-        <script src="{{ asset('assets/js/custom-dashboard.js?v=' . time()) }}"></script>
-
-        {{-- push api request on startup to 'dashboard' --}}
-        <script>
-            $(document).ready(function() {
-
-                // Show spinner && overlay
-                $('#spinner').addClass('d-none');
-                $('#overlay').addClass('d-none');
-                console.log('Starting search...');
-
-                setTimeout(function() {
-                    $.ajax({
-                        url: '/api/dashboard', // Url for online data
-                        type: 'GET',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            // Hide spinner
-                            $('#spinner').removeClass('d-none');
-                            $('#info').removeClass('d-none');
-                            console.log('Online found');
-                            $('#outstanding_principal').innerHTML = "";
+    @endif`;
+                            console.log('hey');
                         }
                     })
                 })

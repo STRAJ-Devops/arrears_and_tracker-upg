@@ -33,7 +33,7 @@ class DashboardController extends Controller
         $principal_arrears = $request_successful ? (int) $data['principalArrears'] : Arrear::sum('principal_arrears');
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $request_successful ? (int) $data['noOfSolidarityMembers'] : Arrear::where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = Arrear::where('product_id', 21070)->sum('number_of_group_members');
         //add AW column
         $number_of_female_borrowers = $request_successful ? (int) $data['noOfWomen'] : Sale::where('gender', 'female')->count() + Sale::where('product_id', 21070)->sum('number_of_women');
 
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $total_disbursements_this_month = $request_successful ? $data['newLoans'] : Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         $number_of_clients = $request_successful ? (int) $data['noOfClients'] : Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
-        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
+        $number_of_groups = $request_successful ? (int) $data['noOfSolidarityMembers'] :  Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
         $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late

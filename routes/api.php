@@ -28,9 +28,9 @@ Route::post('daily-upload', [App\Http\Controllers\API\SaleController::class, 'fi
 
 Route::post('deploy', [App\Http\Controllers\DeploymentController::class, 'deploy']);
 
+Route::get('dashboard', [DashboardController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [LoginController::class, 'logout']);
-    Route::get('dashboard', [DashboardController::class, 'index']);
     Route::get('incentives', [App\Http\Controllers\API\IncentiveController::class, 'calculateIncentive']);
     Route::post('arrears', [ArrearController::class, 'group_by'])->name('arrears-group-by');
     Route::post('sales', [SaleController::class, 'group_by'])->name('sales-group-by');
