@@ -18,7 +18,7 @@ class DashboardController extends Controller
         //fetch data on request
         $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
 
- 
+        $request_successful = $request->successful();
         
         $data = $request->json(['data']);
 
@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $total_disbursements_this_month = $data['newLoans'] ?? Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         $number_of_clients = (int) $data['noOfClients'] ?? Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
 
-        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
+        $number_of_groups = (int) $data['noOfSolidarityGroup'] ?? Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
         $number_of_individuals = (int) $data['noOfSolidarityMembers'] ?? Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
