@@ -18,7 +18,7 @@ class DashboardController extends Controller
         //fetch data on request
         $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
 
-        $data = $request->successful() ? $request->json(['data']) : null;
+        $data = $request->json(['data']);
         
         $outstanding_principal = (int) $data['outstandingPrincipal'] ?? Arrear::sum('outsanding_principal');
 
