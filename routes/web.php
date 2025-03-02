@@ -133,12 +133,12 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     // view monitor details
     Route::get('monitor-details/{id}', [MonitorController::class, 'show'])->name('monitor-details');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
-    Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
+    Route::post('apply', [MonitorController::class, 'apply']);
     // add-activity comment
     Route::post('add-activity-comment', [MonitorController::class, 'add_comment'])->name('add-activity-comment');
 
-    Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
-    Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
+    Route::get('customer-details', [CustomerController::class, 'customer']);
+    Route::get('get-group-details', [CustomerController::class, 'group']);
     Route::get('get-written-off-details', [WrittenOffController::class, 'customer'])->name('get-written-off-details');
     Route::get('truncate-arrears-and-sales', [SaleController::class, 'truncateArrearsAndSales'])->name('truncate-arrears-and-sales');
     Route::get('truncate-written-offs', [WrittenOffController::class, 'truncateWrittenOffs'])->name('truncate-written-offs');
