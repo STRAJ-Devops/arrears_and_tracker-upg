@@ -161,10 +161,12 @@ class CustomerController extends Controller
         $search_payload = $request->customer_id;
         if ($search_by == 'customer_id') {
             $search_criteria = 'customerNo';
-        } elseif ($search_by == 'phone') {
-            $search_criteria = 'phone';
-        } elseif ($search_by == 'group_id') {
-            $search_criteria = 'groupId';
+        } elseif ($search_by == 'officer_no') {
+            $search_criteria = 'officerNo';
+        } elseif ($search_by == 'contract_no') {
+            $search_criteria = 'contractNo';
+        } elseif ($search_by == 'account_no') {
+            $search_criteria = 'accountNo';
         } else {
             $search_criteria = 'customerNo';
         }
