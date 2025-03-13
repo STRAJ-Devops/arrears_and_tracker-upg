@@ -173,7 +173,7 @@ class CustomerController extends Controller
 
         $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
 
-        if ($online_request->successful()) {
+        if ($online_request->successful() && $online_request->json()['data']) {
             return response()->json($online_request->json()['data']);
         } else {
             return response()->json("Not found - ".$search_criteria, 400);
