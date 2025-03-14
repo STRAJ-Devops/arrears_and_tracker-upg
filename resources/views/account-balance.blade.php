@@ -80,7 +80,7 @@
 
                 // Show spinner
                 $('#spinner').removeClass('d-none');
-                $('#info').append('Online Search...');
+                $('#info').html('Online Search...');
                 $('#customer-details').addClass('d-none');
                 $('#search-result').addClass('d-none');
                 $('#result-count').addClass('d-none'); // Hide result count initially
@@ -126,12 +126,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
-                                                        <h5 class="card-title">Customer Name: ${customer.name}</h5>
+                                                        <h5 class="card-title">Customer Name: ${customer.customerName}</h5>
                                                         <p class="card-text"><strong>Product:</strong> ${customer.product}</p>
-                                                        <p class="card-text"><strong>Draw Down Balance:</strong> ${(customer.drawDownBalance)} </p>
-                                                        <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${(customer.compSavingsBal)} </p>
-                                                        <p class="card-text"><strong>Loan Balance:</strong> ${(customer.loanBal)} </p>
-                                                        <p class="card-text"><strong>Amount Due Today:</strong> ${(customer.amountDueToday)} </p>
+                                                        <p class="card-text"><strong>Draw Down Balance:</strong> ${parseFloat(customer.drawDownBalance).toLocaleString()} </p>
+                                                        <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${parseFloat(customer.compSavingsBal).toLocaleString()} </p>
+                                                        <p class="card-text"><strong>Loan Balance:</strong> ${parseFloat(customer.loanBal).toLocaleString()} </p>
+                                                        <p class="card-text"><strong>Amount Due Today:</strong> ${parseFloat(customer.amountDueToday).toLocaleString()} </p>
                                                         <p class="card-text"><strong>Phone:</strong> ${(customer.phoneNo??'N/A')}</p>
                                                         <p class="card-text"><strong>Group ID:</strong> ${customer.groupId??'N/A'}</p>
                                                     </div>
@@ -154,7 +154,7 @@
                             $('#info').empty();
                             console.log('Not found');
                             $('#spinner').addClass('d-none');
-                            $('#info').append('Not found...');
+                            $('#info').html('Not found...');
                            
                         }
                     })
