@@ -126,7 +126,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
-
+                                                        <h5 class="card-title">Customer Name: ${customer.name}</h5>
                                                         <p class="card-text"><strong>Product:</strong> ${customer.product}</p>
                                                         <p class="card-text"><strong>Draw Down Balance:</strong> ${(customer.drawDownBalance)} </p>
                                                         <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${(customer.compSavingsBal)} </p>
