@@ -176,14 +176,25 @@ class CustomerController extends Controller
             $search_criteria = 'customerNo';
         }
 
-        $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
-        $data = $online_request->json()['data'];
+        try {
+            $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
+        } catch (\Throwable $th) {
+            $online_request = null;
+        }
 
-        if ($online_request->successful() && $data) {
-            SCVCache::setCache($data, $search_criteria, $search_payload);
+
+        if ($online_request && $online_request->successful() && $online_request->json('data')) {
+            $data = $online_request->json('data');
+            SCVCache::updateOrCreate(
+                ['param' => $search_criteria, 'key' => $search_payload],
+                ['data' => $data]
+            );
             return response()->json($data);
         } else {
-            $cache = SCVCache::getCache($search_criteria, $search_payload);
+            $cache = SCVCache::where('param', $search_criteria)
+            ->where('key', $search_payload)
+            ->latest()
+            ->first()?->data;
             if ($cache) {
                 return response()->json($cache);
             } else {

@@ -152,7 +152,9 @@
 
                         error: function() {
                             $('#info').empty();
-                            $('#info').append('Online Server cannot be reached...');
+                            console.log('Not found');
+                            $('#spinner').addClass('d-none');
+                            $('#info').append('Not found...');
                            
                         }
                     })
