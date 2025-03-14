@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\SCVCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -167,16 +168,27 @@ class CustomerController extends Controller
             $search_criteria = 'contractNo';
         } elseif ($search_by == 'account_no') {
             $search_criteria = 'accountNo';
+        } elseif ($search_by == 'phone_no') {
+            $search_criteria = 'phoneNo';
+        } elseif ($search_by == 'name') {
+            $search_criteria = 'name';
         } else {
             $search_criteria = 'customerNo';
         }
 
         $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
+        $data = $online_request->json()['data'];
 
-        if ($online_request->successful() && $online_request->json()['data']) {
-            return response()->json($online_request->json()['data']);
+        if ($online_request->successful() && $data) {
+            SCVCache::setCache($data, $search_criteria, $search_payload);
+            return response()->json($data);
         } else {
-            return response()->json("Not found - ".$search_criteria, 400);
+            $cache = SCVCache::getCache($search_criteria, $search_payload);
+            if ($cache) {
+                return response()->json($cache);
+            } else {
+                return response()->json("Not found - ".$search_criteria, 400);
+            }
         }
     }
 

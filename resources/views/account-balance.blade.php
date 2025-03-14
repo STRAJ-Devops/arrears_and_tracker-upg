@@ -12,6 +12,8 @@
                     <option value="officer_no">Officer ID</option>
                     <option value="contract_no">Contract Number</option>
                     <option value="account_no">Account Number</option>
+                    <option value="phone_no">Phone Number</option>
+                    <option value="name">Customer Name</option>
                 </select>
             </div>
             <div class="col-7">

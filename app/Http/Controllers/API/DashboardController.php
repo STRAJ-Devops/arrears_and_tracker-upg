@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Arrear;
 use App\Models\Branch;
 use App\Models\BranchTarget;
+use App\Models\DashboardCache;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
@@ -15,23 +16,37 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        //fetch data on request
-        $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
 
-        $data = $request->json(['data']);
+        try {
+            $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
+            $request_successful = $request->successful();
+        } catch (\Throwable $th) {
+            //throw $th;
+            $request_successful = false;
+        }
         
-        $outstanding_principal = (int) $data['outstandingPrincipal'] ?? Arrear::sum('outsanding_principal');
+        //fetch data on request
+        if ($request_successful) {
+            $data = $request->json(['data']);
+            DashboardCache::setCache($data);
+        } else {
+            $data = DashboardCache::getCache();
+        }
+        
+        //fetch data on request
+        
+        $outstanding_principal = (int) $data['outstandingPrincipal'];
 
-        $outstanding_interest = (int) $data['interestArrears'] ?? Arrear::sum('outstanding_interest');
+        $outstanding_interest = (int) $data['interestArrears'];
 
-        $principal_arrears = (int) $data['principalArrears'] ?? Arrear::sum('principal_arrears');
+        $principal_arrears = (int) $data['principalArrears'];
 
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $data['noOfSolidarityMembers'] ?? Arrear::where('product_id', 21070)->sum('number_of_group_members');
+        $sgl = $data['noOfSolidarityMembers'];
 
-        $number_of_female_borrowers = (int) $data['noOfWomen'] ?? Sale::where('gender', 'female')->count() + Sale::where('product_id', 21070)->sum('number_of_women');
+        $number_of_female_borrowers = (int) $data['noOfWomen'];
 
-        $number_of_children = (int) $data['noOfChildren'] ?? Sale::sum('number_of_children');
+        $number_of_children = (int) $data['noOfChildren'];
 
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
@@ -42,7 +57,7 @@ class DashboardController extends Controller
 
         $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
 
-        $number_of_individuals = (int) $data['noOfClients'] ?? Arrear::where('lending_type', 'Group')->count();
+        $number_of_individuals = (int) $data['noOfClients'];
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
