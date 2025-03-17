@@ -125,16 +125,16 @@
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
                                                         <h5 class="card-title">Customer Name: ${customer.customerName}</h5>
-                                                        <p class="card-text"><strong>Customer ID: </strong> ${customer.customerId}</p>
-                                                        <p class="card-text"><strong>Phone Number: </strong> ${customer.phoneNumber}</p>
-                                                        <p class="card-text"><strong>Group ID: </strong> ${customer.groupId}</p>
-                                                        <p class="card-text"><strong>Group Name: </strong> ${customer.groupName}</p>
-                                                        <p class="card-text"><strong>Write Off Date: </strong> ${customer.writeOffDate}</p>
-                                                        <p class="card-text"><strong>Principal WOF: </strong> ${customer.principalWOF}</p>
-                                                        <p class="card-text"><strong>Interest WOF: </strong> ${customer.interestWOF}</p>
+                                                        <p class="card-text"><strong>Customer ID: </strong> ${customer.customerId ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Phone Number: </strong> ${customer.phoneNumber ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Group ID: </strong> ${customer.groupId ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Group Name: </strong> ${customer.groupName ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Write Off Date: </strong> ${customer.writeOffDate ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Principal WOF: </strong> ${customer.principalWOF ?? 0}</p>
+                                                        <p class="card-text"><strong>Interest WOF: </strong> ${customer.interestWOF  ?? 0}</p>
                                                         <p class="card-text"><strong>Total WOF: </strong> ${Number(customer.principalWOF ?? 0) + Number(customer.interestWOF ?? 0)}</p>
-                                                        <p class="card-text"><strong>Principal Paid: </strong> ${customer.principalPaid}</p>
-                                                        <p class="card-text"><strong>Interest Paid: </strong> ${customer.interestPaid}</p>
+                                                        <p class="card-text"><strong>Principal Paid: </strong> ${customer.principalPaid ?? 0}</p>
+                                                        <p class="card-text"><strong>Interest Paid: </strong> ${customer.interestPaid ?? 0}</p>
                                                         <p class="card-text"><strong>Total Paid: </strong> ${Number(customer.principalPaid ?? 0) + Number(customer.interestPaid ?? 0)}</p>
                                                     </div>
                                                 </div>
