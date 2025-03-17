@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index()
     {
         try {
-            $request = Http::get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
+            $request = Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
             $request_successful = $request->successful();
         } catch (\Throwable $th) {
             $request_successful = false;

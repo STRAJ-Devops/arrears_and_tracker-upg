@@ -116,7 +116,7 @@ class WrittenOffController extends Controller
         }
 
         try {
-            $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/wof/'.$search_criteria.'/'.$search_payload);
+            $online_request = Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/wof/'.$search_criteria.'/'.$search_payload);
         } catch (\Throwable $th) {
             $online_request = null;
         }

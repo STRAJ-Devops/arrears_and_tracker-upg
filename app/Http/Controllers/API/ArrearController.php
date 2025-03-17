@@ -154,7 +154,7 @@ class ArrearController extends Controller
             $search_criteria = 'customerNo';
         }
 
-        $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/arrears/'.$search_criteria.'/'.$search_payload);
+        $online_request = Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/arrears/'.$search_criteria.'/'.$search_payload);
 
         if ($online_request->successful()) {
             return response()->json($online_request->json()['data']);
