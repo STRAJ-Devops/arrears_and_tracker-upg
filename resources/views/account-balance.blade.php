@@ -126,7 +126,9 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
+                                                            
                                                         <h5 class="card-title">Customer Name: ${customer.customerName}</h5>
+                                                        <p class="card-text">Customer ID: ${customer.customerId}</p>
                                                         <p class="card-text"><strong>Product:</strong> ${customer.product}</p>
                                                         <p class="card-text"><strong>Draw Down Balance:</strong> ${parseFloat(customer.drawDownBalance).toLocaleString()} </p>
                                                         <p class="card-text"><strong>Compulsory Savings Account Balance:</strong> ${parseFloat(customer.compSavingsBal).toLocaleString()} </p>
@@ -134,6 +136,22 @@
                                                         <p class="card-text"><strong>Amount Due Today:</strong> ${parseFloat(customer.amountDueToday).toLocaleString()} </p>
                                                         <p class="card-text"><strong>Phone:</strong> ${(customer.phoneNo??'N/A')}</p>
                                                         <p class="card-text"><strong>Group ID:</strong> ${customer.groupId??'N/A'}</p>
+                                                        <p class="card-text d-none">Outstanding Principal: ${customer.outstandingPrincipal}</p>
+                                                        <p class="card-text d-none">Outstanding Interest: ${customer.outstandingInterest}</p>
+                                                        <p class="card-text d-none">Principal Arrears: ${customer.principalArrears}</p>
+                                                        <p class="card-text d-none">Interest in Arrears: ${customer.interestInArrears}</p>
+                                                        <p class="card-text d-none">Number of Days Late: ${customer.numberOfDaysLate}</p>
+                                                        <p class="card-text d-none">Number of Group Members: ${customer.numberOfGroupMembers}</p>
+                                                        <p class="card-text d-none">Amount Disbursed: ${customer.amountDisbursed}</p>
+                                                        <p class="card-text d-none">Lending Type: ${customer.lendingType}</p>
+                                                        <p class="card-text d-none">Gender: ${customer.gender}</p>
+                                                        <p class="card-text d-none">Disbursement Date: ${customer.disbursementDate}</p>
+                                                        <p class="card-text d-none">Staff: ${customer.staffId}</p>
+                                                        <p class="card-text d-none">Branch: ${customer.branchId}</p>
+                                                        <p class="card-text d-none">Product: ${customer.productId}</p>
+                                                        <p class="card-text d-none">Village: ${customer.villageId}</p>
+                                                        <p class="card-text d-none">PAR: ${customer.par}</p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +173,7 @@
                             console.log('Not found');
                             $('#spinner').addClass('d-none');
                             $('#info').html('Not found...');
-                           
+
                         }
                     })
                 })

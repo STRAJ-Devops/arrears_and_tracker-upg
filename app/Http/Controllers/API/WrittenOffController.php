@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\WriteOffCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -102,16 +103,42 @@ class WrittenOffController extends Controller
             $search_criteria = 'contractNo';
         } elseif ($search_by == 'officer') {
             $search_criteria = 'officerNo';
+        } elseif ($search_by == 'name') {
+            $search_criteria = 'name';
+        } elseif ($search_by == 'group_name') {
+            $search_criteria = 'groupName';
+        } elseif ($search_by == 'group_id') {
+            $search_criteria = 'groupNo';
+        } elseif ($search_by == 'phone') {
+            $search_criteria = 'phone';
         } else {
             $search_criteria = 'customerNo';
         }
 
-        $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/wof/'.$search_criteria.'/'.$search_payload);
+        try {
+            $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/wof/'.$search_criteria.'/'.$search_payload);
+        } catch (\Throwable $th) {
+            $online_request = null;
+        }
 
-        if ($online_request->successful()) {
-            return response()->json($online_request->json()['data']);
+
+        if ($online_request && $online_request->successful() && $online_request->json('data')) {
+            $data = $online_request->json('data');
+            WriteOffCache::updateOrCreate(
+                ['param' => $search_criteria, 'key' => $search_payload],
+                ['data' => $data]
+            );
+            return response()->json($data);
         } else {
-            return response()->json("Not found - ".$search_criteria, 400);
+            $cache = WriteOffCache::where('param', $search_criteria)
+            ->where('key', $search_payload)
+            ->latest()
+            ->first()?->data;
+            if ($cache) {
+                return response()->json($cache);
+            } else {
+                return response()->json("Not found - ".$search_criteria, 400);
+            }
         }
     }
 }

@@ -9,12 +9,12 @@
             <div class="col-2">
                 <select class="form-select shadow-none" id="search-by" name="search-by">
                     <option value="customer_id">Customer ID</option>
-                    <option value="name">Officer Name</option>
+                    <option value="contract">Contract ID</option>
                     <option value="officer">Officer ID</option>
-                    <option value="contract">Contract Id</option>
-                    <option value="phone">Phone</option>
-                    <option value="group_id">Group ID</option>
+                    <option value="name">Officer Name</option>
                     <option value="group_name">Group Name</option>
+                    <option value="group_id">Group ID</option>
+                    <option value="phone">Phone</option>
                 </select>
             </div>
             <div class="col-7">
@@ -126,11 +126,16 @@
                                                     <div>
                                                         <h5 class="card-title">Customer Name: ${customer.customerName}</h5>
                                                         <p class="card-text"><strong>Customer ID: </strong> ${customer.customerId}</p>
-                                                        <p class="card-text"><strong>Contract Number:</strong> ${customer.contractNumber}</p>
-                                                        <p class="card-text"><strong>Product Name:</strong> ${customer.productName}</p>
-                                                        <p class="card-text"><strong>Account Officer:</strong> ${customer.accountOfficer}</p>
-                                                        <p class="card-text"><strong>Wof Amount:</strong> ${customer.wofAmount}</p>
-                                                        <p class="card-text"><strong>Recovered Amount:</strong> ${customer.recoveredAmount}</p>
+                                                        <p class="card-text"><strong>Phone Number: </strong> ${customer.phoneNumber}</p>
+                                                        <p class="card-text"><strong>Group ID: </strong> ${customer.groupId}</p>
+                                                        <p class="card-text"><strong>Group Name: </strong> ${customer.groupName}</p>
+                                                        <p class="card-text"><strong>Write Off Date: </strong> ${customer.writeOffDate}</p>
+                                                        <p class="card-text"><strong>Principal WOF: </strong> ${customer.principalWOF}</p>
+                                                        <p class="card-text"><strong>Interest WOF: </strong> ${customer.interestWOF}</p>
+                                                        <p class="card-text"><strong>Total WOF: </strong> ${Number(customer.principalWOF ?? 0) + Number(customer.interestWOF ?? 0)}</p>
+                                                        <p class="card-text"><strong>Principal Paid: </strong> ${customer.principalPaid}</p>
+                                                        <p class="card-text"><strong>Interest Paid: </strong> ${customer.interestPaid}</p>
+                                                        <p class="card-text"><strong>Total Paid: </strong> ${Number(customer.principalPaid ?? 0) + Number(customer.interestPaid ?? 0)}</p>
                                                     </div>
                                                 </div>
                                             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arrear;
 use App\Models\SCVCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class CustomerController extends Controller
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('customers.customer_id', $customer_id)
                 ->get();
-                //new update
+            //new update
 
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
@@ -84,7 +85,6 @@ class CustomerController extends Controller
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('arrears.group_id', $customer_id)
                 ->get();
-
         } else {
             return response()->json(['message' => 'Invalid search_by parameter'], 400);
         }
@@ -177,7 +177,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/'.$search_criteria.'/'.$search_payload);
+            $online_request = Http::get('https://test.ug.vft24.org/crmapi/v1/loan/scv/' . $search_criteria . '/' . $search_payload);
         } catch (\Throwable $th) {
             $online_request = null;
         }
@@ -189,18 +189,44 @@ class CustomerController extends Controller
                 ['param' => $search_criteria, 'key' => $search_payload],
                 ['data' => $data]
             );
+            // foreach ($data as $customer) {
+            //     # code...
+            //     Arrear::updateOrCreate(
+            //         ['customer_id' => $customer['customerId']],
+            //         [
+            //             'customer_name' => $customer['customerName'],
+            //             'product_id' => $customer['productId'],
+            //             'draw_down_balance' => $customer['drawDownBalance'],
+            //             'savings_balance' => $customer['compSavingsBal'],
+            //             'loan_balance' => $customer['loanBal'],
+            //             'amount_due_today' => $customer['amountDueToday'],
+            //             'phone' => $customer['phoneNo'],
+            //             'group_id' => $customer['groupId'],
+            //             'outstanding_principal' => $customer['outstandingPrincipal'],
+            //             'outstanding_interest' => $customer['outstandingInterest'],
+            //             'principal_arrears' => $customer['principalArrears'],
+            //             'interest_arrears' => $customer['interestInArrears'],
+            //             'lending_type' => $customer['lendingType'],
+            //             'gender' => $customer['gender'],
+            //             'disbursement_date' => $customer['disbursementDate'],
+            //             'staff_id' => $customer['staffId'],
+            //             'branch_id' => $customer['branchId'],
+            //             'village_id' => $customer['villageId'],
+            //             'maturity_date' => $customer['maturityDate']
+            //         ]
+            //     );
+            // }
             return response()->json($data);
         } else {
             $cache = SCVCache::where('param', $search_criteria)
-            ->where('key', $search_payload)
-            ->latest()
-            ->first()?->data;
+                ->where('key', $search_payload)
+                ->latest()
+                ->first()?->data;
             if ($cache) {
                 return response()->json($cache);
             } else {
-                return response()->json("Not found - ".$search_criteria, 400);
+                return response()->json("Not found ", 400);
             }
         }
     }
-
 }
