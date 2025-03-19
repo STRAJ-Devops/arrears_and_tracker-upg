@@ -99,12 +99,8 @@ class WrittenOffController extends Controller
         $search_by = $request->search_by;
         if ($search_by == 'customer_id') {
             $search_criteria = 'customerNo';
-        } elseif ($search_by == 'contract') {
-            $search_criteria = 'contractNo';
-        } elseif ($search_by == 'officer') {
-            $search_criteria = 'officerNo';
-        } elseif ($search_by == 'name') {
-            $search_criteria = 'name';
+/        } elseif ($search_by == 'officer_name') {
+            $search_criteria = 'officerName';
         } elseif ($search_by == 'group_name') {
             $search_criteria = 'groupName';
         } elseif ($search_by == 'group_id') {
