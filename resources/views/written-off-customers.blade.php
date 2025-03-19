@@ -128,9 +128,9 @@
                                                         <p class="card-text"><strong>Group ID: </strong> ${customer.groupId ?? 'N/A'}</p>
                                                         <p class="card-text"><strong>Group Name: </strong> ${customer.groupName ?? 'N/A'}</p>
                                                         <p class="card-text"><strong>Write Off Date: </strong> ${customer.writeOffDate ?? 'N/A'}</p>
-                                                        <p class="card-text"><strong>Principal WOF: </strong> ${customer.principalWOF ?? 0}</p>
-                                                        <p class="card-text"><strong>Interest WOF: </strong> ${customer.interestWOF  ?? 0}</p>
-                                                        <p class="card-text"><strong>Total WOF: </strong> ${Number(customer.principalWOF ?? 0) + Number(customer.interestWOF ?? 0)}</p>
+                                                        <p class="card-text"><strong>Principal WOF: </strong> ${customer.principalWrittenOff ?? 0}</p>
+                                                        <p class="card-text"><strong>Interest WOF: </strong> ${customer.interestWrittenOff  ?? 0}</p>
+                                                        <p class="card-text"><strong>Total WOF: </strong> ${Number(customer.principalWrittenOff ?? 0) + Number(customer.interestWrittenOff ?? 0)}</p>
                                                         <p class="card-text"><strong>Principal Paid: </strong> ${customer.principalPaid ?? 0}</p>
                                                         <p class="card-text"><strong>Interest Paid: </strong> ${customer.interestPaid ?? 0}</p>
                                                         <p class="card-text"><strong>Total Paid: </strong> ${Number(customer.principalPaid ?? 0) + Number(customer.interestPaid ?? 0)}</p>
