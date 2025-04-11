@@ -16,35 +16,19 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        try {
-            $request = Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/dashboard/data');
-            $request_successful = $request->successful();
-        } catch (\Throwable $th) {
-            $request_successful = false;
-        }
-        
-        //fetch data on request
-        if ($request_successful) {
-            $data = $request->json(['data']);
-            DashboardCache::create(['data' => $data]);
-        } else {
-            $data = DashboardCache::latest()->value('data');
-        }
         
         //fetch data on request
         
-        $outstanding_principal = (int) $data['outstandingPrincipal'];
-
-        $outstanding_interest = (int) $data['interestArrears'];
-
-        $principal_arrears = (int) $data['principalArrears'];
-
+        $outstanding_principal = Arrear::sum('outstanding_principal') ?? 0;
+        $outstanding_interest = Arrear::sum('interest_arrears') ?? 0;
+        $principal_arrears = Arrear::sum('principal_arrears') ?? 0;
+        
         //get the sgl by counting number_of_group_members where product_code is 21070
-        $sgl = $data['noOfSolidarityMembers'];
+        $sgl = Arrear::where('product_id', 21070)->sum('number_of_group_members') ?? 0;
 
-        $number_of_female_borrowers = (int) $data['noOfWomen'];
+        $number_of_female_borrowers = Arrear::sum('number_of_women') ?? 0;
 
-        $number_of_children = (int) $data['noOfChildren'];
+        $number_of_children = Arrear::sum('number_of_children') ?? 0;
 
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
@@ -55,7 +39,7 @@ class DashboardController extends Controller
 
         $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
 
-        $number_of_individuals = (int) $data['noOfClients'];
+        $number_of_individuals = Arrear::where('lending_type', 'Individual')->distinct()->get(['group_id'])->count() ?? 0;
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
