@@ -19,8 +19,8 @@ class DashboardController extends Controller
         
         //fetch data on request
         
-        $outstanding_principal = Arrear::sum('outstanding_principal') ?? 0;
-        $outstanding_interest = Arrear::sum('interest_arrears') ?? 0;
+        $outstanding_principal = Arrear::sum('outsanding_principal') ?? 0;
+        $outstanding_interest = Arrear::sum('interest_in_arrears') ?? 0;
         $principal_arrears = Arrear::sum('principal_arrears') ?? 0;
         
         //get the sgl by counting number_of_group_members where product_code is 21070

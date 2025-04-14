@@ -20,9 +20,9 @@ class DashboardController extends Controller
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
 
-        $outstanding_principal =  Arrear::sum('outstanding_principal') ?? 0;
+        $outstanding_principal =  Arrear::sum('outsanding_principal') ?? 0;
 
-        $outstanding_interest = Arrear::sum('interest_arrears') ?? 0;
+        $outstanding_interest = Arrear::sum('interest_in_arrears') ?? 0;
 
         $principal_arrears = Arrear::sum('principal_arrears') ?? 0;
 
