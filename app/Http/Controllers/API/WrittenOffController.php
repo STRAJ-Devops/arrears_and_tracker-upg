@@ -83,11 +83,48 @@ class WrittenOffController extends Controller
                     interest_paid')
                 ->where('group_id', $customer_id)
                 ->get();
-
         } else {
             return response()->json(['message' => 'Invalid search_by parameter'], 400);
         }
 
         return response()->json($customer_details, 200);
+    }
+
+    public function onlineWrittenOffDetails(Request $request)
+    {
+        $searchPayload = $request->customer_id;
+        $searchParam = $request->search_by;
+
+        if ($searchParam == 'customer_id') {
+            $searchCriteria = 'customerNo';
+        } elseif ($searchParam == 'phone') {
+            $searchCriteria = 'customerPhone';
+        } elseif ($searchParam == 'name') {
+            $searchCriteria = 'OfficerName';
+        } elseif ($searchParam == 'group_id') {
+            $searchCriteria = 'groupNo';
+        } elseif ($searchParam == 'group_name') {
+            $searchCriteria = 'groupName';
+        } else {
+            return response()->json(['message' => 'Invalid search_by parameter'], 400);
+        }
+
+        try {
+            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/wof/' . $searchCriteria . '/' . $searchPayload);
+        } catch (\Throwable $th) {
+            \Illuminate\Support\Facades\Log::error('Error fetching written off details: ' . $th->getMessage());
+            return response()->json(['status' => 'failed', 'message' => 'Unable to fetch written off details'], 500);
+        }
+
+        if ($onlineRequest->successful()) {
+            $response = json_decode($onlineRequest->body(), true);
+            if (isset($response['status']) && $response['status'] === 'success') {
+                return response()->json(['status' => 'success', 'data' => $response['data']], 200);
+            } else {
+                return response()->json(['status' => 'failed', 'message' => 'Invalid response status'], 500);
+            }
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'Unable to fetch written off details'], 500);
+        }
     }
 }
