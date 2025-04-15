@@ -31,7 +31,7 @@ class CustomerController extends Controller
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('customers.customer_id', $customer_id)
                 ->get();
-                //new update
+            //new update
 
         } elseif ($search_by == 'phone') {
             $customer_details = DB::table('customers')
@@ -82,7 +82,6 @@ class CustomerController extends Controller
                 IF(arrears.next_repayment_date = ? OR arrears.next_repayment_date = "", arrears.next_repayment_principal + arrears.next_repayment_interest, 0)) as amount_due', [$today])
                 ->where('arrears.group_id', $customer_id)
                 ->get();
-
         } else {
             return response()->json(['message' => 'Invalid search_by parameter'], 400);
         }
@@ -153,4 +152,46 @@ class CustomerController extends Controller
         return response()->json($customer_details, 200);
     }
 
+    //public function added by straj to fetch customer details live from middleware
+    public function onlineCustomerDetails(Request $request)
+    {
+        $searchPayload = $request->customer_id;
+        $searchParam = $request->search_by;
+
+        //get search parameter from $searchParam
+        if ($searchParam == 'customer_id') {
+            $searchCriteria = 'customerNo';
+        } elseif ($searchParam == 'phone') {
+            $searchCriteria = 'phoneNumber';
+        } elseif ($searchParam == 'name') {
+            $searchCriteria = 'customerName';
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'Invalid search_by parameter'], 400);
+        }
+
+        try {
+            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/scv/' . $searchCriteria . '/' . $searchPayload);
+        } catch (\Throwable $th) {
+            \Illuminate\Support\Facades\Log::error('Error fetching customer details: ' . $th->getMessage());
+            return response()->json(['status' => 'failed', 'message' => 'Unable to fetch customer details'], 500);
+        }
+
+        if ($onlineRequest->successful()) {
+            $response = json_decode($onlineRequest->body(), true);
+            if (isset($response['status']) && $response['status'] == 'success') {
+                return response()->json(['status' => 'success', 'data' => $response['data']], 200);
+            } else {
+                return response()->json(['status' => 'failed', 'message' => 'Customer not found'], 404);
+                \Illuminate\Support\Facades\Log::error('Error fetching customer details: ' . $response);
+            }
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'Unable to fetch customer details'], 500);
+        }
+    }
+
+    public function onlineGroupDetails(Request $request)
+    {
+        //Implementation for online group details
+        //In Construction
+    }
 }
