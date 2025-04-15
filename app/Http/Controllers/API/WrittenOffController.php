@@ -118,10 +118,10 @@ class WrittenOffController extends Controller
 
         if ($onlineRequest->successful()) {
             $response = json_decode($onlineRequest->body(), true);
-            if (isset($response['status']) && $response['status'] === 'success') {
+            if (isset($response['responseCode']) && $response['responseCode'] === '200') {
                 return response()->json(['status' => 'success', 'data' => $response['data']], 200);
             } else {
-                return response()->json(['status' => 'failed', 'message' => 'Invalid response status'], 500);
+                return response()->json(['status' => 'failed', 'message' => $response['responseMessage']], 500);
             }
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Unable to fetch written off details'], 500);

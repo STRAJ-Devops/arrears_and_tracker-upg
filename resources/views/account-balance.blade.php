@@ -159,6 +159,7 @@
                                     <p class="mt-3">No results found for "${searchCustomerID}"</p>
                                     `
                                 );
+                                console.log(response.message);
                             }
                         },
 

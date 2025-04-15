@@ -178,10 +178,10 @@ class CustomerController extends Controller
 
         if ($onlineRequest->successful()) {
             $response = json_decode($onlineRequest->body(), true);
-            if (isset($response['status']) && $response['status'] == 'success') {
+            if (isset($response['responseCode']) && $response['responseCode'] == '200') {
                 return response()->json(['status' => 'success', 'data' => $response['data']], 200);
             } else {
-                return response()->json(['status' => 'failed', 'message' => 'Customer not found'], 404);
+                return response()->json(['status' => 'failed', 'message' => $response['responseMessage']], 404);
                 \Illuminate\Support\Facades\Log::error('Error fetching customer details: ' . $response);
             }
         } else {
