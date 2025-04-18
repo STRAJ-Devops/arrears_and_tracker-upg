@@ -31,7 +31,7 @@ class DashboardController extends Controller
         //add AW column
         $number_of_female_borrowers = Arrear::sum('number_of_women') ?? 0;
 
-        $number_of_children = Arrear::sum('number_of_children') ?? 0;
+        $number_of_children = Sale::sum('number_of_children') ?? 0;
 
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
