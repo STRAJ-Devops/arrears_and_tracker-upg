@@ -7,6 +7,7 @@ $(document).ready(function () {
     fetchData(initialGroup);
     // Handle change event for the select input
     $('#staff').change(function () {
+        console.log("Selected group: " + $(this).val());
         // Hide content and display spinner
         $("#content").hide();
         $("#spinner").show();
@@ -20,7 +21,7 @@ $(document).ready(function () {
     function populateTableHeaders(group) {
 
         var headers = {
-            // define headers that belong to the institution
+        //     // define headers that belong to the institution
             "staff_id": ["Officer ID", "Names", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "branch_id": ["Branch", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
             "region_id": ["Region", "Name", "Clients", "Outstanding Principal", "Principle Arrears", "Interest Arrears", "Total Arrears", "Clients in Arrears", "Par>1 Day(%)"],
@@ -59,6 +60,7 @@ $(document).ready(function () {
                 var data = response.data;
                 var rows = [];
                 $.each(data, function (index, item) {
+                    console.log(item);
                     if (group === 'age') {
                         var row = [
                             item.group_key,

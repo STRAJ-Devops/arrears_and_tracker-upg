@@ -24,14 +24,20 @@ class MaturityLoanController extends Controller
 
         //join arrears and customers table to get the customer names, phone number where maturity date is like %-currentMonthYear, join with products to get product name
 
-        $data = Arrear::join('customers', 'arrears.customer_id', '=', 'customers.customer_id')
+        $data = [];
+        Arrear::join('customers', 'arrears.customer_id', '=', 'customers.customer_id')
         ->join('products', 'arrears.product_id', '=', 'products.product_id')
         ->join('branches', 'arrears.branch_id', '=', 'branches.branch_id')
         ->select('arrears.*', 'customers.names', 'customers.phone', 'products.product_name', 'branches.branch_name')
         ->where('arrears.maturity_date', 'like', "%-$currentMonthYear")
         ->orWhere('arrears.maturity_date', 'like', "%-$nextMonthYear")
         ->orderByRaw("STR_TO_DATE(arrears.maturity_date, '%d-%m-%Y') ASC")
-        ->get();
+        ->chunk(100, function ($chunkedData) use (&$data) {
+            // Process each chunk
+            foreach ($chunkedData as $item) {
+                $data[] = $item;
+            }
+        });
 
         return response()->json(['data' => $data, 'message' => 'success'], 200);
     }

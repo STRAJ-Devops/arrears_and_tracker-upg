@@ -81,8 +81,18 @@ class ArrearController extends Controller
                 $nameField = null;
                 $nameAttribute = null;
             } else if ($request->group == 'client') {
-                // $arrears = Arrear::where("staff_id", 1050)->get()->groupBy('customer_id');
-                $arrears = Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')->get()->groupBy('customer_id');
+                $arrears = collect();
+                Arrear::whereRaw('(principal_arrears+outstanding_interest)>0')
+                    ->orderBy('customer_id') // Required for chunking
+                    ->chunk(100, function ($chunk) use (&$arrears) {
+                        foreach ($chunk->groupBy('customer_id') as $customerId => $records) {
+                            if ($arrears->has($customerId)) {
+                                $arrears[$customerId] = $arrears[$customerId]->merge($records);
+                            } else {
+                                $arrears[$customerId] = $records;
+                            }
+                        }
+                    });
                 $groupKey = 'client_id';
                 $nameField = 'customer';
                 $nameAttribute = 'names';
