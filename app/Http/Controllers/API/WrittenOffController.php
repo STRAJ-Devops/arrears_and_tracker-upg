@@ -110,7 +110,7 @@ class WrittenOffController extends Controller
         }
 
         try {
-            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/wof/' . $searchCriteria . '/' . $searchPayload);
+            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(120)->get('https://test.ug.vft24.org/crmapi/v1/loan/wof/' . $searchCriteria . '/' . $searchPayload);
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error('Error fetching written off details: ' . $th->getMessage());
             return response()->json(['status' => 'failed', 'message' => 'Unable to fetch written off details'], 500);

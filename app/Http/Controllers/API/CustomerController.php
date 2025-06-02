@@ -170,7 +170,7 @@ class CustomerController extends Controller
         }
 
         try {
-            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(90)->get('https://test.ug.vft24.org/crmapi/v1/loan/scv/' . $searchCriteria . '/' . $searchPayload);
+            $onlineRequest = \Illuminate\Support\Facades\Http::timeout(120)->get('https://test.ug.vft24.org/crmapi/v1/loan/scv/' . $searchCriteria . '/' . $searchPayload);
         } catch (\Throwable $th) {
             \Illuminate\Support\Facades\Log::error('Error fetching customer details: ' . $th->getMessage());
             return response()->json(['status' => 'failed', 'message' => 'Unable to fetch customer details'], 500);
