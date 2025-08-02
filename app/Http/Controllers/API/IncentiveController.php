@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class IncentiveController extends Controller
 {
+    
     // public function calculateIncentive()
     // {
     //     $incentives = $this->getAllIncentives();

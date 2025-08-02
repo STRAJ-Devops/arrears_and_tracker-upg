@@ -7,6 +7,8 @@ use App\Models\Officer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
+
 class LoginController extends Controller
 {
     public function authenticate(Request $request)
@@ -18,6 +20,7 @@ class LoginController extends Controller
 
         if (Auth::guard('officer')->attempt($attributes)) {
             $user = Officer::where('username', $request->username)->first();
+
 
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
@@ -34,6 +37,10 @@ class LoginController extends Controller
             if ($officer) {
                 //is password correct, just compare 2 strings
                 if (request('password') == $officer->un_hashed_password) {
+
+
+
+
                     $token = $officer->createToken('auth_token')->plainTextToken;
                     return response()->json([
                         'authorization' => [

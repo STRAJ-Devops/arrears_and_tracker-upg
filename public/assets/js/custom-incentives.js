@@ -11,7 +11,9 @@ $(document).ready(function () {
             // if there is a data table, kill it and redraw
             var tableId = "Incentives-" + activated_pane.id;
             if ($.fn.DataTable.isDataTable("#" + tableId)) {
-                $("#" + tableId).DataTable().destroy();
+                $("#" + tableId)
+                    .DataTable()
+                    .destroy();
                 //clear the table
                 $("#" + tableId + " tbody").empty();
             }
@@ -24,10 +26,15 @@ $(document).ready(function () {
     }
     function drawTable(table_id = "Incentives-general") {
         // Check logged_user variable and show corresponding section
-        if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
+        if (
+            logged_user === 5 ||
+            logged_user === 4 ||
+            logged_user === 3 ||
+            logged_user === 2
+        ) {
             $("#table-section").show(); // Show the table section if user is logged in
             // Initialize DataTable
-            var table = $('#' + table_id).DataTable({
+            var table = $("#" + table_id).DataTable({
                 dom: "Bfrtip",
                 screenX: true,
                 //style the buttons
@@ -48,8 +55,8 @@ $(document).ready(function () {
                         messageTop: "Officer Incentives",
                         orientation: "landscape",
                         customize: function (doc) {
-                            doc.styles.tableHeader.fillColor = '#FFA500';
-                        }
+                            doc.styles.tableHeader.fillColor = "#FFA500";
+                        },
                     },
                     {
                         extend: "print",
@@ -59,7 +66,6 @@ $(document).ready(function () {
                     },
                 ],
             });
-
         }
         return table;
     }
@@ -70,16 +76,23 @@ $(document).ready(function () {
             url: "/get-incentives",
             type: "GET",
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
 
             success: function (response) {
-                if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
-
+                if (
+                    typeof logged_user !== "undefined" &&
+                    (logged_user === 5 ||
+                        logged_user === 4 ||
+                        logged_user === 3 ||
+                        logged_user === 2)
+                ) {
                     // Draw the table
                     var table = drawTable("Incentives-" + activated_pane);
                     $("#general-section").empty();
-                    var tbody = $("#" + "Incentives-" + activated_pane + " tbody");
+                    var tbody = $(
+                        "#" + "Incentives-" + activated_pane + " tbody"
+                    );
                     tbody.empty(); // Clear existing data
 
                     $.each(response.incentives, function (index, item) {
@@ -89,35 +102,81 @@ $(document).ready(function () {
                             var row = [
                                 index,
                                 officerDetails.names,
-                                Number(incentivesDetails.outstanding_principal_individual ?? 0).toLocaleString(),
-                                Number(incentivesDetails.outstanding_principal_group ?? 0).toLocaleString() ?? 0,
-                                Number(incentivesDetails.outstanding_principal_sgl ?? 0).toLocaleString() ?? 0,
-                                Number(incentivesDetails.unique_customer_id_individual ?? 0).toLocaleString() ?? 0,
-                                Number(incentivesDetails.records_for_unique_group_id_group ?? 0).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.outstanding_principal_individual ??
+                                        0
+                                ).toLocaleString(),
+                                Number(
+                                    incentivesDetails.outstanding_principal_group ??
+                                        0
+                                ).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.outstanding_principal_sgl ??
+                                        0
+                                ).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.unique_customer_id_individual ??
+                                        0
+                                ).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.records_for_unique_group_id_group ??
+                                        0
+                                ).toLocaleString() ?? 0,
                                 incentivesDetails.sgl_records ?? 0,
                                 incentivesDetails.records_for_PAR,
                                 incentivesDetails.monthly_loan_loss_rate,
-                                Number(incentivesDetails.sgl_records ?? 0).toLocaleString(),
-                                Number(incentivesDetails.incentive_amount_PAR).toLocaleString(),
-                                Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
-                                Number(incentivesDetails.incentive_amount_Net_Client_Growth ?? 0).toLocaleString(),
-                                Number(incentivesDetails.incentive_number_of_sgl_groups ?? 0).toLocaleString(),
-                                Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.sgl_records ?? 0
+                                ).toLocaleString(),
+                                Number(
+                                    incentivesDetails.incentive_amount_PAR
+                                ).toLocaleString(),
+                                Number(
+                                    incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                ).toLocaleString() ?? 0,
+                                Number(
+                                    incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                        0
+                                ).toLocaleString(),
+                                Number(
+                                    incentivesDetails.incentive_number_of_sgl_groups ??
+                                        0
+                                ).toLocaleString(),
+                                Number(
+                                    incentivesDetails.total_incentive_amount
+                                ).toLocaleString() ?? 0,
                             ];
                         } else if (activated_pane == "individual") {
                             //check if the record is in the individual pane by checking if the outstanding_principal_individual is not null
-                            if (incentivesDetails.incentive_type == "individual") {
+                            if (
+                                incentivesDetails.incentive_type == "individual"
+                            ) {
                                 var row = [
                                     index,
                                     officerDetails.names,
-                                    Number(incentivesDetails.outstanding_principal_individual ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.unique_customer_id_individual ?? 0).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.outstanding_principal_individual ??
+                                            0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.unique_customer_id_individual ??
+                                            0
+                                    ).toLocaleString() ?? 0,
                                     incentivesDetails.records_for_PAR,
                                     incentivesDetails.monthly_loan_loss_rate,
-                                    Number(incentivesDetails.incentive_amount_PAR).toLocaleString(),
-                                    Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
-                                    Number(incentivesDetails.incentive_amount_Net_Client_Growth ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.incentive_amount_PAR
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                    ).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.total_incentive_amount
+                                    ).toLocaleString() ?? 0,
                                 ];
                             } else {
                                 return;
@@ -128,14 +187,29 @@ $(document).ready(function () {
                                 var row = [
                                     index,
                                     officerDetails.names,
-                                    Number(incentivesDetails.outstanding_principal_group ?? 0).toLocaleString() ?? 0,
-                                    Number(incentivesDetails.records_for_unique_group_id_group ?? 66666).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.outstanding_principal_group ??
+                                            0
+                                    ).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.records_for_unique_group_id_group ??
+                                            66666
+                                    ).toLocaleString() ?? 0,
                                     incentivesDetails.records_for_PAR,
                                     incentivesDetails.monthly_loan_loss_rate,
-                                    Number(incentivesDetails.incentive_amount_PAR).toLocaleString(),
-                                    Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
-                                    Number(incentivesDetails.incentive_amount_Net_Client_Growth ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.incentive_amount_PAR
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                    ).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.total_incentive_amount
+                                    ).toLocaleString() ?? 0,
                                 ];
                             } else {
                                 return;
@@ -146,15 +220,32 @@ $(document).ready(function () {
                                 var row = [
                                     index,
                                     officerDetails.names,
-                                    Number(incentivesDetails.outstanding_principal_sgl ?? 0).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.outstanding_principal_sgl ??
+                                            0
+                                    ).toLocaleString() ?? 0,
                                     incentivesDetails.records_for_PAR,
                                     incentivesDetails.monthly_loan_loss_rate,
-                                    Number(incentivesDetails.sgl_records ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.incentive_amount_PAR).toLocaleString(),
-                                    Number(incentivesDetails.incentive_amount_Net_Portifolio_Growth).toLocaleString() ?? 0,
-                                    Number(incentivesDetails.incentive_amount_Net_Client_Growth ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.incentive_number_of_sgl_groups ?? 0).toLocaleString(),
-                                    Number(incentivesDetails.total_incentive_amount).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.sgl_records ?? 0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.incentive_amount_PAR
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                    ).toLocaleString() ?? 0,
+                                    Number(
+                                        incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.incentive_number_of_sgl_groups ??
+                                            0
+                                    ).toLocaleString(),
+                                    Number(
+                                        incentivesDetails.total_incentive_amount
+                                    ).toLocaleString() ?? 0,
                                 ];
                             } else {
                                 return;
@@ -184,7 +275,10 @@ $(document).ready(function () {
                         $.each(response.incentives, function (index, item) {
                             var officerDetails = item.officer_details;
                             var incentivesDetails = item.incentive;
-                            var cardHTML = createCard(officerDetails, incentivesDetails);
+                            var cardHTML = createCard(
+                                officerDetails,
+                                incentivesDetails
+                            );
                             $("#general-section").append(cardHTML);
                         });
                     }
@@ -194,9 +288,7 @@ $(document).ready(function () {
                     $("#general-section").show();
                 }
             },
-            error: function (xhr, status, error) {
-
-            }
+            error: function (xhr, status, error) {},
         });
     }
 
@@ -209,20 +301,71 @@ $(document).ready(function () {
                     </div>
                     <div class="col-md-8">
                         <div class="card-body text-left">
-                            <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names}</h5>
+                            <h5 class="card-title text-uppercase font-weight-bold">${
+                                officerDetails.names
+                            }</h5>
                             <hr>
-                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual ?? 0)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group ?? 0)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_sgl ?? 0)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual ?? 0).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group ?? 0).toLocaleString() ?? 0}</p>
-                            <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
-                            <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
-                            <p class="card-text"><strong>Number Of Groups:</strong> ${incentivesDetails.sgl_records != undefined ? (incentivesDetails.sgl_records).toLocaleString() : 0}</p>
-                            <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}/=</p>
-                            <p class="card-text h5"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}/=</p>
+                            <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.outstanding_principal_individual ??
+                                        0
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text"><strong>Outstanding principal (Group):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.outstanding_principal_group ??
+                                        0
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.outstanding_principal_sgl ??
+                                        0
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text"><strong>Number of Customers(Individual):</strong> ${
+                                Number(
+                                    incentivesDetails.unique_customer_id_individual ??
+                                        0
+                                ).toLocaleString() ?? 0
+                            }</p>
+                            <p class="card-text"><strong>Number of Customers(Group):</strong> ${
+                                Number(
+                                    incentivesDetails.records_for_unique_group_id_group ??
+                                        0
+                                ).toLocaleString() ?? 0
+                            }</p>
+                            <p class="card-text"><strong>PAR>1Day:</strong> ${
+                                incentivesDetails.records_for_PAR ?? 0
+                            }%</p>
+                            <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${
+                                incentivesDetails.monthly_loan_loss_rate ?? 0
+                            }%</p>
+                            <p class="card-text"><strong>Number Of Groups:</strong> ${
+                                incentivesDetails.sgl_records != undefined
+                                    ? incentivesDetails.sgl_records.toLocaleString()
+                                    : 0
+                            }</p>
+                            <p class="card-text"><strong>Incentive amount (PAR):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.incentive_amount_PAR
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${
+                                parseFloat(
+                                    incentivesDetails.incentive_amount_Net_Client_Growth
+                                ).toLocaleString() ?? 0
+                            }/=</p>
+                            <p class="card-text h5"><strong>Total incentive amount:</strong> ${
+                                parseFloat(
+                                    incentivesDetails.total_incentive_amount
+                                ).toLocaleString() ?? 0
+                            }/=</p>
                         </div>
                     </div>
                 </div>

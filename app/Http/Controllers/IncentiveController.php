@@ -118,74 +118,85 @@ class IncentiveController extends Controller
         $overallIndividualRecords = $this->overallIndividualRecords();
         $overallGroupRecords = $this->overallGroupRecords();
         $overallSGLRecords = $this->overallSGLRecords();
+        $overallSMERecords = $this->overallSMERecords(); // ✅ NEW
 
         $incentives = [];
 
+        // ✅ INDIVIDUAL
         foreach ($overallIndividualRecords as $staffId => $record) {
-            /**
-             * add net portifolio growth and net client growth to the record
-             * from PreviousEndMonth Model
-             */
             $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal_individual'] = $previousMonthOutstandingPrincipal;
             $record['outstanding_principal_group'] = 0;
             $record['records_for_unique_group_id_group'] = 0;
             $record['sgl_records'] = 0;
-            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_individual']);
-            $record['net_portifolio_growth'] = $netPortifolioGrowth;
+
+            $record['net_portifolio_growth'] = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_individual']);
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Individual')
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
-            $record['net_client_growth'] = $netClientGrowth;
-
-            //add a flag that indicates the record is for individual
+            $record['net_client_growth'] = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
             $record['incentive_type'] = "individual";
-
             $incentives[$staffId] = $record;
         }
 
+        // ✅ GROUP
         foreach ($overallGroupRecords as $staffId => $record) {
-            /**
-             * add net portifolio growth and net client growth to the record
-             * from PreviousEndMonth Model
-             */
             $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal_group'] = $previousMonthOutstandingPrincipal;
             $record['outstanding_principal_individual'] = 0;
             $record['unique_customer_id_individual'] = 0;
             $record['records_for_PAR'] = 0;
-            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_group']);
-            $record['net_portifolio_growth'] = $netPortifolioGrowth;
+
+            $record['net_portifolio_growth'] = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_group']);
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
                 ->distinct()->get(['group_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['records_for_unique_group_id_group']);
-
-            $record['net_client_growth'] = $netClientGrowth;
-            //add a flag that indicates the record is for group
+            $record['net_client_growth'] = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['records_for_unique_group_id_group']);
             $record['incentive_type'] = "group";
             $incentives[$staffId] = $record;
         }
 
+        // ✅ FAST (SGL)
         foreach ($overallSGLRecords as $staffId => $record) {
             $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal_sgl'] = $previousMonthOutstandingPrincipal;
             $record['net_portifolio_growth'] = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal_sgl']);
             $record['net_client_growth'] = 0;
-            //add a flag that indicates the record is for sgl
             $record['incentive_type'] = "fast";
+            $incentives[$staffId] = $record;
+        }
+
+        // ✅ SME (NEW SECTION)
+        foreach ($overallSMERecords as $staffId => $record) {
+            $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
+            $record['previous_outstanding_principal_sme'] = $previousMonthOutstandingPrincipal;
+
+            // Zero out other types
+            $record['outstanding_principal_individual'] = 0;
+            $record['outstanding_principal_group'] = 0;
+            $record['outstanding_principal_sgl'] = 0;
+            $record['unique_customer_id_individual'] = 0;
+            $record['records_for_unique_group_id_group'] = 0;
+            $record['sgl_records'] = 0;
+
+            $record['net_portifolio_growth'] = $this->calculateNetPortifolioGrowth(
+                $previousMonthOutstandingPrincipal,
+                $record['outstanding_principal_sme']
+            );
+
+            $record['incentive_type'] = 'sme';
             $incentives[$staffId] = $record;
         }
 
         return $incentives;
     }
+
 
     /**
      * Individual client incentive parameters
@@ -200,6 +211,18 @@ class IncentiveController extends Controller
 
         return $outstandingPrincipalSumIndividual;
     }
+
+    public function calculateOutstandingPrincipalSME()
+    {
+        $outstandingPrincipalSumSME = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
+            ->where('lending_type', 'SME')
+            ->groupBy('staff_id')
+            ->get();
+
+        return $outstandingPrincipalSumSME;
+    }
+
 
     /**
      * Individual client incentive parameters
@@ -282,6 +305,19 @@ class IncentiveController extends Controller
 
         return $uniqueGroupIDGroup;
     }
+
+    public function recordsForPARSME()
+    {
+        $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('lending_type', 'SME')
+            ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
+            ->groupBy('staff_id')
+            ->get();
+
+        return $recordsForPAR;
+    }
+
+
     //par per officer
     public function recordsForPARGroup()
     {
