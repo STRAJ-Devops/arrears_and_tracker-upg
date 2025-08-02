@@ -111,7 +111,6 @@ class IncentiveController extends Controller
             }
         }
         return response()->json(['incentives' => $incentivesWithDetails], 200);
-
     }
 
     public function getAllIncentives()
@@ -488,8 +487,7 @@ class IncentiveController extends Controller
             if (!isset($overallSGLRecords[$staffId])) {
                 $overallSGLRecords[$staffId] = [];
             }
-            $overallSGLRecords[$staffId][
-                'records_for_PAR'] = $record->count;
+            $overallSGLRecords[$staffId]['records_for_PAR'] = $record->count;
         }
 
         foreach ($recordsForMonthlyLoanLossRateGroup as $record) {
@@ -770,5 +768,4 @@ class IncentiveController extends Controller
 
         return false;
     }
-
 }

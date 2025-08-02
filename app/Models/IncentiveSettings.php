@@ -19,6 +19,9 @@ class IncentiveSettings extends Model
         'min_cap_client',
         'percentage_incentive_client',
         'max_incentive',
+        'max_incentive_fsg',
+        'max_incentive_indv',
+        'max_incentive_group',
         'max_cap_portifolio_individual',
         'max_cap_portifolio_group',
         'max_cap_portifolio_fast',
@@ -33,5 +36,19 @@ class IncentiveSettings extends Model
         'max_llr_fast',
         'max_cap_number_of_groups_fast',
         'min_cap_number_of_groups_fast',
+
+        'max_incentive_sme',
+        'max_par_sme',
+        'max_llr_sme',
+        'min_cap_portifolio_sme',
+        'max_cap_portifolio_sme',
+        'min_cap_client_sme',
+        'max_cap_client_sme',
+        'percentage_incentive_portifolio_sme',
+        'percentage_incentive_client_sme',
+        'percentage_incentive_par_sme',
+        'percentage_incentive_retention_sme',
+        'percentage_incentive_net_growth_sme',
+
     ];
 }
