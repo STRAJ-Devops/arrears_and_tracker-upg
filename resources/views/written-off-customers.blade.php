@@ -83,8 +83,8 @@
 
                 setTimeout(function() {
                     $.ajax({
-                        url: 'get-written-off-details', // Adjust the URL as needed
-                        type: 'GET',
+                        url: '/api/online-written-off-customer-details', // Adjust the URL as needed
+                        type: 'POST',
                         data: {
                             customer_id: searchCustomerID,
                             search_by: $('#search-by').val()
@@ -96,19 +96,22 @@
                             // Hide spinner
                             $('#spinner').addClass('d-none');
 
-                            if (response.length > 0) {
+                            if (response.status === 'success' && response.data.length > 0) {
                                 $('#search-result').addClass('d-none');
                                 $('#customer-details').removeClass('d-none');
 
                                 // Show result count
                                 $('#result-count').removeClass('d-none').find('p').text(
-                                    `${response.length} result(s) found`);
+                                    `${response.data.length} result(s) found`);
 
                                 // Clear previous customer details
                                 $('#customer-details').empty();
 
+                                // Log response to console
+                                console.log(response.data);
+
                                 // Loop through each customer detail and append it to the container
-                                response.forEach(function(customer) {
+                                response.data.forEach(function(customer) {
                                     const principalWOF = Number(customer.principal_written_off.replace(/,/g, ''));
                                     const interestWOF = Number(customer.interest_written_off.replace(/,/g, ''));
 
@@ -126,18 +129,18 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
-                                                        <h5 class="card-title">Customer Name: ${customer.customer_name}</h5>
-                                                        <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
-                                                        <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.customer_phone_number)}</p>
-                                                        <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
-                                                        <p class="card-text"><strong>Group Name:</strong> ${customer.group_name}</p>
-                                                        <p class="card-text"><strong>Write Off Date:</strong> ${customer.write_off_date}</p>
-                                                        <p class="card-text"><strong>Principal WOF:</strong> ${customer.principal_written_off}</p>
-                                                        <p class="card-text"><strong>Interest WOF:</strong> ${customer.interest_written_off}</p>
-                                                        <p class="card-text"><strong>Total WOF:</strong> ${totalWOF.toLocaleString()}</p>
-                                                        <p class="card-text"><strong>Principal Paid:</strong> ${customer.principal_paid}</p>
-                                                        <p class="card-text"><strong>Interest Paid:</strong> ${customer.interest_paid}</p>
-                                                        <p class="card-text"><strong>Total Paid:</strong> ${totalPaid.toLocaleString()}</p>
+                                                        <h5 class="card-title">Customer Name: ${customer.customerName ?? ''}</h5>
+                                                        <p class="card-text"><strong>Customer ID: </strong> ${customer.customerId ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Phone Number: </strong> ${customer.phoneNumber ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Group ID: </strong> ${customer.groupId ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Group Name: </strong> ${customer.groupName ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Write Off Date: </strong> ${customer.writeOffDate ?? 'N/A'}</p>
+                                                        <p class="card-text"><strong>Principal WOF: </strong> ${Number(customer.principalWrittenOff).toLocaleString() ?? 0}</p>
+                                                        <p class="card-text"><strong>Interest WOF: </strong> ${Number(customer.interestWrittenOff).toLocaleString() ?? 0}</p>
+                                                        <p class="card-text"><strong>Total WOF: </strong> ${(Number(customer.principalWrittenOff ?? 0) + Number(customer.interestWrittenOff ?? 0)).toLocaleString()}</p>
+                                                        <p class="card-text"><strong>Principal Paid: </strong> ${Number(customer.principalPaid).toLocaleString() ?? 0}</p>
+                                                        <p class="card-text"><strong>Interest Paid: </strong> ${Number(customer.interestPaid).toLocaleString() ?? 0}</p>
+                                                        <p class="card-text"><strong>Total Paid: </strong> ${(Number(customer.principalPaid ?? 0) + Number(customer.interestPaid ?? 0)).toLocaleString()}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,7 +151,12 @@
                             } else {
                                 $('#customer-details').addClass('d-none');
                                 $('#search-result').removeClass('d-none').html(
-                                    '<p>Not Found</p>');
+                                    `
+                                    <p>Not Found</p>
+                                    <p class="mt-3">No results found for "${searchCustomerID}"</p>
+                                    `
+                                );
+                                console.log(response.message);
                             }
                         },
                         error: function() {
@@ -156,7 +164,11 @@
                             $('#spinner').addClass('d-none');
                             $('#customer-details').addClass('d-none');
                             $('#search-result').removeClass('d-none').html(
-                                '<p>Not Found</p>');
+                                `
+                                <p>Not Found</p>
+                                <p class="mt-3">An error occurred while searching for "${searchCustomerID}"</p>
+                                `
+                            );
                         }
                     });
                 }, 5000); // Delay the AJAX call by 5 seconds
