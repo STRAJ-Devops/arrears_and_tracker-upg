@@ -40,11 +40,26 @@ use App\Http\Controllers\MaturityLoanController;
 | contains the "web" middleware group. Now create something great!
 |
  */
-Route::middleware('revalidate','auth:officer')->group(function () {
+
+Route::middleware('revalidate', 'auth:officer')->group(function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::get('/loan-calculator', function () {
         return view('calculator')->with('title', 'Loan Calculator');
     })->name('loan-calculator');
+
+    // Show the force password change form
+    // Route::get('/force-password-change', function () {
+    //     return view('session.reset-password.force-password-change');
+    // })->name('force-password-change');
+
+    // Route::get('/force-password-change', function () {
+    //     return view('session.reset-password.force-password-change');
+    // })->name('force-password-change');
+
+
+    // // Handle the submitted new password
+    // Route::post('/force-password-change', [SessionsController::class, 'forcePasswordChange'])->name('force-password-change.submit');
+
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('branches', [BranchController::class, 'index'])->name('branches');
     Route::get('user-management', [OfficerController::class, 'index'])->name('user-management');
@@ -56,10 +71,10 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::get('edit-role/{id}', [RoleController::class, 'edit'])->name('edit-role');
     Route::patch('update-role/{id}', [RoleController::class, 'update'])->name('update-role');
-    Route::get('account-balance', function(){
+    Route::get('account-balance', function () {
         return view('account-balance');
     });
-    Route::get('group-details', function(){
+    Route::get('group-details', function () {
         return view('group-details');
     });
     Route::get('products', [ProductController::class, 'index'])->name('products');
@@ -133,12 +148,12 @@ Route::middleware('revalidate','auth:officer')->group(function () {
     // view monitor details
     Route::get('monitor-details/{id}', [MonitorController::class, 'show'])->name('monitor-details');
     Route::post('appraise', [MonitorController::class, 'appraise'])->name('appraise');
-    Route::post('apply', [MonitorController::class, 'apply'])->name('apply');
+    Route::post('apply', [MonitorController::class, 'apply']);
     // add-activity comment
     Route::post('add-activity-comment', [MonitorController::class, 'add_comment'])->name('add-activity-comment');
 
-    Route::get('customer-details', [CustomerController::class, 'customer'])->name('customer-details');
-    Route::get('get-group-details', [CustomerController::class, 'group'])->name('customer-details');
+    Route::get('customer-details', [CustomerController::class, 'customer']);
+    Route::get('get-group-details', [CustomerController::class, 'group']);
     Route::get('get-written-off-details', [WrittenOffController::class, 'customer'])->name('get-written-off-details');
     Route::get('truncate-arrears-and-sales', [SaleController::class, 'truncateArrearsAndSales'])->name('truncate-arrears-and-sales');
     Route::get('truncate-written-offs', [WrittenOffController::class, 'truncateWrittenOffs'])->name('truncate-written-offs');
@@ -164,6 +179,13 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
     Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+
+
+    Route::get('/force-password-change', function () {
+        return view('session.reset-password.force-password-change');
+    })->name('force-password-change');
+
+    Route::post('/force-password-change', [SessionsController::class, 'forcePasswordChange'])->name('force-password-change.submit');
 });
 
 Route::get('/login', function () {

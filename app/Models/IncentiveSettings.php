@@ -33,5 +33,37 @@ class IncentiveSettings extends Model
         'max_llr_fast',
         'max_cap_number_of_groups_fast',
         'min_cap_number_of_groups_fast',
+
+        // NEW MSE FIELDS
+        'max_cap_portifolio_mse',
+        'min_cap_portifolio_mse',
+        'percentage_incentive_portifolio_mse',
+        'min_cap_client_mse',
+        'max_par_mse',
+        'max_llr_mse',
+        'min_cap_client_growth_mse',
+        'max_cap_client_growth_mse',
+        'percentage_incentive_client_growth_mse',
+        'max_incentive_mse',
+
+
+        // Add to $fillable:
+        'retention_weight_individual',
+        'retention_weight_group',
+        'retention_weight_sgl',
+        'retention_weight_mse',
+        'retention_min_individual',
+        'retention_min_group',
+        'retention_min_sgl',
+        'retention_min_mse',
+        'retention_max_individual',
+        'retention_max_group',
+        'retention_max_sgl',
+        'retention_max_mse',
+
+        'max_cap_portifolio_sme',
+        'min_cap_portifolio_sme',
+        
+
     ];
 }
