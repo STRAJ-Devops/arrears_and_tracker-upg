@@ -20,7 +20,7 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::post('customer-details', [App\Http\Controllers\API\CustomerController::class, 'customer'])->name('customer-details');
 Route::post('group-details', [App\Http\Controllers\API\CustomerController::class, 'group'])->name('group-details');
-Route::post('written-of-customer-details', [App\Http\Controllers\API\WrittenOffController::class, 'customer'])->name('group-details');
+Route::post('written-of-customer-details', [App\Http\Controllers\API\WrittenOffController::class, 'customer'])->name('written-of-customer-details');
 // routes to fetch live data. These routes are meant to replace the old routes (customer-details, group-details and written-off-customer-details)
 Route::post('online-customer-details', [App\Http\Controllers\API\CustomerController::class, 'onlineCustomerDetails'])->name('online-customer-details');
 // Route::post('online-group-details', [App\Http\Controllers\API\CustomerController::class, 'onlineGroupDetails'])->name('online-group-details');
