@@ -18,6 +18,8 @@ class IncentiveController extends Controller
     public function index()
     {
         $logged_user = auth()->user()->user_type;
+        Log::debug('MSE logged_user Principals', ['user_type' => $logged_user]);
+
         return view('incentives', compact('logged_user'));
     }
 

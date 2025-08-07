@@ -31,8 +31,8 @@
         }
         function drawTable(table_id = "Incentives-general") {
             // Check logged_user variable and show corresponding section
-            // if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
-            if(true){
+            if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
+            // if(true){
                 // console.log("LOGGED IN USER IS ", logged_user);
                 $("#table-section").show(); // Show the table section if user is logged in
                 // Initialize DataTable
@@ -87,10 +87,9 @@
                 success: function (response) {
                     // console.log("Logged user", logged_user);
                     console.log("Logged response", response);
-                    // console.log("Logged user", logged_user);
-                    // if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
-                    if (true
-                    ) {
+                    console.log("Logged user", logged_user);
+                    if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
+                    // if (true) {
                         
                         // Draw the table
                         var table = drawTable("Incentives-" + activated_pane);

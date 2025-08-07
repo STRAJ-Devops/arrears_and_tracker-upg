@@ -241,11 +241,11 @@
         }
     }
 </style>
-<!-- <script>
-    var logged_user = {
-        !!json_encode($logged_user) !!
-    };
-</script> -->
+<script>
+    var logged_user = {!! json_encode($logged_user) !!};
+</script>
+
+</script>
 
 <!-- <script>
     var logged_user = {
