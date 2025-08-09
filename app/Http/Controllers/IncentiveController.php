@@ -39,7 +39,7 @@ class IncentiveController extends Controller
                 if ($officer->branch_id == 1000) {
                     continue;
                 }
-                            Log::debug("PRE-QUALIFICATION METRICS for staff {$staffId}", [
+                            Log::info("PRE-QUALIFICATION METRICS for staff {$staffId}", [
                                 'type' => $incentive['incentive_type'] ?? 'unknown',
                                 'loan_portfolio' => $incentive['outstanding_principal_mse'] ?? $incentive['outstanding_principal_individual'] ?? $incentive['outstanding_principal_group'] ?? 'N/A',
                                 'active_clients' => $incentive['unique_customer_id_mse'] ?? $incentive['unique_customer_id_individual'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
@@ -145,6 +145,8 @@ class IncentiveController extends Controller
                 }
             }
         }
+
+       
         return response()->json(['incentives' => $incentivesWithDetails, 'message' => 'Incentives calculated successfully'], 200);
     }
 
@@ -255,9 +257,11 @@ class IncentiveController extends Controller
 
             $incentives[$staffId] = $record;
         }
-
+        Log::debug('Incentives with details:', $incentives);
         return $incentives;
     }
+
+
 
     /**
      * Individual client incentive parameters
@@ -272,6 +276,54 @@ class IncentiveController extends Controller
 
         return $outstandingPrincipalSumIndividual;
     }
+
+
+    // NEW IMPLEMENTATIONS FOR INCENTIVES
+    public function calculateOutstandingPrincipal($lendingType)
+    {
+        return Arrear::withoutGlobalScope(ArrearScope::class)
+            ->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
+            ->where('lending_type', $lendingType)
+            ->where('product_id', '!=', '21070')
+            ->groupBy('staff_id')
+            ->get();
+    }
+
+    public function calculateUniqueCustomerID($lendingType)
+    {
+        //group by staff_id by calculating the number of unique customer_id
+        $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
+            ->where('lending_type', $lendingType)
+            ->groupBy('staff_id')
+            ->get();
+
+        return $uniqueCustomerIDIndividual;
+    }
+
+    public function recordsForPAR($lendingType)
+    {
+        // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
+        $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('lending_type', $lendingType)
+            ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
+            ->groupBy('staff_id')
+            ->get();
+
+        return $recordsForPAR;
+    }
+
+    public function recordsForMonthlyLoanLossRate($lendingType)
+    {
+        // Calculate the monthly loan loss rate for each staff
+        $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
+            ->where('lending_type', $lendingType)
+            ->selectRaw('staff_id, round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) / SUM(outsanding_principal)) * 100, 2) as count')
+            ->groupBy('staff_id')
+            ->get();
+
+        return $monthlyLoanLossRate;
+    }
+
 
     /**
      * Individual client incentive parameters
