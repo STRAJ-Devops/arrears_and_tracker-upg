@@ -10,9 +10,9 @@
 <div id="table-section" style="display: none;"> <!-- Initially hide this section -->
     <nav class="">
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
-                type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
-            <button class="nav-link" id="individual-tab" data-bs-toggle="pill" data-bs-target="#individual"
+            <!-- <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
+                type="button" role="tab" aria-controls="general" aria-selected="true">General</button> -->
+            <button class="nav-link active" id="individual-tab" data-bs-toggle="pill" data-bs-target="#individual"
                 type="button" role="tab" aria-controls="individual" aria-selected="false">Individual</button>
             <button class="nav-link" id="groups-tab" data-bs-toggle="pill" data-bs-target="#groups" type="button"
                 role="tab" aria-controls="groups" aria-selected="false">Groups</button>

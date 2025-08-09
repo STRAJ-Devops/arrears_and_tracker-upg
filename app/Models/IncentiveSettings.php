@@ -63,7 +63,15 @@ class IncentiveSettings extends Model
 
         'max_cap_portifolio_sme',
         'min_cap_portifolio_sme',
-        
+
+
+        'min_net_portfolio_growth_indv',
+        'max_net_portfolio_growth_indv',
+        'net_portfolio_growth_weight_indv',
+
+        'percentage_incentive_par_individual',
+        'percentage_incentive_par_mse',
+
 
     ];
 }
