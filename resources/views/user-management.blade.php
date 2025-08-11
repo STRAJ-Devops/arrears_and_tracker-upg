@@ -38,7 +38,7 @@
                                     <th>Names</th>
                                     <th>Role</th>
                                     <th>Username</th>
-                                    <th>Password</th>
+                                    <!-- <th>Password</th> -->
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -61,7 +61,7 @@
                                             @endif
                                         </td>
                                                                                 <td>{{ $item->username }}</td>
-                                        <td>{{ $item->un_hashed_password }}</td>
+                                        <!-- <td>{{ $item->password }}</td> -->
                                         <td>
                                             <a href="{{ url('edit-user/' . $item->staff_id) }}"
                                                 title="Edit User"><button class="btn btn-success bg-success text-white"><i

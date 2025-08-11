@@ -359,20 +359,24 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body text-left">
-                                <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names}</h5>
+                                <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names} - ${incentivesDetails.incentive_type}</h5>
                                 <hr>
-                                <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
-                                <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
+                                <p class="card-text"><strong>Loan Portfolio (${incentivesDetails.incentive_type}):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Number of Clients (${incentivesDetails.incentive_type}):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
                                 <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
                                 <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
-                                <p class="card-text"><strong>Number Of Groups:</strong> ${incentivesDetails.sgl_records != undefined ? (incentivesDetails.sgl_records).toLocaleString() : 0}</p>
+                                <p class="card-text"><strong>Client Retention:</strong> ${incentivesDetails.client_retention ?? 0}%</p>
+                                <p class="card-text"><strong>Net Client Growth:</strong> ${incentivesDetails.net_client_growth ?? 0}</p>
+                                <p class="card-text"><strong>Net Portfolio Growth:</strong> ${(parseFloat(incentivesDetails.net_portifolio_growth ?? 0)).toLocaleString() ?? 0}/=</p>
+
+                                <hr>
+                                <h5 class="card-title text-uppercase font-weight-bold">Incentive Amount</h5>
                                 <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.net_portifolio_growth)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.net_client_growth)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text h5"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Incentive amount (Client Retention):</strong> ${(parseFloat(incentivesDetails.incentive_retention_score)).toLocaleString() ?? 0}/=</p>
+                                <hr>
+                                <p class="card-text h4"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}/=</p>
                             </div>
                         </div>
                     </div>

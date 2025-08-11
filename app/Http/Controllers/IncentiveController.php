@@ -42,7 +42,7 @@ class IncentiveController extends Controller
                             Log::info("PRE-QUALIFICATION METRICS for staff {$staffId}", [
                                 'type' => $incentive['incentive_type'] ?? 'unknown',
                                 'loan_portfolio' => $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? 'N/A',
-                                'active_clients' => $incentive['unique_customer_id'] ?? $incentive['unique_customer_id'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
+                                'active_clients' => $incentive['f'] ?? $incentive['unique_customer_id'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
                                 'PAR' => $incentive['records_for_PAR'] ?? 'N/A',
                                 'LLR' => $incentive['monthly_loan_loss_rate'] ?? 'N/A',
                                 'retention' => $this->calculateClientRetention($staffId, $incentive['incentive_type'] ?? 'unknown'),
@@ -54,28 +54,31 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         // $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($staffId, $incentive['incentive_type']);
-
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score']), 2);
                         
                     } elseif ($incentive['incentive_type'] === 'mse') {
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($staffId, $incentive['incentive_type']);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'],2 );
                     } elseif ($incentive['incentive_type'] === 'group') {
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($staffId, $incentive['incentive_type']);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     } 
                     else {
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($staffId, $incentive['incentive_type']);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     }
                 } else {
@@ -102,7 +105,8 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($staffId, $incentive['incentive_type']);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     } else {
                         $incentive['incentive_amount_PAR'] = 0;
@@ -190,10 +194,7 @@ class IncentiveController extends Controller
             $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
             // $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
-            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth(
-                $previousMonthOutstandingPrincipal,
-                $record['outstanding_principal'] ?? 0
-            );
+            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal,$record['outstanding_principal'] ?? 0);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
@@ -240,7 +241,6 @@ class IncentiveController extends Controller
         return Arrear::withoutGlobalScope(ArrearScope::class)
             ->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', $lendingType)
-            ->where('product_id', '!=', '21070')
             ->groupBy('staff_id')
             ->get();
     }
@@ -355,75 +355,121 @@ class IncentiveController extends Controller
         return ROUND($amount, 2);
     }
 
-    public function calculateClientRetention($staffId, $lendingType)
+    // public function calculateClientRetention($staffId)
+    // {
+    //     // Detect current month in format YYYY-MM
+    //     $currentMonth = now()->format('Y-m');
+
+    //     // A. CURRENT CLIENTS from arrears
+    //     $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
+    //         ->where('staff_id', $staffId)
+    //         ->whereNotNull('staff_id')
+    //         ->count('staff_id');
+
+    //     // B. PREVIOUS MONTH CLIENTS from previous_end_month
+    //     $previousClients = PreviousEndMonth::query()
+    //         ->where('staff_id', $staffId)
+    //         ->whereNotNull('staff_id')
+    //         ->count('staff_id');
+
+    //     // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
+    //     $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
+    //         ->where('staff_id', $staffId)
+    //         ->whereNotNull('staff_id')
+    //         ->where('cycle', '1')
+    //         ->where('disbursement_date', 'like', "$currentMonth%")
+    //         ->count('staff_id');
+
+    //     // Avoid divide-by-zero
+    //     $denominator = $previousClients + $newCycle1Clients;
+    //     if ($denominator === 0) {
+    //         return 0;
+    //     }
+
+    //     return round($currentClients / $denominator, 4); // e.g., 0.8857
+    // }
+
+
+    public function calculateClientRetention($staffId)
     {
-        // Detect current month in format YYYY-MM
-        $currentMonth = now()->format('Y-m');
-
-        // Decide if we’re using group_id or customer_id
-        $useGroupId = in_array(strtolower($lendingType), ['group', 'fast']);
-
-        $idColumn = $useGroupId ? 'group_id' : 'customer_id';
+        // Detect current month in format 'M-y' matching your DB date format like 'Aug-25'
+        $currentMonth = now()->format('M-y');
 
         // A. CURRENT CLIENTS from arrears
         $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
             ->where('staff_id', $staffId)
-            ->where('lending_type', $lendingType)
-            ->whereNotNull($idColumn)
-            ->distinct()
-            ->pluck($idColumn)
-            ->count();
+            ->whereNotNull('staff_id')
+            ->count('staff_id');
+        Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
-            ->where('lending_type', $lendingType)
-            ->whereNotNull($idColumn)
-            ->distinct()
-            ->pluck($idColumn)
-            ->count();
+            ->whereNotNull('staff_id')
+            ->count('staff_id');
+        Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
             ->where('staff_id', $staffId)
-            ->where('lending_type', $lendingType)
+            ->whereNotNull('staff_id')
             ->where('cycle', '1')
-            ->where('disbursement_date', 'like', "$currentMonth%")
-            ->whereNotNull($idColumn)
-            ->distinct()
-            ->pluck($idColumn)
-            ->count();
+            ->where('disbursement_date', 'like', "%-$currentMonth")
+            ->count('staff_id');
+        Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
 
         // Avoid divide-by-zero
         $denominator = $previousClients + $newCycle1Clients;
+        Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
+
         if ($denominator === 0) {
+            Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
             return 0;
         }
 
-        return round($currentClients / $denominator, 4); // e.g., 0.8857
+        $retentionRatio = round(($currentClients / $denominator) * 100, 2);
+        Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
+
+        return $retentionRatio;
     }
 
-    public function calculateRetentionScore($staffId, $lendingType)
+
+    public function calculateRetentionScore( $lendingType, $actualRetention)
     {
         $settings = IncentiveSettings::first();
 
         // Calculate actual retention
-        $actualRetention = $this->calculateClientRetention($staffId, $lendingType);
+        // $actualRetention = $this->calculateClientRetention($staffId);
 
         // Get dynamic thresholds
         $minKey = "retention_min_" . strtolower($lendingType);
         $maxKey = "retention_max_" . strtolower($lendingType);
         $weightKey = "percentage_client_retention_" . strtolower($lendingType);
 
-        $min = $settings->$minKey ?? 0;
-        $max = $settings->$maxKey ?? 1;
+        $min = ($settings->$minKey ?? 0) / 100;  // 90 => 0.9
+        $max = ($settings->$maxKey ?? 100) / 100; // 100 => 1.0
+
         $weight = $settings->$weightKey ?? 0;
+
+        $actualRetention = ($actualRetention ?? 0) / 100;
+
+       
 
         // Calculate score
         $retentionScore = 0;
         if ($actualRetention >= $min) {
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $settings->max_incentive;
         }
+
+        Log::debug("calculateRetentionScore inputs:", [
+            'lendingType' => $lendingType,
+            'actualRetention' => $actualRetention,
+            'minThreshold' => $min,
+            'maxThreshold' => $max,
+            'weightPercent' => $weight,
+            'retentionScore' => $retentionScore,
+            'maxIncentive' => $settings->max_incentive,
+        ]);
 
         return round($retentionScore, 2);
     }
@@ -735,10 +781,10 @@ class IncentiveController extends Controller
         $maxLLR = 'max_llr_' . $lendingType;
 
         return (
-            $incentive['outstanding_principal'] >= $settings->$minCapPortfolio &&
-            $incentive['unique_customer_id']    >= $settings->$minCapClient &&
-            $incentive['records_for_PAR']       <= $settings->$maxPar &&
-            $incentive['monthly_loan_loss_rate'] <= $settings->$maxLLR
+            isset($incentive['outstanding_principal']) && $incentive['outstanding_principal'] >= $settings->$minCapPortfolio &&
+            isset($incentive['unique_customer_id']) && $incentive['unique_customer_id'] >= $settings->$minCapClient &&
+            isset($incentive['records_for_PAR']) && $incentive['records_for_PAR'] <= $settings->$maxPar &&
+            isset($incentive['monthly_loan_loss_rate']) && $incentive['monthly_loan_loss_rate'] <= $settings->$maxLLR
         );
     }
 }

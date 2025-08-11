@@ -56,27 +56,42 @@ class OfficerController extends Controller
             return redirect('user-management')->with('flash_message', 'New User Added!');
     }
 
+    // public function edit($id)
+    // {
+    //     $user = Officer::findOrFail($id);
+
+    //     return view('users.edit', compact('user'));
+    // }
+
     public function edit($id)
     {
         $user = Officer::findOrFail($id);
+        $regions = Region::all();
+        $branches = Branch::all();
 
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user', 'regions', 'branches'));
     }
+
 
     public function update(Request $request, $id)
     {
+        $user = Officer::findOrFail($id);
 
-        $requestData = $request->all();
-        //un hashed password
-        $requestData['un_hashed_password'] = $requestData['password'];
-        //hash password
-        $requestData['password'] = bcrypt($requestData['password']);
+        if ($request->input('reset_password') === 'yes') {
+            $user->password = bcrypt($user->username);
+            $user->un_hashed_password = $user->username;
+            $user->force_password_reset = true;
+        }
 
-        $assignment = Officer::findOrFail($id);
-        $assignment->update($requestData);
+        // Update other fields except password/reset_password
+        $user->fill($request->except(['password', 'reset_password']));
 
-        return redirect('user-management')->with('flash_message', 'User Updated!');
+        $user->save();
+
+        // return redirect('user-management')->with('flash_message', 'User Updated!');
+        return redirect('user-management')->with('success', 'User Updated!');
     }
+
 
     public function destroy($id)
     {
