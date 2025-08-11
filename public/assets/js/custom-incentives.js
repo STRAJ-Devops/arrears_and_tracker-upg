@@ -107,23 +107,23 @@
                                     index,
                                     officerDetails.names,
                                     Number(
-                                        incentivesDetails.outstanding_principal_individual ??
+                                        incentivesDetails.outstanding_principal ??
                                             0
                                     ).toLocaleString(),
                                     Number(
-                                        incentivesDetails.outstanding_principal_group ??
+                                        incentivesDetails.outstanding_principal ??
                                             0
                                     ).toLocaleString() ?? 0,
                                     Number(
-                                        incentivesDetails.outstanding_principal_sgl ??
+                                        incentivesDetails.outstanding_principal ??
                                             0
                                     ).toLocaleString() ?? 0,
                                     Number(
-                                        incentivesDetails.unique_customer_id_individual ??
+                                        incentivesDetails.unique_customer_id ??
                                             0
                                     ).toLocaleString() ?? 0,
                                     Number(
-                                        incentivesDetails.records_for_unique_group_id_group ??
+                                        incentivesDetails.unique_customer_id ??
                                             0
                                     ).toLocaleString() ?? 0,
                                     incentivesDetails.sgl_records ?? 0,
@@ -136,14 +136,14 @@
                                         incentivesDetails.incentive_amount_PAR
                                     ).toLocaleString(),
                                     Number(
-                                        incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                        incentivesDetails.net_portifolio_growth
                                     ).toLocaleString() ?? 0,
                                     Number(
-                                        incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                        incentivesDetails.net_client_growth ??
                                             0
                                     ).toLocaleString(),
                                     Number(
-                                        incentivesDetails.incentive_number_of_sgl_groups ??
+                                        incentivesDetails.unique_customer_id ??
                                             0
                                     ).toLocaleString(),
                                     Number(
@@ -163,11 +163,11 @@
                                         index,
                                         officerDetails.names,
                                         Number(
-                                            incentivesDetails.outstanding_principal_individual ??
+                                            incentivesDetails.outstanding_principal ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.unique_customer_id_individual ??
+                                            incentivesDetails.unique_customer_id ??
                                                 0
                                         ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
@@ -176,10 +176,10 @@
                                             incentivesDetails.incentive_amount_PAR
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                            incentivesDetails.net_portifolio_growth
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            incentivesDetails.net_client_growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -200,11 +200,11 @@
                                         index,
                                         officerDetails.names,
                                         Number(
-                                            incentivesDetails.outstanding_principal_group ??
+                                            incentivesDetails.outstanding_principal ??
                                                 0
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.records_for_unique_group_id_group ??
+                                            incentivesDetails.unique_customer_id ??
                                                 66666
                                         ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
@@ -213,10 +213,10 @@
                                             incentivesDetails.incentive_amount_PAR
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                            incentivesDetails.net_portifolio_growth
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            incentivesDetails.net_client_growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -237,7 +237,7 @@
                                         index,
                                         officerDetails.names,
                                         Number(
-                                            incentivesDetails.outstanding_principal_sgl ??
+                                            incentivesDetails.outstanding_principal ??
                                                 0
                                         ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
@@ -249,14 +249,14 @@
                                             incentivesDetails.incentive_amount_PAR
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                            incentivesDetails.net_portifolio_growth
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            incentivesDetails.net_client_growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_number_of_sgl_groups ??
+                                            incentivesDetails.unique_customer_id ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -276,11 +276,11 @@
                                         index,
                                         officerDetails.names,
                                         Number(
-                                            incentivesDetails.outstanding_principal_mse ??
+                                            incentivesDetails.outstanding_principal ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.unique_customer_id_mse ??
+                                            incentivesDetails.unique_customer_id ??
                                                 0
                                         ).toLocaleString(),
                                         incentivesDetails.records_for_PAR,
@@ -290,11 +290,11 @@
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth ??
+                                            incentivesDetails.net_portifolio_growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                            incentivesDetails.net_client_growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -361,17 +361,17 @@
                             <div class="card-body text-left">
                                 <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names}</h5>
                                 <hr>
-                                <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_individual ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_group ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${(parseFloat(incentivesDetails.outstanding_principal_sgl ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id_individual ?? 0).toLocaleString() ?? 0}</p>
-                                <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.records_for_unique_group_id_group ?? 0).toLocaleString() ?? 0}</p>
+                                <p class="card-text"><strong>Outstanding principal (Individual):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Outstanding principal (Group):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Outstanding principal (SGL):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Number of Customers(Individual):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
+                                <p class="card-text"><strong>Number of Customers(Group):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
                                 <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
                                 <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
                                 <p class="card-text"><strong>Number Of Groups:</strong> ${incentivesDetails.sgl_records != undefined ? (incentivesDetails.sgl_records).toLocaleString() : 0}</p>
                                 <p class="card-text"><strong>Incentive amount (PAR):</strong> ${(parseFloat(incentivesDetails.incentive_amount_PAR)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Portifolio_Growth)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.incentive_amount_Net_Client_Growth)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Incentive amount (Net Portfolio Growth):</strong> ${(parseFloat(incentivesDetails.net_portifolio_growth)).toLocaleString() ?? 0}/=</p>
+                                <p class="card-text"><strong>Incentive amount (Net Client Growth):</strong> ${(parseFloat(incentivesDetails.net_client_growth)).toLocaleString() ?? 0}/=</p>
                                 <p class="card-text h5"><strong>Total incentive amount:</strong> ${(parseFloat(incentivesDetails.total_incentive_amount)).toLocaleString() ?? 0}/=</p>
                             </div>
                         </div>
