@@ -74,4 +74,16 @@ class IncentiveSettings extends Model
 
 
     ];
+
+    protected $casts = [];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        // Dynamically cast all fillable fields to double
+        foreach ($this->fillable as $field) {
+            $this->casts[$field] = 'double';
+        }
+    }
 }
