@@ -41,8 +41,8 @@ class IncentiveController extends Controller
                 }
                             Log::info("PRE-QUALIFICATION METRICS for staff {$staffId}", [
                                 'type' => $incentive['incentive_type'] ?? 'unknown',
-                                'loan_portfolio' => $incentive['outstanding_principal_mse'] ?? $incentive['outstanding_principal_individual'] ?? $incentive['outstanding_principal_group'] ?? 'N/A',
-                                'active_clients' => $incentive['unique_customer_id_mse'] ?? $incentive['unique_customer_id_individual'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
+                                'loan_portfolio' => $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? 'N/A',
+                                'active_clients' => $incentive['unique_customer_id'] ?? $incentive['unique_customer_id'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
                                 'PAR' => $incentive['records_for_PAR'] ?? 'N/A',
                                 'LLR' => $incentive['monthly_loan_loss_rate'] ?? 'N/A',
                                 'retention' => $this->calculateClientRetention($staffId, $incentive['incentive_type'] ?? 'unknown'),
@@ -154,7 +154,7 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
+            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
 
             //add a flag that indicates the record is for individual
@@ -178,7 +178,7 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
+            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
 
             //add a flag that indicates the record is for group
@@ -189,7 +189,11 @@ class IncentiveController extends Controller
         foreach ($overallFASTRecords as $staffId => $record) {
             $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
-            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
+            // $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
+            $netPortifolioGrowth = $this->calculateNetPortifolioGrowth(
+                $previousMonthOutstandingPrincipal,
+                $record['outstanding_principal'] ?? 0
+            );
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
@@ -197,7 +201,7 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
+            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
             //add a flag that indicates the record is for fast
             $record['incentive_type'] = "fast";
@@ -217,7 +221,7 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id_individual']);
+            $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
 
             $record['incentive_type'] = 'mse';
@@ -465,7 +469,7 @@ class IncentiveController extends Controller
             $overallIndividualRecords[$staffId]['monthly_loan_loss_rate'] = $record->count;
         }
 
-        //filter only those with fast_records property or has all [outstanding_principal_individual, unique_customer_id_individual, records_for_PAR, monthly_loan_loss_rate]
+        //filter only those with fast_records property or has all [outstanding_principal_individual, unique_customer_id, records_for_PAR, monthly_loan_loss_rate]
         $overallIndividualRecords = array_filter($overallIndividualRecords, function ($record) {
             return isset($record['outstanding_principal']) && isset($record['unique_customer_id']) && isset($record['records_for_PAR']) && isset($record['monthly_loan_loss_rate']);
         });
@@ -624,8 +628,8 @@ class IncentiveController extends Controller
 
         // Final filtering: make sure all required keys are present
         $overallMSERecords = array_filter($overallMSERecords, function ($record) {
-            return isset($record['outstanding_principal_mse']) &&
-                isset($record['unique_customer_id_mse']) &&
+            return isset($record['outstanding_principal']) &&
+                isset($record['unique_customer_id']) &&
                 isset($record['records_for_PAR']) &&
                 isset($record['monthly_loan_loss_rate']);
         });
