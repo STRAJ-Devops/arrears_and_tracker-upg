@@ -99,8 +99,10 @@ $(document).ready(function () {
                             ''
                         ];
                     } else if (group === 'client') {
+                        console.log("GROUP IS WHAT ", group)
 
                         var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';
+                        console.log("ITEM IS WHAT ", item)
                         var row = [
                             item.group_key,
                             item.names,

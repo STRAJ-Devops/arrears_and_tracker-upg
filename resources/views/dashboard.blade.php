@@ -437,7 +437,7 @@
     integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script>
+<!-- <script>
     Chart.register(ChartDataLabels);
 
     var productLabels = {
@@ -474,7 +474,26 @@
     var userRole = {
         !!json_encode(auth() - > user() - > role) !!
     };
+</script> -->
+<script>
+    var productLabels = @json($data['product_labels']);
+    var productSales = @json($data['product_sales']);
+    var productTargets = @json($data['product_targets']);
+    var branchLabels = @json($data['branch_labels']);
+    var branchSales = @json($data['branch_sales']);
+    var branchTargets = @json($data['branch_targets']);
+    var outstandingPrincipal = @json($data['outstanding_principal']);
+    var PrincipalInArrears = @json($data['principal_arrears']);
+    var totalTargets = @json($data['total_targets']);
+    var totalSales = @json($data['total_disbursements']);
+    var userRole = @json(auth() -> user() -> role);
+
+    console.log(productLabels); // Check if data is logged correctly
+    console.log(userRole);
 </script>
+
+
+
 <script src="{{ asset('assets/js/custom-dashboard.js?v=' . time()) }}"></script>
 @endpush
 @endsection

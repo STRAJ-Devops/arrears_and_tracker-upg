@@ -118,7 +118,13 @@ class ExpectedController extends Controller
             }
         } else {
             // Default to group by staff_id if 'group' parameter is not provided
-            $arrears = Arrear::where('next_repayment_date', 'LIKE', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
+            // $arrears = Arrear::where('next_repayment_date', 'LIKE', $today)->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) !=0 ')->get()->groupBy('staff_id');
+            $arrears = Arrear::where('next_repayment_date', 'LIKE', $today)
+                ->whereRaw('(principal_arrears + outstanding_interest + next_repayment_principal + next_repayment_interest) != 0')
+                ->get()
+                ->unique('customer_id')
+                ->groupBy('staff_id');
+
             $groupKey = 'staff_id';
             $nameField = 'officer';
         }
