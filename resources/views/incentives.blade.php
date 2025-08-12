@@ -13,7 +13,7 @@
             <!-- <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
                 type="button" role="tab" aria-controls="general" aria-selected="true">General</button> -->
             <button class="nav-link active" id="individual-tab" data-bs-toggle="pill" data-bs-target="#individual"
-                type="button" role="tab" aria-controls="individual" aria-selected="false">Individual</button>
+                type="button" role="tab" aria-controls="individual" aria-selected="true">Individual</button>
             <button class="nav-link" id="groups-tab" data-bs-toggle="pill" data-bs-target="#groups" type="button"
                 role="tab" aria-controls="groups" aria-selected="false">Groups</button>
             <button class="nav-link" id="fast-tab" data-bs-toggle="pill" data-bs-target="#fast" type="button"
@@ -23,7 +23,7 @@
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab"
+        <div class="tab-pane fade show active" id="individual" role="tabpanel" aria-labelledby="individual-tab"
             tabindex="0">
             <div class="card">
                 <div class="row">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                <div class="table-responsive incentives-table">
+                <!-- <div class="table-responsive incentives-table">
                     <table id="Incentives-general" class="table">
                         <thead>
                             <tr>
@@ -49,8 +49,8 @@
                                 <th>No of Customers(Individual)</th>
                                 <th>No of Customers(Group)</th>
                                 <th>No of SGL Groups</th>
-                                <th>PAR>1Day</th>
-                                <th>LLR</th>
+                                <th>PAR>1Day(%)</th>
+                                <th>LLR(%)</th>
                                 <th>SGL</th>
                                 <th>Incentive(PAR>1Day)</th>
                                 <th>Incentive(Net Portifolio Growth)</th>
@@ -63,11 +63,13 @@
                         </tbody>
                     </table>
 
-                </div>
+                </div> -->
+
             </div>
         </div>
 
-        <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0">
+        <!-- <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0"> -->
+        <div class="table-responsive incentives-table">
             <table id="Incentives-individual" class="table">
                 <thead>
                     <tr>
@@ -75,11 +77,15 @@
                         <th>Full Name</th>
                         <th>Outstanding principal(Individual)</th>
                         <th>No of Customers(Individual)</th>
-                        <th>PAR>1Day</th>
-                        <th>LLR</th>
+                        <th>PAR>1Day(%)</th>
+                        <th>LLR(%)</th>
+                        <th>Client Retention(%)</th>
+                        <th>Client Growth</th>
+                        <th>Portfolio Growth</th>
                         <th>Incentive(PAR>1Day)</th>
                         <th>Incentive(Net Portifolio Growth)</th>
                         <th>Incentive(Net Client Growth)</th>
+                        <th>Incentive(Client Retention(%))</th>
                         <th>Total Incentive</th>
                     </tr>
                 </thead>
@@ -96,11 +102,15 @@
                         <th>Full Name</th>
                         <th>Outstanding principal(Group)</th>
                         <th>No of Customers(Group)</th>
-                        <th>PAR>1Day</th>
-                        <th>LLR</th>
+                        <th>PAR>1Day(%)</th>
+                        <th>LLR(%)</th>
+                        <th>Client Retention(%)</th>
+                        <th>Client Growth</th>
+                        <th>Portfolio Growth</th>
                         <th>Incentive(PAR>1Day)</th>
                         <th>Incentive(Net Portifolio Growth)</th>
                         <th>Incentive(Net Client Growth)</th>
+                        <th>Incentive(Client Retention(%))</th>
                         <th>Total Incentive</th>
                     </tr>
                 </thead>
@@ -112,19 +122,20 @@
         <div class="tab-pane fade" id="fast" role="tabpanel" aria-labelledby="fast-tab" tabindex="0">
             <table id="Incentives-fast" class="table">
                 <thead>
-                    <tr>
-                        <th>Staff ID</th>
-                        <th>Full Name</th>
-                        <th>Outstanding principal(SGL)</th>
-                        <th>PAR>1Day</th>
-                        <th>LLR</th>
-                        <th>SGL</th>
-                        <th>Incentive(PAR>1Day)</th>
-                        <th>Incentive(Net Portifolio Growth)</th>
-                        <th>Incentive(Net Client Growth)</th>
-                        <th>Incentive(No of SGL Groups)</th>
-                        <th>Total Incentive</th>
-                    </tr>
+                    <th>Staff ID</th>
+                    <th>Full Name</th>
+                    <th>Outstanding principal(Fast)</th>
+                    <th>No of Customers(Fast Group)</th>
+                    <th>PAR>1Day(%)</th>
+                    <th>LLR(%)</th>
+                    <th>Client Retention(%)</th>
+                    <th>Client Growth</th>
+                    <!-- <th>Portfolio Growth</th> -->
+                    <th>Incentive(PAR>1Day)</th>
+                    <!-- <th>Incentive(Net Portifolio Growth)</th> -->
+                    <th>Incentive(Net Client Growth)</th>
+                    <th>Incentive(Client Retention(%))</th>
+                    <th>Total Incentive</th>
                 </thead>
                 <tbody>
                 </tbody>
@@ -137,13 +148,17 @@
                     <tr>
                         <th>Staff ID</th>
                         <th>Full Name</th>
-                        <th>Outstanding Principal (MSE)</th>
-                        <th>No of Clients (MSE)</th>
-                        <th>PAR > 1 Day</th>
-                        <th>LLR</th>
-                        <th>Incentive (PAR > 1 Day)</th>
-                        <th>Incentive (Net Portfolio Growth)</th>
-                        <th>Incentive (Net Client Growth)</th>
+                        <th>Outstanding principal(mse)</th>
+                        <th>No of Customers(mse)</th>
+                        <th>PAR>1Day(%)</th>
+                        <th>LLR(%)</th>
+                        <th>Client Retention(%)</th>
+                        <th>Client Growth</th>
+                        <th>Portfolio Growth</th>
+                        <th>Incentive(PAR>1Day)</th>
+                        <th>Incentive(Net Portifolio Growth)</th>
+                        <th>Incentive(Net Client Growth)</th>
+                        <th>Incentive(Client Retention(%))</th>
                         <th>Total Incentive</th>
                     </tr>
                 </thead>
@@ -242,9 +257,9 @@
     }
 </style>
 <script>
-    var logged_user = {!! json_encode($logged_user) !!};
-</script>
-
+    var logged_user = {
+        !!json_encode($logged_user) !!
+    };
 </script>
 
 <!-- <script>

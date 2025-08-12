@@ -29,14 +29,14 @@
                 fetchData(activated_pane.id);
             });
         }
-        function drawTable(table_id = "Incentives-general") {
+        function drawTable(table_id = "Incentives-individual") {
             // Check logged_user variable and show corresponding section
-            if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
-            // if(true){
+            // if (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2) {
+            if (true) {
                 // console.log("LOGGED IN USER IS ", logged_user);
                 $("#table-section").show(); // Show the table section if user is logged in
                 // Initialize DataTable
-                var table = $('#' + table_id).DataTable({
+                var table = $("#" + table_id).DataTable({
                     dom: "Bfrtip",
                     screenX: true,
                     //style the buttons
@@ -57,8 +57,8 @@
                             messageTop: "Officer Incentives",
                             orientation: "landscape",
                             customize: function (doc) {
-                                doc.styles.tableHeader.fillColor = '#FFA500';
-                            }
+                                doc.styles.tableHeader.fillColor = "#FFA500";
+                            },
                         },
                         {
                             extend: "print",
@@ -68,14 +68,13 @@
                         },
                     ],
                 });
-
             }
             return table;
         }
 
         // Function to fetch data
-        function fetchData(activated_pane = "general") {
-            console.log("Activted Pane", activated_pane)
+        function fetchData(activated_pane = "individual") {
+            console.log("Activted Pane in Fetch Data", activated_pane)
             // console.log("Logged user", logged_user);
             $.ajax({
                 url: "/get-incentives",
@@ -87,9 +86,9 @@
                 success: function (response) {
                     // console.log("Logged user", logged_user);
                     console.log("Logged response", response);
-                    console.log("Logged user", logged_user);
-                    if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
-                    // if (true) {
+                    // console.log("Logged user", logged_user);
+                    // if (typeof logged_user !== 'undefined' && (logged_user === 5 || logged_user === 4 || logged_user === 3 || logged_user === 2)) {
+                    if (true) {
                         
                         // Draw the table
                         var table = drawTable("Incentives-" + activated_pane);
@@ -102,55 +101,51 @@
                         $.each(response.incentives, function (index, item) {
                             var officerDetails = item.officer_details;
                             var incentivesDetails = item.incentive;
-                            if (activated_pane == "general") {
-                                var row = [
-                                    index,
-                                    officerDetails.names,
-                                    Number(
-                                        incentivesDetails.outstanding_principal ??
-                                            0
-                                    ).toLocaleString(),
-                                    Number(
-                                        incentivesDetails.outstanding_principal ??
-                                            0
-                                    ).toLocaleString() ?? 0,
-                                    Number(
-                                        incentivesDetails.outstanding_principal ??
-                                            0
-                                    ).toLocaleString() ?? 0,
-                                    Number(
-                                        incentivesDetails.unique_customer_id ??
-                                            0
-                                    ).toLocaleString() ?? 0,
-                                    Number(
-                                        incentivesDetails.unique_customer_id ??
-                                            0
-                                    ).toLocaleString() ?? 0,
-                                    incentivesDetails.sgl_records ?? 0,
-                                    incentivesDetails.records_for_PAR,
-                                    incentivesDetails.monthly_loan_loss_rate,
-                                    Number(
-                                        incentivesDetails.sgl_records ?? 0
-                                    ).toLocaleString(),
-                                    Number(
-                                        incentivesDetails.incentive_amount_PAR
-                                    ).toLocaleString(),
-                                    Number(
-                                        incentivesDetails.net_portifolio_growth
-                                    ).toLocaleString() ?? 0,
-                                    Number(
-                                        incentivesDetails.net_client_growth ??
-                                            0
-                                    ).toLocaleString(),
-                                    Number(
-                                        incentivesDetails.unique_customer_id ??
-                                            0
-                                    ).toLocaleString(),
-                                    Number(
-                                        incentivesDetails.total_incentive_amount
-                                    ).toLocaleString() ?? 0,
-                                ];
-                            } else if (activated_pane == "individual") {
+                            // if (activated_pane == "general") {
+                            //     var row = [index,officerDetails.names,Number(incentivesDetails.outstanding_principal ??0).toLocaleString(),
+                            //         Number(
+                            //             incentivesDetails.outstanding_principal ??
+                            //                 0
+                            //         ).toLocaleString() ?? 0,
+                            //         Number(
+                            //             incentivesDetails.outstanding_principal ??
+                            //                 0
+                            //         ).toLocaleString() ?? 0,
+                            //         Number(
+                            //             incentivesDetails.unique_customer_id ??
+                            //                 0
+                            //         ).toLocaleString() ?? 0,
+                            //         Number(
+                            //             incentivesDetails.unique_customer_id ??
+                            //                 0
+                            //         ).toLocaleString() ?? 0,
+                            //         incentivesDetails.sgl_records ?? 0,
+                            //         incentivesDetails.records_for_PAR,
+                            //         incentivesDetails.monthly_loan_loss_rate,
+                            //         Number(
+                            //             incentivesDetails.sgl_records ?? 0
+                            //         ).toLocaleString(),
+                            //         Number(
+                            //             incentivesDetails.incentive_amount_PAR
+                            //         ).toLocaleString(),
+                            //         Number(
+                            //             incentivesDetails.net_portifolio_growth
+                            //         ).toLocaleString() ?? 0,
+                            //         Number(
+                            //             incentivesDetails.net_client_growth ??
+                            //                 0
+                            //         ).toLocaleString(),
+                            //         Number(
+                            //             incentivesDetails.unique_customer_id ??
+                            //                 0
+                            //         ).toLocaleString(),
+                            //         Number(
+                            //             incentivesDetails.total_incentive_amount
+                            //         ).toLocaleString() ?? 0,
+                            //     ];
+                            // } 
+                            
+                            if (activated_pane == "individual") {
                                 //check if the record is in the individual pane by checking if the outstanding_principal_individual is not null
                                 if (
                                     incentivesDetails.incentive_type == "individual"
@@ -172,14 +167,25 @@
                                         ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
                                         incentivesDetails.monthly_loan_loss_rate,
+                                        incentivesDetails.client_retention,
+                                        incentivesDetails.net_client_growth,
                                         Number(
-                                            incentivesDetails.incentive_amount_PAR
-                                        ).toLocaleString(),
-                                        Number(
-                                            incentivesDetails.net_portifolio_growth
+                                            incentivesDetails.net_portifolio_growth ??
+                                                0
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.net_client_growth ??
+                                            incentivesDetails.incentive_amount_PAR ??
+                                                0
+                                        ).toLocaleString(),
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                        ).toLocaleString() ?? 0,
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                                0
+                                        ).toLocaleString(),
+                                        Number(
+                                            incentivesDetails.incentive_retention_score ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -202,21 +208,32 @@
                                         Number(
                                             incentivesDetails.outstanding_principal ??
                                                 0
-                                        ).toLocaleString() ?? 0,
+                                        ).toLocaleString(),
                                         Number(
                                             incentivesDetails.unique_customer_id ??
-                                                66666
+                                                0
                                         ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
                                         incentivesDetails.monthly_loan_loss_rate,
+                                        incentivesDetails.client_retention,
+                                        incentivesDetails.net_client_growth,
                                         Number(
-                                            incentivesDetails.incentive_amount_PAR
-                                        ).toLocaleString(),
-                                        Number(
-                                            incentivesDetails.net_portifolio_growth
+                                            incentivesDetails.net_portifolio_growth ??
+                                                0
                                         ).toLocaleString() ?? 0,
                                         Number(
-                                            incentivesDetails.net_client_growth ??
+                                            incentivesDetails.incentive_amount_PAR ??
+                                                0
+                                        ).toLocaleString(),
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                        ).toLocaleString() ?? 0,
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                                0
+                                        ).toLocaleString(),
+                                        Number(
+                                            incentivesDetails.incentive_retention_score ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -239,24 +256,32 @@
                                         Number(
                                             incentivesDetails.outstanding_principal ??
                                                 0
-                                        ).toLocaleString() ?? 0,
-                                        incentivesDetails.records_for_PAR,
-                                        incentivesDetails.monthly_loan_loss_rate,
-                                        Number(
-                                            incentivesDetails.sgl_records ?? 0
-                                        ).toLocaleString(),
-                                        Number(
-                                            incentivesDetails.incentive_amount_PAR
-                                        ).toLocaleString(),
-                                        Number(
-                                            incentivesDetails.net_portifolio_growth
-                                        ).toLocaleString() ?? 0,
-                                        Number(
-                                            incentivesDetails.net_client_growth ??
-                                                0
                                         ).toLocaleString(),
                                         Number(
                                             incentivesDetails.unique_customer_id ??
+                                                0
+                                        ).toLocaleString() ?? 0,
+                                        incentivesDetails.records_for_PAR,
+                                        incentivesDetails.monthly_loan_loss_rate,
+                                        incentivesDetails.client_retention,
+                                        incentivesDetails.net_client_growth,
+                                        // Number(
+                                        //     incentivesDetails.net_portifolio_growth ??
+                                        //         0
+                                        // ).toLocaleString() ?? 0,
+                                        Number(
+                                            incentivesDetails.incentive_amount_PAR ??
+                                                0
+                                        ).toLocaleString(),
+                                        // Number(
+                                        //     incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                        // ).toLocaleString() ?? 0,
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
+                                                0
+                                        ).toLocaleString(),
+                                        Number(
+                                            incentivesDetails.incentive_retention_score ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
@@ -282,25 +307,33 @@
                                         Number(
                                             incentivesDetails.unique_customer_id ??
                                                 0
-                                        ).toLocaleString(),
+                                        ).toLocaleString() ?? 0,
                                         incentivesDetails.records_for_PAR,
                                         incentivesDetails.monthly_loan_loss_rate,
+                                        incentivesDetails.client_retention,
+                                        incentivesDetails.net_client_growth,
+                                        Number(
+                                            incentivesDetails.net_portifolio_growth ??
+                                                0
+                                        ).toLocaleString() ?? 0,
                                         Number(
                                             incentivesDetails.incentive_amount_PAR ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.net_portifolio_growth ??
+                                            incentivesDetails.incentive_amount_Net_Portifolio_Growth
+                                        ).toLocaleString() ?? 0,
+                                        Number(
+                                            incentivesDetails.incentive_amount_Net_Client_Growth ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.net_client_growth ??
+                                            incentivesDetails.incentive_retention_score ??
                                                 0
                                         ).toLocaleString(),
                                         Number(
-                                            incentivesDetails.total_incentive_amount ??
-                                                0
-                                        ).toLocaleString(),
+                                            incentivesDetails.total_incentive_amount
+                                        ).toLocaleString() ?? 0,
                                     ];
                                 } else {
                                     return;

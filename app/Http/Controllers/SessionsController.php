@@ -15,6 +15,75 @@ class SessionsController extends Controller
         return view('session.login-session');
     }
 
+    // public function store()
+    // {
+    //     $attributes = request()->validate([
+    //         'username' => 'required',
+    //         'password' => 'required'
+    //     ]);
+
+    //     if (Auth::guard('officer')->attempt($attributes)) {
+
+    //         $officer = Officer::where('username', request('username'))->first();
+
+    //         // —— NEW: flag expired or never-changed passwords ——
+    //         if (
+    //             is_null($officer->password_last_changed)
+    //             || Carbon::parse($officer->password_last_changed)->addDays(30)->isPast()
+    //         ) {
+    //             $officer->force_password_reset = true;
+    //             $officer->save();
+    //             $officer->refresh();
+    //         }
+
+    //         // Check if user needs to change password
+    //         if ($officer->force_password_reset) {
+    //             return redirect()->route('force-password-change');
+    //         }
+
+
+
+    //         session()->regenerate();
+    //         return redirect('dashboard');
+    //     } else {
+    //         //look for the user in the database
+    //         $officer = Officer::where('username', request('username'))->first();
+
+    //         if ($officer) {
+    //             //is password correct, just compare 2 strings
+    //             if (request('password') == $officer->un_hashed_password) {
+
+    //                 // dd('using fallback');
+
+    //                 // —— NEW: flag expired or never-changed passwords ——
+    //                 if (
+    //                     is_null($officer->password_last_changed)
+    //                     || Carbon::parse($officer->password_last_changed)->addDays(30)->isPast()
+    //                 ) {
+    //                     $officer->force_password_reset = true;
+    //                     $officer->save();
+    //                     $officer->refresh();
+    //                 }
+
+    //                 // Check if user needs to change password
+    //                 if ($officer->force_password_reset) {
+    //                     return redirect()->route('force-password-change');
+    //                 }
+
+
+
+    //                 Auth::guard('officer')->login($officer);
+    //                 session()->regenerate();
+    //                 return redirect('dashboard');
+    //             } else {
+    //                 return back()->withErrors(['password' => 'Email or password invalid new impl IN AUTH GUARD.']);
+    //             }
+    //         }
+
+    //         return back()->withErrors(['email' => 'Email or password invalid new impl.']);
+    //     }
+    // }
+
     public function store()
     {
         $attributes = request()->validate([
@@ -22,66 +91,39 @@ class SessionsController extends Controller
             'password' => 'required'
         ]);
 
+        // Try normal hashed password login
         if (Auth::guard('officer')->attempt($attributes)) {
-
-            $officer = Officer::where('username', request('username'))->first();
-
-            // —— NEW: flag expired or never-changed passwords ——
-            if (
-                is_null($officer->password_last_changed)
-                || Carbon::parse($officer->password_last_changed)->addDays(30)->isPast()
-            ) {
-                $officer->force_password_reset = true;
-                $officer->save();
-                $officer->refresh();
-            }
-
-            // Check if user needs to change password
-            if ($officer->force_password_reset) {
-                return redirect()->route('force-password-change');
-            }
-
-
-
-            session()->regenerate();
-            return redirect('dashboard');
+            $officer = Auth::guard('officer')->user();
         } else {
-            //look for the user in the database
-            $officer = Officer::where('username', request('username'))->first();
+            // Try fallback plain text check
+            $officer = Officer::where('username', $attributes['username'])->first();
 
-            if ($officer) {
-                //is password correct, just compare 2 strings
-                if (request('password') == $officer->un_hashed_password) {
-
-                    dd('using fallback');
-
-                    // —— NEW: flag expired or never-changed passwords ——
-                    if (
-                        is_null($officer->password_last_changed)
-                        || Carbon::parse($officer->password_last_changed)->addDays(30)->isPast()
-                    ) {
-                        $officer->force_password_reset = true;
-                        $officer->save();
-                        $officer->refresh();
-                    }
-
-                    // Check if user needs to change password
-                    if ($officer->force_password_reset) {
-                        return redirect()->route('force-password-change');
-                    }
-
-
-
-                    Auth::guard('officer')->login($officer);
-                    session()->regenerate();
-                    return redirect('dashboard');
-                } else {
-                    return back()->withErrors(['password' => 'Email or password invalid new impl IN AUTH GUARD.']);
-                }
+            if (trim(request('password')) === trim($officer->un_hashed_password)){
+                return back()->withErrors(['password' => 'Email or password invalid.']);
             }
 
-            return back()->withErrors(['email' => 'Email or password invalid new impl.']);
+            // Manually log them in for fallback
+            Auth::guard('officer')->login($officer);
         }
+
+        session()->regenerate();
+
+        // Check if password is expired or never changed
+        if (
+            is_null($officer->password_last_changed) ||
+            Carbon::parse($officer->password_last_changed)->addDays(30)->isPast()
+        ) {
+            $officer->force_password_reset = true;
+            $officer->save();
+        }
+
+        // Redirect if password reset is required
+        if ($officer->force_password_reset) {
+            return redirect()->route('force-password-change');
+        }
+
+        // Otherwise go to dashboard
+        return redirect('dashboard');
     }
 
     public function forcePasswordChange(Request $request)

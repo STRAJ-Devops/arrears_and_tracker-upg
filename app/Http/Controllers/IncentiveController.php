@@ -82,12 +82,20 @@ class IncentiveController extends Controller
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     }
                 } else {
-                    $incentive['incentive_amount_PAR'] = 0;
-                    $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
-                    $incentive['incentive_amount_Net_Client_Growth'] = 0;
-                    $incentive['incentive_retention_score'] = 0;
+                    // $incentive['incentive_amount_PAR'] = 0;
+                    // $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
+                    // $incentive['incentive_amount_Net_Client_Growth'] = 0;
+                    // $incentive['incentive_retention_score'] = 0;
+                    // $incentive['total_incentive_amount'] = 0;
+                    // $incentive['client_retention'] = 0;
+                    // $incentives['fast_records'] = 0;
+
+                    $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
+                    $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
+                    $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
+                    $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                    $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                     $incentive['total_incentive_amount'] = 0;
-                    $incentives['fast_records'] = 0;
                 }
 
                 // Combine the officer details with the incentives
@@ -109,12 +117,20 @@ class IncentiveController extends Controller
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     } else {
-                        $incentive['incentive_amount_PAR'] = 0;
-                        $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
-                        $incentive['incentive_amount_Net_Client_Growth'] = 0;
-                        $incentive['incentive_retention_score'] = 0;
+                        // $incentive['incentive_amount_PAR'] = 0;
+                        // $incentive['incentive_amount_Net_Portifolio_Growth'] = 0;
+                        // $incentive['incentive_amount_Net_Client_Growth'] = 0;
+                        // $incentive['incentive_retention_score'] = 0;
+                        // $incentive['total_incentive_amount'] = 0;
+                        // $incentive['client_retention'] = 0;
+                        // $incentives['fast_records'] = 0;
+
+                        $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
+                        $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
+                        $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = 0;
-                        $incentives['fast_records'] = 0;
                     }
                     // Combine the officer details with the incentives
                     $incentivesWithDetails[$staffId] = [
@@ -343,7 +359,12 @@ class IncentiveController extends Controller
         $actual = $numberOfClient;
         $amount = 0;
 
-        if ($actual >= 5) {
+        // if ($actual >= 5) {
+        //     $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
+        // }
+
+        if ($actual >= $min) {
+            // This applies the incentive based on the formula you provided
             $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
         }
 
