@@ -12,7 +12,7 @@
         <div class="nav nav-tabs nav-fill nav-underline" id="nav-tab" role="tablist">
             <!-- <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general"
                 type="button" role="tab" aria-controls="general" aria-selected="true">General</button> -->
-            <button class="nav-link active" id="individual-tab" data-bs-toggle="pill" data-bs-target="#individual"
+            <button class="nav-link show active" id="individual-tab" data-bs-toggle="pill" data-bs-target="#individual"
                 type="button" role="tab" aria-controls="individual" aria-selected="true">Individual</button>
             <button class="nav-link" id="groups-tab" data-bs-toggle="pill" data-bs-target="#groups" type="button"
                 role="tab" aria-controls="groups" aria-selected="false">Groups</button>
@@ -23,7 +23,7 @@
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab"
+        <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab"
             tabindex="0">
             <div class="card">
                 <div class="row">
@@ -68,8 +68,8 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0">
-        <!-- <div class="table-responsive incentives-table"> -->
+        <div class="tab-pane fade incentives-table show active" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0">
+            <!-- <div class="table-responsive incentives-table"> -->
             <table id="Incentives-individual" class="table">
                 <thead>
                     <tr>
