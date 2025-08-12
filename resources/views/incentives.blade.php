@@ -182,8 +182,6 @@
         @endfor
     </div>
 </div>
-
-</div>
 @endsection
 
 @push('dashboard')
@@ -256,11 +254,22 @@
         }
     }
 </style>
+
+
+<script>
+    var logged_user = @json($logged_user); // Safely encode the variable into JavaScript
+    console.log('logged_user:', logged_user); // Debugging
+</script>
+
+<script src="{{ asset('assets/js/custom-incentives.js') }}"></script>
+
+
+<!-- 
 <script>
     var logged_user = {
         !!json_encode($logged_user) !!
     };
-</script>
+</script> -->
 
 <!-- <script>
     var logged_user = {
@@ -268,5 +277,5 @@
     };
 </script> -->
 
-<script src="{{ asset('assets/js/custom-incentives.js') }}"></script>
+<!-- <script src="{{ asset('assets/js/custom-incentives.js') }}"></script> -->
 @endpush

@@ -18,10 +18,12 @@ class IncentiveController extends Controller
     public function index()
     {
         $logged_user = auth()->user()->user_type;
+        Log::debug('Incentives with logged_user:', ['logged_user' => $logged_user]);
         return view('incentives', compact('logged_user'));
     }
 
-   
+
+
     public function calculateIncentive()
     {
         $incentives = $this->getAllIncentives();
