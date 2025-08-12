@@ -130,9 +130,7 @@
                     <th>LLR(%)</th>
                     <th>Client Retention(%)</th>
                     <th>Client Growth</th>
-                    <!-- <th>Portfolio Growth</th> -->
                     <th>Incentive(PAR>1Day)</th>
-                    <!-- <th>Incentive(Net Portifolio Growth)</th> -->
                     <th>Incentive(Net Client Growth)</th>
                     <th>Incentive(Client Retention(%))</th>
                     <th>Total Incentive</th>

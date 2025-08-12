@@ -266,17 +266,10 @@
                                         incentivesDetails.monthly_loan_loss_rate,
                                         incentivesDetails.client_retention,
                                         incentivesDetails.net_client_growth,
-                                        // Number(
-                                        //     incentivesDetails.net_portifolio_growth ??
-                                        //         0
-                                        // ).toLocaleString() ?? 0,
                                         Number(
                                             incentivesDetails.incentive_amount_PAR ??
                                                 0
                                         ).toLocaleString(),
-                                        // Number(
-                                        //     incentivesDetails.incentive_amount_Net_Portifolio_Growth
-                                        // ).toLocaleString() ?? 0,
                                         Number(
                                             incentivesDetails.incentive_amount_Net_Client_Growth ??
                                                 0
