@@ -23,7 +23,7 @@
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="individual" role="tabpanel" aria-labelledby="individual-tab"
+        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab"
             tabindex="0">
             <div class="card">
                 <div class="row">
@@ -68,8 +68,8 @@
             </div>
         </div>
 
-        <!-- <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0"> -->
-        <div class="table-responsive incentives-table">
+        <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab" tabindex="0">
+        <!-- <div class="table-responsive incentives-table"> -->
             <table id="Incentives-individual" class="table">
                 <thead>
                     <tr>
