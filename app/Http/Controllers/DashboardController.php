@@ -32,10 +32,16 @@ class DashboardController extends Controller
         // Get the current month abbreviation like "Mar-24"
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
-        $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
+        // $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
+        $number_of_clients = Sale::count();
+        $number_of_groups     = Arrear::where('lending_type', 'Group')->count();
+        $number_of_individuals = Arrear::where('lending_type', 'Individual')->count();
+        $number_of_smes        = Arrear::where('lending_type', 'mse')->count();
+        $number_of_fasts       = Arrear::where('lending_type', 'Fast')->count();
 
-        $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
-        $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
+
+        // $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
+        // $number_of_individuals = Arrear::where('lending_type', 'Group')->count();
 
         //get par 30 days that is sum of par for all arrears that are more than 30 days late
         $par_30_days = Arrear::where('number_of_days_late', '>', 30)->sum('par');
@@ -117,6 +123,8 @@ class DashboardController extends Controller
             'number_of_clients' => $number_of_clients,
             'number_of_groups' => $number_of_groups,
             'number_of_individuals' => $number_of_individuals,
+            'number_of_fasts' => $number_of_fasts,
+            'number_of_smes' => $number_of_smes,
             'product_labels' => $labels,
             'product_targets' => $targets,
             'product_sales' => $sales,
