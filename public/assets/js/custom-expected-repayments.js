@@ -87,6 +87,8 @@ $(document).ready(function () {
                 "group": group
             },
             success: function (response) {
+                console.log("EXPECTED PAYMENT RESPONSE ", response)
+                console.log("EXPECTED PAYMENT RESPONSE DATA", response.data);
                 var data = response.data;
                 var tbody = $('#arrears tbody');
                 var rows = [];

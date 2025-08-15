@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Arrear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\ToArray;
 
 class ExpectedController extends Controller
 {
@@ -28,6 +30,8 @@ class ExpectedController extends Controller
             $arrear->expected_interest = $expectedInterest;
             $arrear->expected_total = $expected_total;
         }
+
+        // Log::debug('EXPECTED ARREARS TO ARRAYS', $arrear->toArray());
 
         return response()->json(['arrears' => $arrears], 200);
     }
@@ -127,6 +131,8 @@ class ExpectedController extends Controller
 
             $groupKey = 'staff_id';
             $nameField = 'officer';
+
+            // Log::debug('EXPECTED DATA ARREARS ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
         }
 
         $previous_arrears = $this->group_previous_days($request);
@@ -134,42 +140,248 @@ class ExpectedController extends Controller
         // Initialize data array
         $data = [];
 
+        // Log::debug('EXPECTED DATA ARREARS OUTSIDE ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
+
         // Iterate through grouped arrears and calculate totals
+        // foreach ($arrears as $key => $arrear) {
+        //     //check if the key exists in the previous arrears and sum the $total_principal_arrears, $total_interest_arrears
+        //     $previous_principal_arrears = 0;
+        //     $previous_interest_arrears = 0;
+        //     $previous_outstanding_principal = 0;
+        //     $total_next_repayment_principal = 0;
+        //     $total_next_repayment_interest = 0;
+        //     $number_of_clients = 0;
+        //     if (isset($previous_arrears[$key])) {
+        //         $previous_principal_arrears = $arrears[$key]->sum('principal_arrears');
+        //         $previous_interest_arrears = $arrears[$key]->sum('outstanding_interest');
+        //         $previous_outstanding_principal = $arrears[$key]->sum('outsanding_principal');
+        //         $total_next_repayment_principal = $arrears[$key]->sum('next_repayment_principal');
+        //         $total_next_repayment_interest = $arrears[$key]->sum('next_repayment_interest');
+        //         $number_of_clients = $arrears[$key]->sum('number_of_group_members');
+        //     }
+        //     $present_principal_arrears = $arrear->sum('principal_arrears');
+        //     $present_interest_arrears = $arrear->sum('outstanding_interest');
+        //     $present_outstanding_principal = $arrear->sum('outsanding_principal');
+        //     $total_principle_arrears = $present_principal_arrears + $previous_principal_arrears;
+        //     $total_interest_arrears = $present_interest_arrears + $previous_interest_arrears;
+        //     $total_outstanding_principal = $present_outstanding_principal + $previous_outstanding_principal;
+        //     //remember that add column is named as interest_in_arrears
+        //     $add = $arrear->sum('interest_in_arrears');
+        //     $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $total_principle_arrears + $total_interest_arrears;
+        //     $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;
+        //     $expectedInterest = $total_interest_arrears + $total_next_repayment_interest;
+        //     $expected_total = $expectedPrincipal + $expectedInterest;
+        //     $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->sum('number_of_group_members');
+        //     $total_clients = $arrear->sum('number_of_group_members');
+        //     $names = $arrear->first()->$nameField->$nameAttribute ?? "None FIRST"; // Fetch name based on grouping key
+        //     $next_repayment_date = $arrear->first()->next_repayment_date;
+        //     $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
+        //     $number_of_comments = $arrear->first()->customer->comments->count();
+        //     $amount_disbursed = $arrear->sum('amount_disbursed');
+        //     $data[] = [
+        //         'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
+        //         'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
+        //         'group_key' => $key,
+        //         'branch_id' => $arrear->first()->branch_id,
+        //         'expected_principal' => $expectedPrincipal,
+        //         'expected_interest' => $expectedInterest,
+        //         'expected_total' => $expected_total ?? 0,
+        //         'clients_in_arrears' => $clients_in_arrears,
+        //         'total_clients' => $total_clients + $number_of_clients,
+        //         'names' => $names,
+        //         'next_repayment_date' => $next_repayment_date,
+        //         'phone_number' => $phone_number,
+        //         'number_of_comments' => $number_of_comments,
+        //         'amount_disbursed' => $amount_disbursed,
+        //         'total_outstanding_principal' => $total_outstanding_principal,
+        //         'next_repayment_principal' => $total_next_repayment_principal,
+        //         'next_repayment_interest' => $total_next_repayment_interest,
+        //         'total_principle_arrears' => $total_principle_arrears,
+        //         'total_interest_arrears' => $total_interest_arrears,
+        //         'total_payment_amount' => $total_payment_amount,
+        //         'number_of_days_late' => $arrear->first()->number_of_days_late,
+        //         'add_per_customer' => $add,
+        //         'previous_principal_in_arrears' => $previous_principal_arrears,
+        //         'previous_interest_in_arrears' => $previous_interest_arrears,
+        //         'previous_outstanding_principal' => $previous_outstanding_principal,
+        //         'present_principal_in_arrears' => $present_principal_arrears,
+        //         'present_interest_in_arrears' => $present_interest_arrears,
+        //         'present_outstanding_principal' => $present_outstanding_principal,
+        //     ];
+        // }
+
+        //add those in arrears not in the previous arrears
+        // foreach ($arrears as $key => $arrear) {
+        //     if (!isset($previous_arrears[$key])) {
+        //         $present_principal_arrears = $arrear->sum('principal_arrears');
+        //         $present_interest_arrears = $arrear->sum('outstanding_interest');
+        //         $present_outstanding_principal = $arrear->sum('outsanding_principal');
+        //         $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
+        //         $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
+        //         $total_principle_arrears = $present_principal_arrears;
+        //         $total_interest_arrears = $present_interest_arrears + $previous_interest_arrears;
+        //         $total_outstanding_principal = $present_outstanding_principal + $previous_outstanding_principal;
+        //         //remember that add column is named as interest_in_arrears
+        //         $add = $arrear->sum('interest_in_arrears');
+        //         $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $total_principle_arrears + $total_interest_arrears;
+        //         $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;
+        //         $expectedInterest = $total_interest_arrears + $total_next_repayment_interest;
+        //         $expected_total = $expectedPrincipal + $expectedInterest;
+        //         $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->sum('number_of_group_members');
+        //         $total_clients = $arrear->sum('number_of_group_members');
+        //         $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
+        //         $next_repayment_date = $arrear->first()->next_repayment_date;
+        //         $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
+        //         $number_of_comments = $arrear->first()->customer->comments->count();
+        //         $amount_disbursed = $arrear->sum('amount_disbursed');
+        //         $data[] = [
+        //             'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
+        //             'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
+        //             'group_key' => $key,
+        //             'branch_id' => $arrear->first()->branch_id,
+        //             'expected_principal' => $expectedPrincipal,
+        //             'expected_interest' => $expectedInterest,
+        //             'expected_total' => $expected_total ?? 0,
+        //             'clients_in_arrears' => $clients_in_arrears,
+        //             'total_clients' => $total_clients,
+        //             'names' => $names,
+        //             'next_repayment_date' => $next_repayment_date,
+        //             'phone_number' => $phone_number,
+        //             'number_of_comments' => $number_of_comments,
+        //             'amount_disbursed' => $amount_disbursed,
+        //             'total_outstanding_principal' => $total_outstanding_principal,
+        //             'next_repayment_principal' => $total_next_repayment_principal,
+        //             'next_repayment_interest' => $total_next_repayment_interest,
+        //             'total_principle_arrears' => $total_principle_arrears,
+        //             'total_interest_arrears' => $total_interest_arrears,
+        //             'total_payment_amount' => $total_payment_amount,
+        //             'number_of_days_late' => $arrear->first()->number_of_days_late,
+        //             'add_per_customer' => $add,
+        //             'previous_principal_in_arrears' => $previous_principal_arrears,
+        //             'previous_interest_in_arrears' => $previous_interest_arrears,
+        //             'previous_outstanding_principal' => $previous_outstanding_principal,
+        //             'present_principal_in_arrears' => $present_principal_arrears,
+        //             'present_interest_in_arrears' => $present_interest_arrears,
+        //             'present_outstanding_principal' => $present_outstanding_principal,
+        //         ];
+
+        //     }
+        // }
+
+        // foreach ($arrears as $key => $arrear) {
+        //     // Get previous arrears or default to an empty collection
+        //     $previous = $previous_arrears[$key] ?? collect();
+
+        //     // Calculate previous arrears totals
+        //     $previous_principal_arrears = $previous->sum('principal_arrears');
+        //     $previous_interest_arrears = $previous->sum('outstanding_interest');
+        //     $previous_outstanding_principal = $previous->sum('outsanding_principal');
+
+        //     // Calculate present arrears totals
+        //     $present_principal_arrears = $arrear->sum('principal_arrears');
+        //     $present_interest_arrears = $arrear->sum('outstanding_interest');
+        //     $present_outstanding_principal = $arrear->sum('outsanding_principal');
+
+        //     // Calculate next repayment totals
+        //     $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
+        //     $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
+
+        //     // Calculate the additional column
+        //     $add = $arrear->sum('interest_in_arrears');
+
+        //     // Calculate the total payment amount
+        //     $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $present_principal_arrears + $present_interest_arrears;
+
+        //     // Calculate the expected amounts
+        //     $expectedPrincipal = $present_principal_arrears + $total_next_repayment_principal;
+        //     $expectedInterest = $present_interest_arrears + $total_next_repayment_interest;
+        //     $expected_total = $expectedPrincipal + $expectedInterest;
+
+        //     // Calculate clients in arrears and total clients
+        //     $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->sum('number_of_group_members');
+        //     $total_clients = $arrear->sum('number_of_group_members');
+
+        //     // Fetch other required fields
+        //     $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
+        //     $next_repayment_date = $arrear->first()->next_repayment_date;
+        //     $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
+        //     $number_of_comments = $arrear->first()->customer->comments->count();
+        //     $amount_disbursed = $arrear->sum('amount_disbursed');
+
+        //     // Add data to the response
+        //     $data[] = [
+        //         'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
+        //         'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
+        //         'group_key' => $key,
+        //         'branch_id' => $arrear->first()->branch_id,
+        //         'expected_principal' => $expectedPrincipal,
+        //         'expected_interest' => $expectedInterest,
+        //         'expected_total' => $expected_total ?? 0,
+        //         'clients_in_arrears' => $clients_in_arrears,
+        //         'total_clients' => $total_clients,
+        //         'names' => $names,
+        //         'next_repayment_date' => $next_repayment_date,
+        //         'phone_number' => $phone_number,
+        //         'number_of_comments' => $number_of_comments,
+        //         'amount_disbursed' => $amount_disbursed,
+        //         'total_outstanding_principal' => $present_outstanding_principal + $previous_outstanding_principal,
+        //         'next_repayment_principal' => $total_next_repayment_principal,
+        //         'next_repayment_interest' => $total_next_repayment_interest,
+        //         'total_principle_arrears' => $present_principal_arrears + $previous_principal_arrears,
+        //         'total_interest_arrears' => $present_interest_arrears + $previous_interest_arrears,
+        //         'total_payment_amount' => $total_payment_amount,
+        //         'number_of_days_late' => $arrear->first()->number_of_days_late,
+        //         'add_per_customer' => $add,
+        //         'previous_principal_in_arrears' => $previous_principal_arrears,
+        //         'previous_interest_in_arrears' => $previous_interest_arrears,
+        //         'previous_outstanding_principal' => $previous_outstanding_principal,
+        //         'present_principal_in_arrears' => $present_principal_arrears,
+        //         'present_interest_in_arrears' => $present_interest_arrears,
+        //         'present_outstanding_principal' => $present_outstanding_principal,
+        //     ];
+        // }
+
         foreach ($arrears as $key => $arrear) {
-            //check if the key exists in the previous arrears and sum the $total_principal_arrears, $total_interest_arrears
-            $previous_principal_arrears = 0;
-            $previous_interest_arrears = 0;
-            $previous_outstanding_principal = 0;
-            $total_next_repayment_principal = 0;
-            $total_next_repayment_interest = 0;
-            $number_of_clients = 0;
-            if (isset($previous_arrears[$key])) {
-                $previous_principal_arrears = $arrears[$key]->sum('principal_arrears');
-                $previous_interest_arrears = $arrears[$key]->sum('outstanding_interest');
-                $previous_outstanding_principal = $arrears[$key]->sum('outsanding_principal');
-                $total_next_repayment_principal = $arrears[$key]->sum('next_repayment_principal');
-                $total_next_repayment_interest = $arrears[$key]->sum('next_repayment_interest');
-                $number_of_clients = $arrears[$key]->sum('number_of_group_members');
-            }
+            // Get previous arrears or default to an empty collection
+            $previous = $previous_arrears[$key] ?? collect(); // get previous or empty
+
+            // Calculate previous arrears totals
+            $previous_principal_arrears = $previous->sum('principal_arrears');
+            $previous_interest_arrears = $previous->sum('outstanding_interest');
+            $previous_outstanding_principal = $previous->sum('outsanding_principal');
+
+            // Calculate present arrears totals
             $present_principal_arrears = $arrear->sum('principal_arrears');
             $present_interest_arrears = $arrear->sum('outstanding_interest');
             $present_outstanding_principal = $arrear->sum('outsanding_principal');
-            $total_principle_arrears = $present_principal_arrears + $previous_principal_arrears;
-            $total_interest_arrears = $present_interest_arrears + $previous_interest_arrears;
-            $total_outstanding_principal = $present_outstanding_principal + $previous_outstanding_principal;
-            //remember that add column is named as interest_in_arrears
+
+            // Calculate next repayment totals
+            $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
+            $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
+
+            // Remember that add column is named as interest_in_arrears
             $add = $arrear->sum('interest_in_arrears');
-            $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $total_principle_arrears + $total_interest_arrears;
-            $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;
-            $expectedInterest = $total_interest_arrears + $total_next_repayment_interest;
+
+            // Calculate the total payment amount
+            $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $present_principal_arrears + $present_interest_arrears;
+
+            // Calculate the expected amounts
+            $expectedPrincipal = $present_principal_arrears + $total_next_repayment_principal;
+            $expectedInterest = $present_interest_arrears + $total_next_repayment_interest;
             $expected_total = $expectedPrincipal + $expectedInterest;
+
+            // Calculate clients in arrears and total clients
             $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->sum('number_of_group_members');
             $total_clients = $arrear->sum('number_of_group_members');
+
+            // Fetch other required fields
             $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
             $next_repayment_date = $arrear->first()->next_repayment_date;
             $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
             $number_of_comments = $arrear->first()->customer->comments->count();
             $amount_disbursed = $arrear->sum('amount_disbursed');
+
+            // Add data to the response
             $data[] = [
                 'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
                 'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
@@ -179,17 +391,17 @@ class ExpectedController extends Controller
                 'expected_interest' => $expectedInterest,
                 'expected_total' => $expected_total ?? 0,
                 'clients_in_arrears' => $clients_in_arrears,
-                'total_clients' => $total_clients + $number_of_clients,
+                'total_clients' => $total_clients,
                 'names' => $names,
                 'next_repayment_date' => $next_repayment_date,
                 'phone_number' => $phone_number,
                 'number_of_comments' => $number_of_comments,
                 'amount_disbursed' => $amount_disbursed,
-                'total_outstanding_principal' => $total_outstanding_principal,
+                'total_outstanding_principal' => $present_outstanding_principal + $previous_outstanding_principal,
                 'next_repayment_principal' => $total_next_repayment_principal,
                 'next_repayment_interest' => $total_next_repayment_interest,
-                'total_principle_arrears' => $total_principle_arrears,
-                'total_interest_arrears' => $total_interest_arrears,
+                'total_principle_arrears' => $present_principal_arrears + $previous_principal_arrears,
+                'total_interest_arrears' => $present_interest_arrears + $previous_interest_arrears,
                 'total_payment_amount' => $total_payment_amount,
                 'number_of_days_late' => $arrear->first()->number_of_days_late,
                 'add_per_customer' => $add,
@@ -202,63 +414,7 @@ class ExpectedController extends Controller
             ];
         }
 
-        //add those in arrears not in the previous arrears
-        foreach ($arrears as $key => $arrear) {
-            if (!isset($previous_arrears[$key])) {
-                $present_principal_arrears = $arrear->sum('principal_arrears');
-                $present_interest_arrears = $arrear->sum('outstanding_interest');
-                $present_outstanding_principal = $arrear->sum('outsanding_principal');
-                $total_next_repayment_principal = $arrear->sum('next_repayment_principal');
-                $total_next_repayment_interest = $arrear->sum('next_repayment_interest');
-                $total_principle_arrears = $present_principal_arrears;
-                $total_interest_arrears = $present_interest_arrears + $previous_interest_arrears;
-                $total_outstanding_principal = $present_outstanding_principal + $previous_outstanding_principal;
-                //remember that add column is named as interest_in_arrears
-                $add = $arrear->sum('interest_in_arrears');
-                $total_payment_amount = $total_next_repayment_principal + $total_next_repayment_interest + $total_principle_arrears + $total_interest_arrears;
-                $expectedPrincipal = $total_principle_arrears + $total_next_repayment_principal;
-                $expectedInterest = $total_interest_arrears + $total_next_repayment_interest;
-                $expected_total = $expectedPrincipal + $expectedInterest;
-                $clients_in_arrears = $arrear->where('number_of_days_late', '>', 0)->sum('number_of_group_members');
-                $total_clients = $arrear->sum('number_of_group_members');
-                $names = $arrear->first()->$nameField->$nameAttribute ?? "None"; // Fetch name based on grouping key
-                $next_repayment_date = $arrear->first()->next_repayment_date;
-                $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
-                $number_of_comments = $arrear->first()->customer->comments->count();
-                $amount_disbursed = $arrear->sum('amount_disbursed');
-                $data[] = [
-                    'arrear_id' => $arrear->first()->id, // Fetch arrear id for the first record in the group
-                    'customer_id' => $arrear->first()->$nameField->customer_id ?? "None", // Fetch customer id for the first record in the group
-                    'group_key' => $key,
-                    'branch_id' => $arrear->first()->branch_id,
-                    'expected_principal' => $expectedPrincipal,
-                    'expected_interest' => $expectedInterest,
-                    'expected_total' => $expected_total ?? 0,
-                    'clients_in_arrears' => $clients_in_arrears,
-                    'total_clients' => $total_clients,
-                    'names' => $names,
-                    'next_repayment_date' => $next_repayment_date,
-                    'phone_number' => $phone_number,
-                    'number_of_comments' => $number_of_comments,
-                    'amount_disbursed' => $amount_disbursed,
-                    'total_outstanding_principal' => $total_outstanding_principal,
-                    'next_repayment_principal' => $total_next_repayment_principal,
-                    'next_repayment_interest' => $total_next_repayment_interest,
-                    'total_principle_arrears' => $total_principle_arrears,
-                    'total_interest_arrears' => $total_interest_arrears,
-                    'total_payment_amount' => $total_payment_amount,
-                    'number_of_days_late' => $arrear->first()->number_of_days_late,
-                    'add_per_customer' => $add,
-                    'previous_principal_in_arrears' => $previous_principal_arrears,
-                    'previous_interest_in_arrears' => $previous_interest_arrears,
-                    'previous_outstanding_principal' => $previous_outstanding_principal,
-                    'present_principal_in_arrears' => $present_principal_arrears,
-                    'present_interest_in_arrears' => $present_interest_arrears,
-                    'present_outstanding_principal' => $present_outstanding_principal,
-                ];
-
-            }
-        }
+        // Log::debug('EXPECTED DATA', $data);
 
         // Return JSON response with data and success message
         return response()->json(['data' => $data, 'message' => 'success'], 200);
