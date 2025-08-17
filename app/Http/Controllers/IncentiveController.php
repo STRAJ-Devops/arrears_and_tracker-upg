@@ -247,7 +247,7 @@ class IncentiveController extends Controller
 
             $incentives[$staffId] = $record;
         }
-        Log::debug('Incentives with details:', $incentives);
+        ////Log::debug('Incentives with details:', $incentives);
         return $incentives;
     }
 
@@ -423,14 +423,14 @@ class IncentiveController extends Controller
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
+        //Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
+        //Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
@@ -439,19 +439,19 @@ class IncentiveController extends Controller
             ->where('cycle', '1')
             ->where('disbursement_date', 'like', "%-$currentMonth")
             ->count('staff_id');
-        Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
+        //Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
 
         // Avoid divide-by-zero
         $denominator = $previousClients + $newCycle1Clients;
-        Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
+        //Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
 
         if ($denominator === 0) {
-            Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
+            //Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
             return 0;
         }
 
         $retentionRatio = round(($currentClients / $denominator) * 100, 2);
-        Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
+        //Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
 
         return $retentionRatio;
     }
@@ -484,7 +484,7 @@ class IncentiveController extends Controller
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $settings->max_incentive;
         }
 
-        Log::debug("calculateRetentionScore inputs:", [
+        //Log::debug("calculateRetentionScore inputs:", [
             'lendingType' => $lendingType,
             'actualRetention' => $actualRetention,
             'minThreshold' => $min,
@@ -657,10 +657,10 @@ class IncentiveController extends Controller
         // Log::info('overallFASTRecords Records:', $monthlyLoanLossRate);
 
 
-        Log::debug('MSE Outstanding Principals', $outstandingPrincipalMSE->toArray());
-        Log::debug('MSE Unique Customers', $uniqueCustomerIDMSE->toArray());
-        Log::debug('MSE recordsForPAR', $recordsForPAR->toArray());
-        Log::debug('MSE monthlyLoanLossRate', $monthlyLoanLossRate->toArray());
+        //Log::debug('MSE Outstanding Principals', $outstandingPrincipalMSE->toArray());
+        //Log::debug('MSE Unique Customers', $uniqueCustomerIDMSE->toArray());
+        //Log::debug('MSE recordsForPAR', $recordsForPAR->toArray());
+        //Log::debug('MSE monthlyLoanLossRate', $monthlyLoanLossRate->toArray());
 
 
 

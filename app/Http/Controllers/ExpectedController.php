@@ -31,7 +31,7 @@ class ExpectedController extends Controller
             $arrear->expected_total = $expected_total;
         }
 
-        // Log::debug('EXPECTED ARREARS TO ARRAYS', $arrear->toArray());
+        // //Log::debug('EXPECTED ARREARS TO ARRAYS', $arrear->toArray());
 
         return response()->json(['arrears' => $arrears], 200);
     }
@@ -132,7 +132,7 @@ class ExpectedController extends Controller
             $groupKey = 'staff_id';
             $nameField = 'officer';
 
-            // Log::debug('EXPECTED DATA ARREARS ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
+            // //Log::debug('EXPECTED DATA ARREARS ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
         }
 
         $previous_arrears = $this->group_previous_days($request);
@@ -140,7 +140,7 @@ class ExpectedController extends Controller
         // Initialize data array
         $data = [];
 
-        // Log::debug('EXPECTED DATA ARREARS OUTSIDE ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
+        // //Log::debug('EXPECTED DATA ARREARS OUTSIDE ELSE: ' . json_encode($arrears, JSON_PRETTY_PRINT));
 
         // Iterate through grouped arrears and calculate totals
         // foreach ($arrears as $key => $arrear) {
@@ -414,7 +414,7 @@ class ExpectedController extends Controller
             ];
         }
 
-        // Log::debug('EXPECTED DATA', $data);
+        // //Log::debug('EXPECTED DATA', $data);
 
         // Return JSON response with data and success message
         return response()->json(['data' => $data, 'message' => 'success'], 200);
