@@ -41,16 +41,16 @@ class IncentiveController extends Controller
                 if ($officer->branch_id == 1000) {
                     continue;
                 }
-                            Log::info("PRE-QUALIFICATION METRICS for staff {$staffId}", [
-                                'type' => $incentive['incentive_type'] ?? 'unknown',
-                                'loan_portfolio' => $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? 'N/A',
-                                'active_clients' => $incentive['f'] ?? $incentive['unique_customer_id'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
-                                'PAR' => $incentive['records_for_PAR'] ?? 'N/A',
-                                'LLR' => $incentive['monthly_loan_loss_rate'] ?? 'N/A',
-                                'retention' => $this->calculateClientRetention($staffId, $incentive['incentive_type'] ?? 'unknown'),
-                                'net_portfolio_growth' => $incentive['net_portifolio_growth'] ?? 'N/A',
-                                'net_client_growth' => $incentive['net_client_growth'] ?? 'N/A',
-                            ]);
+                            // Log::info("PRE-QUALIFICATION METRICS for staff {$staffId}", [
+                            //     'type' => $incentive['incentive_type'] ?? 'unknown',
+                            //     'loan_portfolio' => $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? $incentive['outstanding_principal'] ?? 'N/A',
+                            //     'active_clients' => $incentive['f'] ?? $incentive['unique_customer_id'] ?? $incentive['records_for_unique_group_id_group'] ?? 'N/A',
+                            //     'PAR' => $incentive['records_for_PAR'] ?? 'N/A',
+                            //     'LLR' => $incentive['monthly_loan_loss_rate'] ?? 'N/A',
+                            //     'retention' => $this->calculateClientRetention($staffId, $incentive['incentive_type'] ?? 'unknown'),
+                            //     'net_portfolio_growth' => $incentive['net_portifolio_growth'] ?? 'N/A',
+                            //     'net_client_growth' => $incentive['net_client_growth'] ?? 'N/A',
+                            // ]);
                 if ($this->determineQualifiers($incentive)) {
                     if ($incentive['incentive_type'] === 'fast') {
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
@@ -484,15 +484,15 @@ class IncentiveController extends Controller
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $settings->max_incentive;
         }
 
-        //Log::debug("calculateRetentionScore inputs:", [
-            'lendingType' => $lendingType,
-            'actualRetention' => $actualRetention,
-            'minThreshold' => $min,
-            'maxThreshold' => $max,
-            'weightPercent' => $weight,
-            'retentionScore' => $retentionScore,
-            'maxIncentive' => $settings->max_incentive,
-        ]);
+        // //Log::debug("calculateRetentionScore inputs:", [
+        //     'lendingType' => $lendingType,
+        //     'actualRetention' => $actualRetention,
+        //     'minThreshold' => $min,
+        //     'maxThreshold' => $max,
+        //     'weightPercent' => $weight,
+        //     'retentionScore' => $retentionScore,
+        //     'maxIncentive' => $settings->max_incentive,
+        // ]);
 
         return round($retentionScore, 2);
     }
