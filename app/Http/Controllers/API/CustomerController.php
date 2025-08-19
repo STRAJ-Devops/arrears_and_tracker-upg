@@ -162,9 +162,9 @@ class CustomerController extends Controller
         if ($searchParam == 'customer_id') {
             $searchCriteria = 'customerNo';
         } elseif ($searchParam == 'phone') {
-            $searchCriteria = 'phoneNumber';
+            $searchCriteria = 'phoneNo';
         } elseif ($searchParam == 'name') {
-            $searchCriteria = 'customerName';
+            $searchCriteria = 'name';
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Invalid search_by parameter'], 400);
         }

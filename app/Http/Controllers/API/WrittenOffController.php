@@ -98,13 +98,13 @@ class WrittenOffController extends Controller
         if ($searchParam == 'customer_id') {
             $searchCriteria = 'customerNo';
         } elseif ($searchParam == 'phone') {
-            $searchCriteria = 'customerPhone';
+            $searchCriteria = 'phoneNo';
         } elseif ($searchParam == 'name') {
-            $searchCriteria = 'OfficerName';
+            $searchCriteria = 'officerNo';
         } elseif ($searchParam == 'group_id') {
-            $searchCriteria = 'groupNo';
+            $searchCriteria = 'groupId';
         } elseif ($searchParam == 'group_name') {
-            $searchCriteria = 'groupName';
+            $searchCriteria = 'name';
         } else {
             return response()->json(['message' => 'Invalid search_by parameter'], 400);
         }
