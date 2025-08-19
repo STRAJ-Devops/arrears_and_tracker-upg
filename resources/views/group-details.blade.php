@@ -117,7 +117,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <img src="{{ asset('assets/img/avatar.png') }}" alt="Customer Avatar" class="rounded-circle me-3" width="80" height="80">
                                                     <div>
-                                                        <h5 class="card-title">Customer Name: ${customer.names}</h5>
+                                                        <h5 class="card-title">Customer Name: ${customer.name}</h5>
                                                         <p class="card-text"><strong>Customer ID: </strong> ${Number(customer.customer_id)}</p>
                                                         <p class="card-text"><strong>Phone Number:</strong> ${Number(customer.phone)}</p>
                                                         <p class="card-text"><strong>Group ID:</strong> ${customer.group_id}</p>
