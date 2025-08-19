@@ -9,7 +9,7 @@
             <div class="col-2">
                 <select class="form-select shadow-none" id="search-by" name="search-by">
                     <option value="customer_id">Customer ID</option>
-                    <option value="name">Officer Name</option>
+                    <option value="officer">Officer Number</option>
                     <option value="phone">Phone</option>
                     <option value="group_id">Group ID</option>
                     {{-- <option value="group_name">Group Name</option> --}}

@@ -99,7 +99,7 @@ class WrittenOffController extends Controller
             $searchCriteria = 'customerNo';
         } elseif ($searchParam == 'phone') {
             $searchCriteria = 'phoneNo';
-        } elseif ($searchParam == 'name') {
+        } elseif ($searchParam == 'officer') {
             $searchCriteria = 'officerNo';
         } elseif ($searchParam == 'group_id') {
             $searchCriteria = 'groupId';
