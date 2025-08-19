@@ -132,7 +132,7 @@ class CustomerController extends Controller
         $customer_details = DB::table('customers')
             ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
             ->selectRaw('
-                customers.name,
+                customers.names,
                 arrears.group_id,
                 arrears.group_name,
                 arrears.customer_id,
