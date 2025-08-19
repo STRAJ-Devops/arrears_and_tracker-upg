@@ -102,10 +102,11 @@ class CustomerController extends Controller
                 ->where('customers.customer_id', $customer_id)
                 ->first();
         } elseif ($search_by == 'phone') {
+            $searchPhone = ltrim($customer_id, '0');
             $record = DB::table('customers')
                 ->join('arrears', 'customers.customer_id', '=', 'arrears.customer_id')
                 ->selectRaw('arrears.group_id, customers.phone')
-                ->where('customers.phone', 'like', '%' . $customer_id . '%')
+                ->where('customers.phone', 'like', '%' . $searchPhone . '%')
                 ->first();
         } else if ($search_by == 'group_name') {
             $record = DB::table('arrears')
