@@ -33,11 +33,18 @@ class DashboardController extends Controller
         $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         // $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
-        $number_of_clients = Sale::count();
-        $number_of_groups     = Arrear::where('lending_type', 'Group')->count();
-        $number_of_individuals = Arrear::where('lending_type', 'Individual')->count();
-        $number_of_smes        = Arrear::where('lending_type', 'mse')->count();
-        $number_of_fasts       = Arrear::where('lending_type', 'Fast')->count();
+        // $number_of_clients = Sale::count();
+        // $number_of_groups     = Arrear::where('lending_type', 'Group')->count();
+        // $number_of_individuals = Arrear::where('lending_type', 'Individual')->count();
+        // $number_of_smes        = Arrear::where('lending_type', 'mse')->count();
+        // $number_of_fasts       = Arrear::where('lending_type', 'Fast')->count();
+
+        $number_of_clients     = Arrear::sum('number_of_group_members');
+        $number_of_groups      = Arrear::where('lending_type', 'Group')->sum('number_of_group_members');
+        $number_of_individuals = Arrear::where('lending_type', 'Individual')->sum('number_of_group_members');
+        $number_of_smes        = Arrear::where('lending_type', 'mse')->sum('number_of_group_members');
+        $number_of_fasts       = Arrear::where('lending_type', 'Fast')->sum('number_of_group_members');
+
 
 
         // $number_of_groups = Arrear::where('lending_type', 'Group')->distinct()->get(['group_id'])->count();
