@@ -6,6 +6,7 @@ use App\Models\Officer;
 use Illuminate\Http\Request;
 use App\Models\Region;
 use App\Models\Branch;
+use Illuminate\Support\Facades\Log;
 
 class OfficerController extends Controller
 {
@@ -30,30 +31,46 @@ class OfficerController extends Controller
 
         //get all branches
         $branches = Branch::all();
+
+        // Log::info('Create User: Regions count', ['count' => $regions->count()]);
+        // Log::info('Create User: Branches count', ['count' => $branches->count()]);
+
+        // // log actual data (be careful in prod, this can be a lot!)
+        // Log::debug('Create User: Regions data', $regions->toArray());
+        // Log::debug('Create User: Branches data', $branches->toArray());
         return view('users.create', compact('regions', 'branches'));
     }
 
     public function store(Request $request)
     {
 
+        // log raw input
+        Log::info('User store request received', $request->all());
             //validate form data
             $this->validate($request, [
                 'names' => 'required',
                 'staff_id' => 'required|integer|unique:officers,staff_id',
-                'username' => 'required',
+                'username' => 'required|unique:officers,username',
                 'password' => 'required',
-            ]);
+            ], [
+            'staff_id.unique' => 'This Officer ID is already taken.',
+            'username.unique' => 'This Username is already taken.',
+        ]);
 
             $requestData = $request->all();
+
             
             //un hash password
             $requestData['un_hashed_password'] = $requestData['password'];
             //hash password
             $requestData['password'] = bcrypt($requestData['password']);
 
-            Officer::create($requestData);
+        Officer::create($requestData);
 
-            return redirect('user-management')->with('flash_message', 'New User Added!');
+        // log what was saved
+        // Log::info('New officer created', $officer->toArray());
+
+            return redirect('user-management')->with('success', 'New User Added!');
     }
 
     // public function edit($id)

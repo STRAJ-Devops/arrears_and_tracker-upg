@@ -98,6 +98,13 @@ class SessionsController extends Controller
             // Try fallback plain text check
             $officer = Officer::where('username', $attributes['username'])->first();
 
+            if (!$officer) {
+                // User not found at all
+                return back()->withErrors([
+                    'username' => 'User does not exist.'
+                ]);
+            }
+
             if (trim(request('password')) === trim($officer->un_hashed_password)){
                 return back()->withErrors(['password' => 'Email or password invalid.']);
             }

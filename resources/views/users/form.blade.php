@@ -66,12 +66,28 @@
     </select>
 </div>
 
+
 <div class="form-group">
     <label>Reset Password?</label><br>
     <label><input type="radio" name="reset_password" value="yes"> Yes</label>
     <label><input type="radio" name="reset_password" value="no" checked> No</label>
 </div>
 
+
+<!-- NEW PASSWORD FIELD -->
+@if ($formMode === 'create')
+<div class="form-group">
+    <label for="password" class="control-label">{{ 'Password' }}</label>
+    <input class="form-control" name="password" type="text" id="password"
+        value="">
+    @if ($errors->has('password'))
+    <span class="text-danger">{{ $errors->first('password') }}</span>
+    @endif
+</div>
+@endif
+
+
+<!-- EXISITING PASSWORD FIELD -->
 
 <!-- <div class="form-group">
     <label for="password" class="control-label">{{ 'Password' }}</label>
