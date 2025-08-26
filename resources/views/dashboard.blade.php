@@ -414,7 +414,8 @@
         </div>
     </div>
 </div>
-@if (auth()->user()->role == 5)
+
+@if ($data['user_type'] == 5)
 <div class="row">
     <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
         <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
@@ -423,7 +424,8 @@
     </div>
 </div>
 @endif
-@if (auth()->user()->role == 5)
+
+@if ($data['user_type'] == 5)
 <div class="row">
     <div class="col-xl-12 col-sm-12 mb-xl-0 mb-4 mt-4">
         <div class="p-1" style="background-color:white;border-radius:25px;box-shadow:-3px 3px 1px #C2C2C2;">
@@ -476,6 +478,7 @@
     };
 </script> -->
 <script>
+    Chart.register(ChartDataLabels);
     var productLabels = @json($data['product_labels']);
     var productSales = @json($data['product_sales']);
     var productTargets = @json($data['product_targets']);
@@ -486,7 +489,9 @@
     var PrincipalInArrears = @json($data['principal_arrears']);
     var totalTargets = @json($data['total_targets']);
     var totalSales = @json($data['total_disbursements']);
-    var userRole = @json(auth() -> user() -> role);
+    // var userRole = @json(auth() -> user() -> role);
+
+    var userRole = @json($data['user_type']);
 
     console.log(productLabels); // Check if data is logged correctly
     console.log(userRole);

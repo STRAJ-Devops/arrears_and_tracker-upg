@@ -23,6 +23,7 @@ class CommentController extends Controller
     //store a new comment
     public function store(Request $request)
     {
+
         $request->validate(
             [
                 'comment' => 'required'
@@ -35,6 +36,8 @@ class CommentController extends Controller
         $comment->number_of_days_late = $request->number_of_days_late;
         $comment->staff_id = auth()->user()->staff_id;
         $comment->save();
+
+        
 
         return back()->with(['success' => 'Comment added successfully.']);
     }

@@ -33,6 +33,7 @@ class CommentController extends Controller
         $comment->save();
 
         return response()->json(['comment' => $comment], 201);
+        
     }
 
     //get all comments

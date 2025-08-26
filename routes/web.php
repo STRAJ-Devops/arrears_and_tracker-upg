@@ -162,9 +162,9 @@ Route::middleware('revalidate', 'auth:officer')->group(function () {
     Route::get('download-branch-targets-template', [BranchTargetController::class, 'downloadTemplate'])->name('download-branch-targets-template');
     Route::get('download-officer-targets-template', [OfficerTargetController::class, 'downloadTemplate'])->name('download-officer-targets-template');
     Route::get('written-off-customers', [WrittenOffController::class, 'index'])->name('written-off-customers');
-    Route::get('/login', function () {
-        return view('dashboard');
-    })->name('sign-up');
+    // Route::get('/login', function () {
+    //     return view('dashboard');
+    // })->name('sign-up');
 });
 
 Route::get('download-template', [SaleController::class, 'downloadTemplate'])->name('download-template');
@@ -173,7 +173,7 @@ Route::get('officers', [OfficerController::class, 'getOfficers'])->name('officer
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
-    Route::get('/login', [SessionsController::class, 'create']);
+    Route::get('/login', [SessionsController::class, 'create'])->name('login');
     Route::post('/session', [SessionsController::class, 'store']);
     Route::get('/login/forgot-password', [ResetController::class, 'create']);
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
@@ -188,6 +188,6 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/force-password-change', [SessionsController::class, 'forcePasswordChange'])->name('force-password-change.submit');
 });
 
-Route::get('/login', function () {
-    return view('session/login-session');
-})->name('login');
+// Route::get('/login', function () {
+//     return view('session/login-session');
+// })->name('login');

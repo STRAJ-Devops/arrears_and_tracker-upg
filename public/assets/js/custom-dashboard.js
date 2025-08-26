@@ -1,3 +1,4 @@
+console.log("USERROLE IN JS ", userRole);
 if (userRole === 5) {
     //graph for product sales and targets
     var productLabels = productLabels;
@@ -5,22 +6,22 @@ if (userRole === 5) {
         labels: productLabels,
         datasets: [
             {
-                label: 'Sales',
-                backgroundColor: 'green',
-                borderColor: 'green',
-                data: productSales
+                label: "Sales",
+                backgroundColor: "green",
+                borderColor: "green",
+                data: productSales,
             },
             {
-                label: 'Target',
-                backgroundColor: 'red',
-                borderColor: 'red',
-                data: productTargets
-            }
-        ]
-    }
+                label: "Target",
+                backgroundColor: "red",
+                borderColor: "red",
+                data: productTargets,
+            },
+        ],
+    };
 
     var config = {
-        type: 'bar',
+        type: "bar",
         data: data,
         options: {
             responsive: true,
@@ -29,180 +30,179 @@ if (userRole === 5) {
                     stacked: true,
                 },
                 y: {
-                    stacked: true
-                }
+                    stacked: true,
+                },
             },
             plugins: {
                 title: {
                     display: true,
-                    text: 'Product Sales and Targets'
+                    text: "Product Sales and Targets",
                 },
 
                 datalabels: {
-                    color: 'white',
+                    color: "white",
                     formatter: function (value, context) {
                         return "";
                     },
-                }
-            }
+                },
+            },
         },
     };
 
-
-    new Chart(document.getElementById('product-sales-targets'), config);
-
+    new Chart(document.getElementById("product-sales-targets"), config);
 }
 var data = {
     labels: branchLabels,
     datasets: [
         {
-            label: 'Sales',
-            backgroundColor: 'green',
-            borderColor: 'green',
-            data: branchSales
+            label: "Sales",
+            backgroundColor: "green",
+            borderColor: "green",
+            data: branchSales,
         },
         {
-            label: 'Target',
-            backgroundColor: 'red',
-            borderColor: 'red',
-            data: branchTargets
-        }
-    ]
-}
+            label: "Target",
+            backgroundColor: "red",
+            borderColor: "red",
+            data: branchTargets,
+        },
+    ],
+};
 
 var config = {
-    type: 'bar',
+    type: "bar",
     data: data,
     options: {
         responsive: true,
-        scales: {
-
-        },
+        scales: {},
         plugins: {
             title: {
                 display: true,
-                text: 'Branch Sales and Targets'
+                text: "Branch Sales and Targets",
             },
             datalabels: {
-                color: 'white',
+                color: "white",
                 formatter: function (value, context) {
                     return "";
                 },
-            }
-        }
+            },
+        },
     },
 };
 
-
-new Chart(document.getElementById('branch-sales-targets'), config);
-
+new Chart(document.getElementById("branch-sales-targets"), config);
 
 //pie chart for arrears
 var data = {
-    labels: ['Outstanding Principal', 'Principal in Arrears'],
+    labels: ["Outstanding Principal", "Principal in Arrears"],
     datasets: [
         {
-            label: 'Arrears',
-            backgroundColor: ['green', 'red'],
-            borderColor: ['green', 'red'],
-            data: [outstandingPrincipal, PrincipalInArrears]
-        }
-    ]
-}
+            label: "Arrears",
+            backgroundColor: ["green", "red"],
+            borderColor: ["green", "red"],
+            data: [outstandingPrincipal, PrincipalInArrears],
+        },
+    ],
+};
 
 var config = {
-    type: 'pie',
+    type: "pie",
     data: data,
     options: {
         responsive: true,
         plugins: {
             title: {
                 display: true,
-                text: 'A pie chart showing the outstanding principal and principal in arrears'
+                text: "A pie chart showing the outstanding principal and principal in arrears",
             },
             datalabels: {
-                color: 'white',
+                color: "white",
                 // display percentage with two decimal points
                 formatter: function (value, context) {
                     //return the percentage and append the percentage sign
-                    const percentage = (value / (Number(outstandingPrincipal) + Number(PrincipalInArrears))) * 100;
-                    return percentage.toFixed(2) + '%';
+                    const percentage =
+                        (value /
+                            (Number(outstandingPrincipal) +
+                                Number(PrincipalInArrears))) *
+                        100;
+                    return percentage.toFixed(2) + "%";
                 },
                 font: {
-                    weight: 'bold',
+                    weight: "bold",
                     size: 25,
-                }
-            }
-        }
+                },
+            },
+        },
     },
 };
 
+new Chart(document.getElementById("arrears-chart"), config);
 
-new Chart(document.getElementById('arrears-chart'), config);
-
-var actuals = ((totalSales / totalTargets) * 100)
-var targets = (((totalTargets - totalSales) / totalTargets) * 100)
+var actuals = (totalSales / totalTargets) * 100;
+var targets = ((totalTargets - totalSales) / totalTargets) * 100;
 //pie chart for arrears
 var data = {
-    labels: ['Actuals', 'Targets'],
+    labels: ["Actuals", "Targets"],
     datasets: [
         {
-            backgroundColor: ['green', 'red'],
-            borderColor: ['green', 'red'],
-            data: [actuals, targets]
-        }
-    ]
-}
+            backgroundColor: ["green", "red"],
+            borderColor: ["green", "red"],
+            data: [actuals, targets],
+        },
+    ],
+};
 
 var config = {
-    type: 'pie',
+    type: "pie",
     data: data,
     options: {
         responsive: true,
         plugins: {
             title: {
                 display: true,
-                text: 'Total Sales vs Total Targets'
+                text: "Total Sales vs Total Targets",
             },
             tooltip: {
                 callbacks: {
                     label: function (context) {
-                        var label = context.dataset.label || '';
+                        var label = context.dataset.label || "";
                         if (label) {
-                            label += ': ';
+                            label += ": ";
                         }
                         if (context.dataIndex === 0) {
                             label += Number(totalSales).toLocaleString();
-
                         } else {
-
                             label += Number(totalTargets).toLocaleString();
                         }
                         return label;
-                    }
-                }
+                    },
+                },
             },
             datalabels: {
-                color: 'white',
+                color: "white",
                 // display percentage with two decimal points
                 formatter: function (value, context) {
                     var percentage = 0;
                     if (context.dataIndex === 0) {
-                        percentage = ((totalSales / totalTargets) * 100).toFixed(2);
+                        percentage = (
+                            (totalSales / totalTargets) *
+                            100
+                        ).toFixed(2);
                     } else {
-                        percentage = (((totalTargets - totalSales) / totalTargets) * 100).toFixed(2);
+                        percentage = (
+                            ((totalTargets - totalSales) / totalTargets) *
+                            100
+                        ).toFixed(2);
                     }
-                    return percentage + '%';
+                    return percentage + "%";
                 },
                 font: {
-                    weight: 'bold',
+                    weight: "bold",
                     size: 25,
-                }
-            }
-        }
+                },
+            },
+        },
     },
 };
 
-
-
-new Chart(document.getElementById('targets-sales-chart'), config);
+new Chart(document.getElementById("targets-sales-chart"), config);

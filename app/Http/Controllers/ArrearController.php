@@ -16,6 +16,10 @@ class ArrearController extends Controller
 
     public function group_by(Request $request)
     {
+        //     static $counter = 0;
+        // $counter++;
+
+        // \Log::info('group_by IN ARREARS METHOD CALLED AT: ' . now() . ' | Call count: ' . $counter);
         // Check if request has group as parameter
         if ($request->has('group')) {
             if ($request->group == 'staff_id') {
@@ -116,6 +120,8 @@ class ArrearController extends Controller
             $total_par = $total_outstanding_principal != 0 ? (($arrear->sum('par') / $total_outstanding_principal) * 100) : 0;
             $phone_number = $arrear->first()->$nameField->phone ?? "None"; // Fetch name based on grouping key
             $number_of_comments = $arrear->first()->customer->comments->count();
+
+
             $amount_disbursed = $arrear->sum('amount_disbursed');
             $branch_name = $arrear->first()->branch->branch_name ?? "None";
             $number_of_days_late = $arrear->sum('number_of_days_late');
@@ -136,8 +142,21 @@ class ArrearController extends Controller
                 'amount_disbursed' => $amount_disbursed,
                 'total_outstanding_principal' => $total_outstanding_principal,
                 'number_of_days_late' => $number_of_days_late,
+
+                'comments' => $arrear->first()->customer->comments->map(function ($c) {
+                    return [
+                        'staff_id' => $c->staff_id,
+                        'comment' => $c->comment,
+                        'created_at' => $c->created_at,
+                    ];
+                }),
             ];
         }
+
+
+        \Log::info('Grouped Arrear Data:', $data);
+
+
 
         // Return JSON response with data and success message
         return response()->json(['data' => $data, 'message' => 'success'], 200);

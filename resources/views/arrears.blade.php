@@ -124,7 +124,71 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script>
             var logged_user = {!! json_encode($logged_user) !!};
+            console.log("LOGGED USER ==>>> ", logged_user)
         </script>
+
+    <script>
+    $(document).on("click", "#submitComment", function () {
+    let customerId = $("#customer_id").val();
+    let nodl = $("#nodl").val();
+    let comment = $("#comment").val();
+
+    $.ajax({
+        url: "{{ route('add-comment') }}", // Blade will parse this
+        method: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            customer_id: customerId,
+            number_of_days_late: nodl,
+            comment: comment,
+        },
+        success: function (response) {
+            Swal.fire("Saved!", "Comment added successfully LEGGO.", "success");
+            $("#commentModal").modal("hide");
+            $("#comment").val("");
+            table.ajax.reload();
+        },
+        error: function (xhr) {
+            Swal.fire(
+                "Error!",
+                xhr.responseJSON?.message ?? "Something went wrong",
+                "error"
+            );
+        },
+    });
+});
+    </script>
+
+    <script>
+$(document).on("click", ".view-comments", function () {
+    let customerId = $(this).data("customer-id");
+
+    $.ajax({
+        url: "{{ route('comments') }}", // works here
+        type: "GET",
+        data: { customer_id: customerId },
+        success: function(response) {
+            let html = '';
+            if (response.comments.length > 0) {
+                response.comments.forEach(function(comment) {
+                    // html += `<p><strong>Staff:</strong> ${comment.staff_id} | <strong>Comment:</strong> ${comment.comment}</p>`;
+                    let friendlyDate = new Date(comment.created_at).toLocaleString(); 
+                    html += `<p><strong>Staff:</strong> ${comment.staff_id} | <strong>Comment:</strong> ${comment.comment} | <strong>Created at:</strong> ${new Date(comment.created_at).toLocaleString()}</p>`;
+                });
+            } else {
+                html = '<p>No comments found.</p>';
+            }
+            $("#comments-container").html(html);
+            $("#viewCommentsModal").modal("show");
+        },
+        error: function(xhr) {
+            Swal.fire("Error!", "Failed to load comments.", "error");
+        }
+    });
+});
+</script>
+
+
 
         <script src="{{ asset('assets/js/custom-arrears.js') }}"></script>
     @endpush

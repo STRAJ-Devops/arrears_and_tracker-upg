@@ -9,12 +9,16 @@ use App\Models\OfficerTarget;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 class DashboardController extends Controller
 {
     public function index()
     {
         $logged_user = auth()->user()->user_type;
         $staff_id = auth()->user()->staff_id;
+        // Log::info('Logged-in user type:', ['user_type' => $logged_user]);
+        // Log::info('Logged-in user details:', auth()->user()->toArray());
 
         $outstanding_principal = Arrear::sum('outsanding_principal');
 
@@ -41,17 +45,29 @@ class DashboardController extends Controller
         // $number_of_clients = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears) as t"))
         //     ->sum('t.number_of_group_members');
 
-        $number_of_groups = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'Group') as t"))
-            ->sum('t.number_of_group_members');
 
-        $number_of_individuals = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'Individual') as t"))
-            ->sum('t.number_of_group_members');
 
-        $number_of_smes = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'mse') as t"))
-            ->sum('t.number_of_group_members');
+        $number_of_groups = Arrear::where('lending_type', 'Group')
+            ->groupBy('customer_id')
+            ->get()
+            ->sum('number_of_group_members');
 
-        $number_of_fasts = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'Fast') as t"))
-            ->sum('t.number_of_group_members');
+        $number_of_individuals = Arrear::where('lending_type', 'Individual')
+            ->groupBy('customer_id')
+            ->get()
+            ->sum('number_of_group_members');
+
+        $number_of_smes = Arrear::where('lending_type', 'mse')
+            ->groupBy('customer_id')
+            ->get()
+            ->sum('number_of_group_members');
+
+        $number_of_fasts = Arrear::where('lending_type', 'Fast')
+            ->groupBy('customer_id')
+            ->get()
+            ->sum('number_of_group_members');
+
+
 
         $number_of_clients = $number_of_groups + $number_of_individuals + $number_of_smes + $number_of_fasts;
 
@@ -151,6 +167,11 @@ class DashboardController extends Controller
             'sgl' => $sgl,
             'officer_performance' => number_format($officer_performance),
             'clients_performance' => number_format($clients_performance),
+
+
+            // Add user_type and staff_id
+            'user_type' => $logged_user,
+            'staff_id' => $staff_id,
         ];
 
         return view('dashboard', compact('data'));

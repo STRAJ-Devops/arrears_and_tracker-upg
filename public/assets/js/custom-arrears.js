@@ -16,6 +16,81 @@ $(document).ready(function () {
     });
 
 
+    // $(document).on("click", ".comment-button", function () {
+    //     alert("Comment button clicked!");
+    // });
+
+    $(document).on("click", ".comment-button", function () {
+        let customerId = $(this).data("customer-id");
+        let nodl = $(this).data("nodl");
+
+        // fill hidden fields inside modal
+        $("#customer_id").val(customerId);
+        $("#nodl").val(nodl);
+
+        // show the modal (Bootstrap 5 style)
+        let commentModal = new bootstrap.Modal(
+            document.getElementById("commentModal")
+        );
+        commentModal.show();
+    });
+
+    // $(document).on("click", ".view-comments", function () {
+    //     let customerId = $(this).data("customer-id");
+
+    //     // here you can call AJAX to fetch comments
+    //     // then inject them into #comments-container
+    //     $("#comments-container").html(
+    //         "<p>Loading comments for " + customerId + "...</p>"
+    //     );
+
+    //     let viewModal = new bootstrap.Modal(
+    //         document.getElementById("viewCommentsModal")
+    //     );
+    //     viewModal.show();
+    // });
+
+//     $(document).on("click", ".view-comments", function () {
+//     let customerId = $(this).data("customer-id");
+//     console.log("CUSTOMER ID FOR VIEW",customerId)
+
+//     $("#comments-container").html('<p>Loading comments...</p>');
+
+//     let viewModal = new bootstrap.Modal(document.getElementById("viewCommentsModal"));
+//     viewModal.show();
+
+//     $.ajax({
+//         url: "{{ route('comments') }}", // points to CommentController@index
+//         type: "GET",
+//         data: { customer_id: customerId },
+//         success: function (response) {
+//             let html = '';
+//             if (response.comments.length > 0) {
+//                 response.comments.forEach(function(comment) {
+//                     html += `<div class="mb-2 p-2 border rounded">
+//                                 <strong>Staff ID: ${comment.staff_id}</strong>
+//                                 <small>(${new Date(comment.created_at).toLocaleString()})</small>
+//                                 <p>${comment.comment}</p>
+//                              </div>`;
+//                 });
+//             } else {
+//                 html = '<p>No comments yet.</p>';
+//             }
+//             $("#comments-container").html(html);
+//         },
+//         error: function () {
+//             $("#comments-container").html('<p class="text-danger">Failed to load comments.</p>');
+//         }
+//     });
+// });
+
+
+
+    
+
+
+
+
     // Function to populate table headers
     function populateTableHeaders(group) {
 
@@ -45,6 +120,8 @@ $(document).ready(function () {
 
     // Function to fetch data
     function fetchData(group) {
+        // console.log("GROUP IN JS ARREARS ", group)
+        // console.log('Fetching data for group:', group, new Date().toISOString());
         // Fetch data based on the selected group
         $.ajax({
             url: "/arrears-group-by",
@@ -98,7 +175,9 @@ $(document).ready(function () {
                             '',
                             ''
                         ];
-                    } else if (group === 'client') {
+                    } 
+                    
+                    else if (group === 'client') {
                         console.log("GROUP IS WHAT ", group)
 
                         var numberOfCommentsHtml = '<button class="btn btn-sm btn-outline-primary view-comments" data-customer-id="' + item.customer_id + '">' + item.number_of_comments.toLocaleString() + '</button>';

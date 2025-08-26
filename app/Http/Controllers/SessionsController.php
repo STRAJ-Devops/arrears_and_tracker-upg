@@ -12,6 +12,10 @@ class SessionsController extends Controller
 {
     public function create()
     {
+        // Always force logout when hitting /login
+        Auth::guard('officer')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
         return view('session.login-session');
     }
 
@@ -105,12 +109,12 @@ class SessionsController extends Controller
                 ]);
             }
 
-            if (trim(request('password')) === trim($officer->un_hashed_password)){
+            if (trim(request('password')) !== trim($officer->un_hashed_password)){
                 return back()->withErrors(['password' => 'Email or password invalid.']);
             }
 
             // Manually log them in for fallback
-            Auth::guard('officer')->login($officer);
+            // Auth::guard('officer')->login($officer);
         }
 
         session()->regenerate();
@@ -161,11 +165,26 @@ class SessionsController extends Controller
 
 
 
+    // public function destroy()
+    // {
+    //     Auth::guard('officer')->logout();
+    //     session()->invalidate();
+    //     session()->regenerateToken();
+
+    //     Auth::logout();
+
+    //     return redirect('/login')->with(['success' => 'You have been logged out.']);
+    // }
+
     public function destroy()
     {
-
-        Auth::logout();
+        Auth::guard('officer')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
 
         return redirect('/login')->with(['success' => 'You have been logged out.']);
     }
+
+
+
 }
