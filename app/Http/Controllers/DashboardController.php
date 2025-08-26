@@ -38,8 +38,8 @@ class DashboardController extends Controller
         // $number_of_individuals = Arrear::where('lending_type', 'Individual')->count();
         // $number_of_smes        = Arrear::where('lending_type', 'mse')->count();
         // $number_of_fasts       = Arrear::where('lending_type', 'Fast')->count();
-        $number_of_clients = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears) as t"))
-            ->sum('t.number_of_group_members');
+        // $number_of_clients = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears) as t"))
+        //     ->sum('t.number_of_group_members');
 
         $number_of_groups = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'Group') as t"))
             ->sum('t.number_of_group_members');
@@ -52,6 +52,8 @@ class DashboardController extends Controller
 
         $number_of_fasts = DB::table(DB::raw("(SELECT DISTINCT customer_id, number_of_group_members FROM arrears WHERE lending_type = 'Fast') as t"))
             ->sum('t.number_of_group_members');
+
+        $number_of_clients = $number_of_groups + $number_of_individuals + $number_of_smes + $number_of_fasts;
 
 
 

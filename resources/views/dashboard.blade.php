@@ -157,7 +157,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Individuals</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Individual Clients</p>
                             <h5 class="font-weight-bolder mb-0 text-nowrap">
                                 {{ number_format($data['number_of_individuals'], 0, '.', ',') }}
                             </h5>
@@ -179,7 +179,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Groups</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Group Clients</p>
                             <h5 class="font-weight-bolder mb-0 text-nowrap">
                                 {{ number_format($data['number_of_groups'], 0, '.', ',') }}
                             </h5>
@@ -201,7 +201,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Fast</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of Fast Clients</p>
                             <h5 class="font-weight-bolder mb-0 text-nowrap">
                                 {{ number_format($data['number_of_fasts'], 0, '.', ',') }}
                             </h5>
@@ -223,7 +223,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of SMEs</p>
+                            <p class="text-sm mb-0 text-capitalize font-weight-bold">Number Of SME Clients</p>
                             <h5 class="font-weight-bolder mb-0 text-nowrap">
                                 {{ number_format($data['number_of_smes'], 0, '.', ',') }}
                             </h5>
