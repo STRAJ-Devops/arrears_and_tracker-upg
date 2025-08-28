@@ -799,7 +799,7 @@ class IncentiveController extends Controller
         $lendingType = strtolower($incentive['incentive_type']);
 
         $minCapPortfolio = 'min_cap_portifolio_' . $lendingType;
-        $minCapClient = 'min_cap_client_' . $lendingType;
+        $minCapClient = 'min_active_client_' . $lendingType;
         $maxPar = 'max_par_' . $lendingType;
         $maxLLR = 'max_llr_' . $lendingType;
 

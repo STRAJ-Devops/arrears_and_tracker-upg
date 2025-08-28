@@ -171,22 +171,22 @@
                                 @method('PATCH')
                                 @csrf
                                 <div class="form-group row">
-                                    <label for="max_cap_portifolio_individual"
+                                    <label for="min_cap_portifolio_individual"
                                         class="col-md-4 col-form-label text-md-right">Loan Portfolio</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="max_cap_portifolio_individual"
-                                            id="max_cap_portifolio_individual" class="form-control number_format"
-                                            value="{{ number_format($incentiveSettings->max_cap_portifolio_individual, 2, '.', ',') }}"
+                                        <input type="text" name="min_cap_portifolio_individual"
+                                            id="min_cap_portifolio_individual" class="form-control number_format"
+                                            value="{{ number_format($incentiveSettings->min_cap_portifolio_individual, 2, '.', ',') }}"
                                             required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="min_cap_client_individual"
-                                        class="col-md-4 col-form-label text-md-right">Minimum Number Of Clients</label>
+                                    <label for="min_active_client_individual"
+                                        class="col-md-4 col-form-label text-md-right">Minimum No of Active Clients</label>
                                     <div class="col-md-6">
-                                        <input type="number" step="any" name="min_cap_client_individual"
-                                            id="min_cap_client_individual" class="form-control"
-                                            value="{{ number_format($incentiveSettings->min_cap_client_individual, 2, '.', ',') }}"
+                                        <input type="number" step="any" name="min_active_client_individual"
+                                            id="min_active_client_individual" class="form-control"
+                                            value="{{ number_format($incentiveSettings->min_active_client_individual, 2, '.', ',') }}"
                                             required>
                                     </div>
                                 </div>
@@ -282,17 +282,17 @@
                                 <fieldset class="form-group border p-3">
                                     <legend>Portfolio Client Incentive</legend>
                                     <div class="form-group row">
-                                        <label for="min_cap_client" class="col-md-4 col-form-label text-md-right">Min Net Client Growth</label>
+                                        <label for="min_cap_client_individual" class="col-md-4 col-form-label text-md-right">Min Net Client Growth</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="min_cap_client" id="min_cap_client" class="form-control"
-                                                value="{{ number_format($incentiveSettings->min_cap_client ?? 0, 2, '.', ',') }}">
+                                            <input type="text" name="min_cap_client_individual" id="min_cap_client_individual" class="form-control"
+                                                value="{{ number_format($incentiveSettings->min_cap_client_individual ?? 0, 2, '.', ',') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="max_cap_client" class="col-md-4 col-form-label text-md-right">Max Net Client Growth</label>
+                                        <label for="max_cap_client_individual" class="col-md-4 col-form-label text-md-right">Max Net Client Growth</label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_cap_client" id="max_cap_client" class="form-control"
-                                                value="{{ number_format($incentiveSettings->max_cap_client ?? 0, 2, '.', ',') }}">
+                                            <input type="text" name="max_cap_client_individual" id="max_cap_client_individual" class="form-control"
+                                                value="{{ number_format($incentiveSettings->max_cap_client_individual ?? 0, 2, '.', ',') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -331,20 +331,20 @@
                                 @csrf
 
                                 <div class="form-group row">
-                                    <label for="max_cap_portifolio_group" class="col-md-4 col-form-label text-md-right">Loan Portfolio</label>
+                                    <label for="min_cap_portifolio_group" class="col-md-4 col-form-label text-md-right">Loan Portfolio</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="max_cap_portifolio_group" id="max_cap_portifolio_group"
+                                        <input type="text" name="min_cap_portifolio_group" id="min_cap_portifolio_group"
                                             class="form-control number_format"
-                                            value="{{ number_format($incentiveSettings->max_cap_portifolio_group, 2, '.', ',') }}" required>
+                                            value="{{ number_format($incentiveSettings->min_cap_portifolio_group, 2, '.', ',') }}" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="min_cap_client_group" class="col-md-4 col-form-label text-md-right">Minimum Number Of Groups</label>
+                                    <label for="min_active_client_group" class="col-md-4 col-form-label text-md-right">Minimum No Of Active Groups</label>
                                     <div class="col-md-6">
-                                        <input type="number" step="any" name="min_cap_client_group" id="min_cap_client_group"
+                                        <input type="number" step="any" name="min_active_client_group" id="min_active_client_group"
                                             class="form-control"
-                                            value="{{ number_format($incentiveSettings->min_cap_client_group, 2, '.', ',') }}" required>
+                                            value="{{ number_format($incentiveSettings->min_active_client_group, 2, '.', ',') }}" required>
                                     </div>
                                 </div>
 
@@ -498,12 +498,12 @@
                                 </div> -->
 
                                 <div class="form-group row">
-                                    <label for="min_cap_number_of_groups_fast" class="col-md-4 col-form-label text-md-right">
-                                        Minimum Number Of Fast Groups
+                                    <label for="min_active_client_fast" class="col-md-4 col-form-label text-md-right">
+                                        Minimum No Of Active Fast Groups
                                     </label>
                                     <div class="col-md-6">
-                                        <input type="text" name="min_cap_number_of_groups_fast" id="min_cap_number_of_groups_fast"
-                                            value="{{ number_format($incentiveSettings->min_cap_number_of_groups_fast, 0, '.', ',') }}"
+                                        <input type="text" name="min_active_client_fast" id="min_active_client_fast"
+                                            value="{{ number_format($incentiveSettings->min_active_client_fast, 0, '.', ',') }}"
                                             class="form-control" required>
                                     </div>
                                 </div>
@@ -584,30 +584,30 @@
                                 <fieldset class="form-group border p-3">
                                     <legend>Client Growth Incentive</legend>
                                     <div class="form-group row">
-                                        <label for="min_cap_client_growth_fast" class="col-md-4 col-form-label text-md-right">
+                                        <label for="min_cap_client_fast" class="col-md-4 col-form-label text-md-right">
                                             Min Net Client Growth
                                         </label>
                                         <div class="col-md-6">
-                                            <input type="text" name="min_cap_client_growth_fast" id="min_cap_client_growth_fast" class="form-control"
-                                                value="{{ number_format($incentiveSettings->min_cap_client_growth_fast ?? 0, 2, '.', ',') }}">
+                                            <input type="text" name="min_cap_client_growth_fast" id="min_cap_client_fast" class="form-control"
+                                                value="{{ number_format($incentiveSettings->min_cap_client_fast ?? 0, 2, '.', ',') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="max_cap_client_growth_fast" class="col-md-4 col-form-label text-md-right">
+                                        <label for="max_cap_client_fast" class="col-md-4 col-form-label text-md-right">
                                             Max Net Client Growth
                                         </label>
                                         <div class="col-md-6">
-                                            <input type="text" name="max_cap_client_growth_fast" id="max_cap_client_growth_fast" class="form-control"
-                                                value="{{ number_format($incentiveSettings->max_cap_client_growth_fast ?? 0, 2, '.', ',') }}">
+                                            <input type="text" name="max_cap_client_fast" id="max_cap_client_fast" class="form-control"
+                                                value="{{ number_format($incentiveSettings->max_cap_client_fast ?? 0, 2, '.', ',') }}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="percentage_incentive_client_growth_fast" class="col-md-4 col-form-label text-md-right">
+                                        <label for="percentage_client_growth_fast" class="col-md-4 col-form-label text-md-right">
                                             Client Growth % Incentive
                                         </label>
                                         <div class="col-md-6">
-                                            <input type="text" name="percentage_incentive_client_growth_fast" id="percentage_incentive_client_growth_fast" class="form-control"
-                                                value="{{ number_format($incentiveSettings->percentage_incentive_client_growth_fast ?? 0, 2, '.', ',') }}">
+                                            <input type="text" name="percentage_client_growth_fast" id="percentage_client_growth_fast" class="form-control"
+                                                value="{{ number_format($incentiveSettings->percentage_client_growth_fast ?? 0, 2, '.', ',') }}">
                                         </div>
                                     </div>
                                 </fieldset>
@@ -639,20 +639,20 @@
                                 @csrf
 
                                 <div class="form-group row">
-                                    <label for="max_cap_portifolio_mse" class="col-md-4 col-form-label text-md-right">Loan Portfolio</label>
+                                    <label for="min_cap_portifolio_mse" class="col-md-4 col-form-label text-md-right">Loan Portfolio</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="max_cap_portifolio_mse" id="max_cap_portifolio_mse"
+                                        <input type="text" name="min_cap_portifolio_mse" id="min_cap_portifolio_mse"
                                             class="form-control number_format"
-                                            value="{{ number_format($incentiveSettings->max_cap_portifolio_mse, 2, '.', ',') }}" required>
+                                            value="{{ number_format($incentiveSettings->min_cap_portifolio_mse, 2, '.', ',') }}" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="min_cap_client_mse" class="col-md-4 col-form-label text-md-right">Minimum Number Of MSE Clients</label>
+                                    <label for="min_active_client_mse" class="col-md-4 col-form-label text-md-right">Minimum No Of Active MSE Clients</label>
                                     <div class="col-md-6">
-                                        <input type="number" step="any" name="min_cap_client_mse" id="min_cap_client_mse"
+                                        <input type="number" step="any" name="min_active_client_mse" id="min_active_client_mse"
                                             class="form-control"
-                                            value="{{ number_format($incentiveSettings->min_cap_client_mse, 2, '.', ',') }}" required>
+                                            value="{{ number_format($incentiveSettings->min_active_client_mse, 2, '.', ',') }}" required>
                                     </div>
                                 </div>
 
