@@ -389,7 +389,7 @@
                                 <h5 class="card-title text-uppercase font-weight-bold">${officerDetails.names} - ${incentivesDetails.incentive_type}</h5>
                                 <hr>
                                 <p class="card-text"><strong>Loan Portfolio (${incentivesDetails.incentive_type}):</strong> ${(parseFloat(incentivesDetails.outstanding_principal ?? 0)).toLocaleString() ?? 0}/=</p>
-                                <p class="card-text"><strong>Number of ${incentivesDetails.incentive_type === 'fast' ? 'Clients' : 'Group'} (${incentivesDetails.incentive_type}):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
+                                <p class="card-text"><strong>Number of ${incentivesDetails.incentive_type === 'FAST' ? 'Clients' : 'Group'} (${incentivesDetails.incentive_type}):</strong> ${Number(incentivesDetails.unique_customer_id ?? 0).toLocaleString() ?? 0}</p>
                                 <p class="card-text"><strong>PAR>1Day:</strong> ${incentivesDetails.records_for_PAR ?? 0}%</p>
                                 <p class="card-text"><strong>Monthly Loan Loss Rate:</strong> ${incentivesDetails.monthly_loan_loss_rate ?? 0}%</p>
                                 <p class="card-text"><strong>Client Retention:</strong> ${incentivesDetails.client_retention ?? 0}%</p>
