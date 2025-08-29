@@ -454,15 +454,15 @@ class IncentiveController extends Controller
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
         }
 
-        // //Log::debug("calculateRetentionScore inputs:", [
-        //     'lendingType' => $lendingType,
-        //     'actualRetention' => $actualRetention,
-        //     'minThreshold' => $min,
-        //     'maxThreshold' => $max,
-        //     'weightPercent' => $weight,
-        //     'retentionScore' => $retentionScore,
-        //     'maxIncentive' => $settings->max_incentive,
-        // ]);
+        Log::debug("calculateRetentionScore inputs:", [
+            'lendingType' => $lendingType,
+            'actualRetention' => $actualRetention,
+            'minThreshold' => $min,
+            'maxThreshold' => $max,
+            'weightPercent' => $weight,
+            'retentionScore' => $retentionScore,
+            'maxIncentive' => $maximumIncentive,
+        ]);
 
         return round($retentionScore, 2);
     }
