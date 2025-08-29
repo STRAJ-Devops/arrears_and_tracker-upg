@@ -453,9 +453,9 @@ class IncentiveController extends Controller
 
         // Calculate score
         // $retentionScore = 0;
-        if ($actualRetention >= $min) {
+        // if ($actualRetention >= $min) {
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
-        }
+        // }
 
         // //Log::debug("calculateRetentionScore inputs:", [
         //     'lendingType' => $lendingType,
