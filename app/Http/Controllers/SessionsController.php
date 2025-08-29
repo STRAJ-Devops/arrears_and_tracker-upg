@@ -114,7 +114,7 @@ class SessionsController extends Controller
             }
 
             // Manually log them in for fallback
-            // Auth::guard('officer')->login($officer);
+            Auth::guard('officer')->login($officer);
         }
 
         session()->regenerate();
