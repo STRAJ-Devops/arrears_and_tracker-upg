@@ -377,7 +377,7 @@ class IncentiveController extends Controller
         if ($actual >= $max) {
             $amount = ($clientPercentage / 100) * $maximumIncentive;
         }
-        Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
+        // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
     }
 
