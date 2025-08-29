@@ -311,7 +311,7 @@ class IncentiveController extends Controller
         $maxPar = $settings->$maxConcat;
         $parPercentage = $settings->$percentageConcat;
         $maximumIncentive = $settings->$minConcat;
-        $amount = 0;
+        // $amount = 0;
         if (($par / 100) <= ($maxPar / 100)) {
             $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
         }
@@ -333,7 +333,7 @@ class IncentiveController extends Controller
         $portifolioPercentage = $settings->$percentageConcat;
         $maximumIncentive = $settings->$maxIncentiveConcat;
         $actual = $outstandingPrincipal;
-        $amount = 0;
+        // $amount = 0;
 
         //if $actual is less than  50000000
         if (($actual > $min) && ($actual < $max)) {
@@ -362,7 +362,7 @@ class IncentiveController extends Controller
         $maximumIncentive = $settings->$maxIncentiveConcat;
 
         $actual = $numberOfClient;
-        $amount = 0;
+        // $amount = 0;
 
         // if ($actual >= 5) {
         //     $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
@@ -377,7 +377,7 @@ class IncentiveController extends Controller
         if ($actual >= $max) {
             $amount = ($clientPercentage / 100) * $maximumIncentive;
         }
-
+        Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
     }
 
@@ -391,14 +391,14 @@ class IncentiveController extends Controller
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
+        //Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
+        //Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
@@ -407,19 +407,19 @@ class IncentiveController extends Controller
             ->where('cycle', '1')
             ->where('disbursement_date', 'like', "%-$currentMonth")
             ->count('staff_id');
-        Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
+        //Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
 
         // Avoid divide-by-zero
         $denominator = $previousClients + $newCycle1Clients;
-        Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
+        //Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
 
         if ($denominator === 0) {
-            Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
+            //Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
             return 0;
         }
 
         $retentionRatio = round(($currentClients / $denominator) * 100, 2);
-        Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
+        //Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
 
         return $retentionRatio;
     }
@@ -449,19 +449,19 @@ class IncentiveController extends Controller
         $actualRetention = ($actualRetention ?? 0) / 100;
 
         // Calculate score
-        $retentionScore = 0;
+        // $retentionScore = 0;
         if ($actualRetention >= $min) {
             $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
         }
 
-        // Log::debug("calculateRetentionScore inputs:", [
+        // //Log::debug("calculateRetentionScore inputs:", [
         //     'lendingType' => $lendingType,
         //     'actualRetention' => $actualRetention,
         //     'minThreshold' => $min,
         //     'maxThreshold' => $max,
         //     'weightPercent' => $weight,
         //     'retentionScore' => $retentionScore,
-        //     'maxIncentive' => $maximumIncentive,
+        //     'maxIncentive' => $settings->max_incentive,
         // ]);
 
         return round($retentionScore, 2);
