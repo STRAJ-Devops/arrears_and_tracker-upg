@@ -788,11 +788,25 @@ class IncentiveController extends Controller
 {
     // Ensure keys exist; missing ones default to 0
     $par        = (float) ($incentive['incentive_amount_PAR'] ?? 0);
+    if($incentive['incentive_type'] == 'fast' ){
+        $npGrowth   = 0;  
+    }else{
+        $npGrowth   = (float) ($incentive['incentive_amount_Net_Portifolio_Growth'] ?? 0);
+    }
     $npGrowth   = (float) ($incentive['incentive_amount_Net_Portifolio_Growth'] ?? 0);
     $ncGrowth   = (float) ($incentive['incentive_amount_Net_Client_Growth'] ?? 0);
     $retention  = (float) ($incentive['incentive_retention_score'] ?? 0);
 
     $rawTotal = $par + $npGrowth + $ncGrowth + $retention;
+
+    Log::debug("Incentive breakdown", [
+        'NP Growth' => $npGrowth,
+        'NC Growth' => $ncGrowth,
+        'Retention' => $retention,
+        'Raw Total' => $rawTotal,
+        'par' => $par,
+    ]);
+    
 
     // Resolve cap for the lending type
     $settings = IncentiveSettings::first();
