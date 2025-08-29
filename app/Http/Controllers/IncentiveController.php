@@ -391,14 +391,14 @@ class IncentiveController extends Controller
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        //Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
+        Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        //Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
+        Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
@@ -414,7 +414,7 @@ class IncentiveController extends Controller
         Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
 
         if ($denominator === 0) {
-            //Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
+            Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
             return 0;
         }
 
