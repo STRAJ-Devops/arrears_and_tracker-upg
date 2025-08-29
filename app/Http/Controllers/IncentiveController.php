@@ -437,6 +437,10 @@ class IncentiveController extends Controller
         $maxKey = "retention_max_" . strtolower($lendingType);
         $weightKey = "percentage_client_retention_" . strtolower($lendingType);
 
+        $maxIncentiveConcat = 'max_incentive_' . strtolower($lendingType);
+
+        $maximumIncentive = $settings->$maxIncentiveConcat;
+
         $min = ($settings->$minKey ?? 0) / 100;  // 90 => 0.9
         $max = ($settings->$maxKey ?? 100) / 100; // 100 => 1.0
 
@@ -447,7 +451,7 @@ class IncentiveController extends Controller
         // Calculate score
         $retentionScore = 0;
         if ($actualRetention >= $min) {
-            $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $settings->max_incentive;
+            $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
         }
 
         // //Log::debug("calculateRetentionScore inputs:", [
