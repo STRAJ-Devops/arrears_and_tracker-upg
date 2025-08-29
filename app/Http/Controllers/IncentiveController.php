@@ -200,7 +200,7 @@ class IncentiveController extends Controller
 
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
-                ->distinct()->get(['customer_id'])
+                ->distinct()->get(['group_id'])
                 ->count();
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
@@ -273,6 +273,13 @@ class IncentiveController extends Controller
             ->where('lending_type', $lendingType)
             ->groupBy('staff_id')
             ->get();
+            
+            if($lendingType === 'Group'){
+                $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
+            ->where('lending_type', $lendingType)
+            ->groupBy('staff_id')
+            ->get();
+            }
 
         return $uniqueCustomerIDIndividual;
     }
@@ -380,7 +387,7 @@ class IncentiveController extends Controller
         // if ($actual >= $max) {
         //     $amount = ($clientPercentage / 100) * $maximumIncentive;
         // }
-        // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
+        Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
     }
 
