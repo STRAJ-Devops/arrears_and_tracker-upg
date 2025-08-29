@@ -312,9 +312,9 @@ class IncentiveController extends Controller
         $parPercentage = $settings->$percentageConcat;
         $maximumIncentive = $settings->$minConcat;
         // $amount = 0;
-        if (($par / 100) <= ($maxPar / 100)) {
+        // if (($par / 100) <= ($maxPar / 100)) {
             $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
-        }
+        // }
 
         return ROUND($amount, 2);
     }
@@ -336,13 +336,13 @@ class IncentiveController extends Controller
         // $amount = 0;
 
         //if $actual is less than  50000000
-        if (($actual > $min) && ($actual < $max)) {
+        // if (($actual > $min) && ($actual < $max)) {
             $amount = (ROUND(($actual - $min) / ($max - $min), 2)) * ($portifolioPercentage / 100) * $maximumIncentive;
-        }
+        // }
         //greater than 40000000
-        if ($actual >= $max) {
-            $amount = ($portifolioPercentage / 100) * $maximumIncentive;
-        }
+        // if ($actual >= $max) {
+        //     $amount = ($portifolioPercentage / 100) * $maximumIncentive;
+        // }
 
         return ROUND($amount, 2);
     }
@@ -364,20 +364,23 @@ class IncentiveController extends Controller
         $actual = $numberOfClient;
         // $amount = 0;
 
+        // $amount = ($clientPercentage / 100) * $maximumIncentive;
+
         // if ($actual >= 5) {
         //     $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
         // }
 
-        if ($actual >= $min) {
+        // if ($actual >= $min) {
             // This applies the incentive based on the formula you provided
             $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
-        }
+        // }
 
         //if $actual is greater than 20
-        if ($actual >= $max) {
-            $amount = ($clientPercentage / 100) * $maximumIncentive;
-        }
-        // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
+
+        // if ($actual >= $max) {
+        //     $amount = ($clientPercentage / 100) * $maximumIncentive;
+        // }
+        Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
     }
 
