@@ -786,7 +786,7 @@ class IncentiveController extends Controller
 
     private function totalIncentiveAmount(array $incentive): float
 {
-    // $incentiveType = $incentive['incentive_type'] === 'mse
+     $incentiveType = $incentive['incentive_type'] ;
     // Ensure keys exist; missing ones default to 0
     $par        = (float) ($incentive['incentive_amount_PAR'] ?? 0);
     if($incentive['incentive_type'] === 'fast' ){
@@ -794,7 +794,7 @@ class IncentiveController extends Controller
     }else{
         $npGrowth   = (float) ($incentive['incentive_amount_Net_Portifolio_Growth'] ?? 0);
     }
-    $npGrowth   = (float) ($incentive['incentive_amount_Net_Portifolio_Growth'] ?? 0);
+    // $npGrowth   = (float) ($incentive['incentive_amount_Net_Portifolio_Growth'] ?? 0);
     $ncGrowth   = (float) ($incentive['incentive_amount_Net_Client_Growth'] ?? 0);
     $retention  = (float) ($incentive['incentive_retention_score'] ?? 0);
 
@@ -806,6 +806,7 @@ class IncentiveController extends Controller
         'Retention' => $retention,
         'Raw Total' => $rawTotal,
         'par' => $par,
+        'incentiveType' => $incentiveType,
     ]);
     
 
