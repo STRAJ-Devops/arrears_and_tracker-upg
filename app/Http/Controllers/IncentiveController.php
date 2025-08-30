@@ -199,16 +199,23 @@ class IncentiveController extends Controller
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
+            Log::debug("overallGroupRecords ===>>> ", [
+                'netPortifolioGrowth' => $netPortifolioGrowth,
+                'previousMonthOutstandingPrincipal' => $previousMonthOutstandingPrincipal,
+                '   CURRENT OUTS PRINCAL' => $record['outstanding_principal'],
+                'staffId' => $staffId,
+            ]);
+
             $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
                 ->distinct()->get(['group_id'])
                 ->count();
 
-                Log::debug("overallGroupRecords ===>>> ", [
-                    'previousMonthUniqueCustomerCount' => $previousMonthUniqueCustomerCount,
-                    'UNIQUE CUSTOMER COUNT' => $record['unique_customer_id'],
-                    'staffId' => $staffId,
-                ]);
+                // Log::debug("overallGroupRecords ===>>> ", [
+                //     'previousMonthUniqueCustomerCount' => $previousMonthUniqueCustomerCount,
+                //     'UNIQUE CUSTOMER COUNT' => $record['unique_customer_id'],
+                //     'staffId' => $staffId,
+                // ]);
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
