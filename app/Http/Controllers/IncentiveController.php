@@ -708,6 +708,13 @@ class IncentiveController extends Controller
     public function calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $currentMonthOutstandingPrincipal)
     {
         $netPortifolioGrowth = $currentMonthOutstandingPrincipal - $previousMonthOutstandingPrincipal;
+
+        Log::debug("Net Portfolio Growth Calculation", [
+            'currentMonthOutstandingPrincipal' => $currentMonthOutstandingPrincipal,
+            'previousMonthOutstandingPrincipal' => $previousMonthOutstandingPrincipal,
+            'netPortifolioGrowth' => $netPortifolioGrowth,
+        ]);
+        
         return $netPortifolioGrowth;
     }
 
