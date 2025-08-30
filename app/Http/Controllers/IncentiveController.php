@@ -319,10 +319,18 @@ class IncentiveController extends Controller
         $maxPar = $settings->$maxConcat;
         $parPercentage = $settings->$percentageConcat;
         $maximumIncentive = $settings->$minConcat;
-        // $amount = 0;
-        // if (($par / 100) <= ($maxPar / 100)) {
+
         $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
-        // }
+
+        $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
+
+        Log::debug("PAR Calculation", [
+            'maxPar' => $maxPar,
+            'par' => $par,
+            'parPercentage' => $parPercentage,
+            'maximumIncentive' => $maximumIncentive,
+            'amount' => $amount,
+        ]);
 
         return ROUND($amount, 2);
     }
@@ -446,20 +454,20 @@ class IncentiveController extends Controller
 
         $weight = $settings->$weightKey ?? 0;
 
-        $actualRetention = round(($actualRetention ?? 0),2);
+        $actualRetention = round(($actualRetention ?? 0), 2);
 
         $retentionScore = round((($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive, 2);
 
 
-        Log::debug("calculateRetentionScore inputs:", [
-            'lendingType' => $lendingType,
-            'actualRetention' => $actualRetention,
-            'minThreshold' => $min,
-            'maxThreshold' => $max,
-            'weightPercent' => $weight,
-            'retentionScore' => $retentionScore,
-            'maxIncentive' => $maximumIncentive,
-        ]);
+        // Log::debug("calculateRetentionScore inputs:", [
+        //     'lendingType' => $lendingType,
+        //     'actualRetention' => $actualRetention,
+        //     'minThreshold' => $min,
+        //     'maxThreshold' => $max,
+        //     'weightPercent' => $weight,
+        //     'retentionScore' => $retentionScore,
+        //     'maxIncentive' => $maximumIncentive,
+        // ]);
 
         return round($retentionScore, 2);
     }
