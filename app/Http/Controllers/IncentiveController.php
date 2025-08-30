@@ -204,6 +204,12 @@ class IncentiveController extends Controller
                 ->distinct()->get(['group_id'])
                 ->count();
 
+                Log::debug("overallGroupRecords ===>>> ", [
+                    'previousMonthUniqueCustomerCount' => $previousMonthUniqueCustomerCount,
+                    'UNIQUE CUSTOMER COUNT' => $record['unique_customer_id'],
+                    'staffId' => $staffId,
+                ]);
+
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
 
@@ -709,11 +715,11 @@ class IncentiveController extends Controller
     {
         $netPortifolioGrowth = $currentMonthOutstandingPrincipal - $previousMonthOutstandingPrincipal;
 
-        Log::debug("Net Portfolio Growth Calculation", [
-            'currentMonthOutstandingPrincipal' => $currentMonthOutstandingPrincipal,
-            'previousMonthOutstandingPrincipal' => $previousMonthOutstandingPrincipal,
-            'netPortifolioGrowth' => $netPortifolioGrowth,
-        ]);
+        // Log::debug("Net Portfolio Growth Calculation", [
+        //     'currentMonthOutstandingPrincipal' => $currentMonthOutstandingPrincipal,
+        //     'previousMonthOutstandingPrincipal' => $previousMonthOutstandingPrincipal,
+        //     'netPortifolioGrowth' => $netPortifolioGrowth,
+        // ]);
         
         return $netPortifolioGrowth;
     }
