@@ -455,7 +455,7 @@ class IncentiveController extends Controller
 
         if ($denominator === 0) {
             //Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
-            return 0;
+            return 1;
         }
 
         $retentionRatio = round(($currentClients / $denominator), 2);
