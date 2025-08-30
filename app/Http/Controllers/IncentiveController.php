@@ -458,7 +458,7 @@ class IncentiveController extends Controller
             'maxThreshold' => $max,
             'weightPercent' => $weight,
             'retentionScore' => $retentionScore,
-            'maxIncentive' => $settings->max_incentive,
+            'maxIncentive' => $maximumIncentive,
         ]);
 
         return round($retentionScore, 2);
