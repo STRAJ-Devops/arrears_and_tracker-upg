@@ -180,8 +180,12 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-            Log::debug("previousMonthUniqueCustomerCount: {$previousMonthUniqueCustomerCount}");
-            Log::debug("unique_customer_id: {$record['unique_customer_id']}");
+                Log::debug("Customer Growth Debug", [
+                    'staff_id' => $staffId,
+                    'previousMonthUniqueCustomerCount' => $previousMonthUniqueCustomerCount,
+                    'unique_customer_id' => $record['unique_customer_id'],
+                ]);
+                
 
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
