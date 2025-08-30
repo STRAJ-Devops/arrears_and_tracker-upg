@@ -122,6 +122,7 @@ class IncentiveController extends Controller
                         $incentive['client_retention'] = $this->calculateClientRetention($staffId);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
+
                         // $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
                     } else {
                         // $incentive['incentive_amount_PAR'] = 0;
@@ -369,25 +370,19 @@ class IncentiveController extends Controller
         $maximumIncentive = $settings->$maxIncentiveConcat;
 
         $actual = $numberOfClient;
-        // $amount = 0;
+    
+        $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
 
-        // $amount = ($clientPercentage / 100) * $maximumIncentive;
+        Log::debug("Net Client Growth Calculation", [
+            'actual' => $actual,
+            'min' => $min,
+            'max' => $max,
+            'clientPercentage' => $clientPercentage,
+            'maximumIncentive' => $maximumIncentive,
+            'amount' => $amount,
+        ]);
 
-        // if ($actual >= 5) {
-        //     $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
-        // }
-
-        // if ($actual >= $min) {
-            // This applies the incentive based on the formula you provided
-            $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
-        // }
-
-        //if $actual is greater than 20
-
-        // if ($actual >= $max) {
-        //     $amount = ($clientPercentage / 100) * $maximumIncentive;
-        // }
-        Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
+        // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
     }
 
@@ -807,14 +802,14 @@ class IncentiveController extends Controller
 
     $rawTotal = $par + $npGrowth + $ncGrowth + $retention;
 
-    Log::debug("Incentive breakdown", [
-        'NP Growth' => $npGrowth,
-        'NC Growth' => $ncGrowth,
-        'Retention' => $retention,
-        'Raw Total' => $rawTotal,
-        'par' => $par,
-        'incentiveType' => $incentiveType,
-    ]);
+    // Log::debug("Incentive breakdown", [
+    //     'NP Growth' => $npGrowth,
+    //     'NC Growth' => $ncGrowth,
+    //     'Retention' => $retention,
+    //     'Raw Total' => $rawTotal,
+    //     'par' => $par,
+    //     'incentiveType' => $incentiveType,
+    // ]);
     
 
     // Resolve cap for the lending type
