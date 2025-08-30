@@ -180,6 +180,10 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
+            Log::debug("previousMonthUniqueCustomerCount: {$previousMonthUniqueCustomerCount}");
+            Log::debug("unique_customer_id: {$record['unique_customer_id']}");
+
+
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
 
@@ -373,14 +377,14 @@ class IncentiveController extends Controller
     
         $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
 
-        Log::debug("Net Client Growth Calculation", [
-            'actual' => $actual,
-            'min' => $min,
-            'max' => $max,
-            'clientPercentage' => $clientPercentage,
-            'maximumIncentive' => $maximumIncentive,
-            'amount' => $amount,
-        ]);
+        // Log::debug("Net Client Growth Calculation", [
+        //     'actual' => $actual,
+        //     'min' => $min,
+        //     'max' => $max,
+        //     'clientPercentage' => $clientPercentage,
+        //     'maximumIncentive' => $maximumIncentive,
+        //     'amount' => $amount,
+        // ]);
 
         // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
         return ROUND($amount, 2);
@@ -692,11 +696,11 @@ class IncentiveController extends Controller
     public function calculateNetClientGrowth($previousMonthUniqueCustomerID, $currentMonthUniqueCustomerID)
     {
         $netClientGrowth = $currentMonthUniqueCustomerID - $previousMonthUniqueCustomerID;
-        Log::debug("Net Client Growth Calculation", [
-            'currentMonthUniqueCustomerID' => $currentMonthUniqueCustomerID,
-            'previousMonthUniqueCustomerID' => $previousMonthUniqueCustomerID,
-            'netClientGrowth' => $netClientGrowth,
-        ]);
+        // Log::debug("Net Client Growth Calculation", [
+        //     'currentMonthUniqueCustomerID' => $currentMonthUniqueCustomerID,
+        //     'previousMonthUniqueCustomerID' => $previousMonthUniqueCustomerID,
+        //     'netClientGrowth' => $netClientGrowth,
+        // ]);
         return $netClientGrowth;
     }
 
