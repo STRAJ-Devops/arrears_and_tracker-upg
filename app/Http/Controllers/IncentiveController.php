@@ -314,23 +314,23 @@ class IncentiveController extends Controller
     {
         $settings = IncentiveSettings::first();
         $maxConcat = 'max_par_' . strtolower($lendingType);
-        $minConcat = 'max_incentive_' . strtolower($lendingType);
+        $maxIncentiveConcat = 'max_incentive_' . strtolower($lendingType);
         $percentageConcat = 'percentage_par_' . strtolower($lendingType);
         $maxPar = $settings->$maxConcat;
         $parPercentage = $settings->$percentageConcat;
-        $maximumIncentive = $settings->$minConcat;
+        $maximumIncentive = $settings->$maxIncentiveConcat;
 
         $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
 
         $amount = ((($maxPar / 100) - ($par / 100)) / ($maxPar / 100)) * ($parPercentage / 100) * $maximumIncentive;
 
-        Log::debug("PAR Calculation", [
-            'maxPar' => $maxPar,
-            'par' => $par,
-            'parPercentage' => $parPercentage,
-            'maximumIncentive' => $maximumIncentive,
-            'amount' => $amount,
-        ]);
+        // Log::debug("PAR Calculation", [
+        //     'maxPar' => $maxPar,
+        //     'par' => $par,
+        //     'parPercentage' => $parPercentage,
+        //     'maximumIncentive' => $maximumIncentive,
+        //     'amount' => $amount,
+        // ]);
 
         return ROUND($amount, 2);
     }
@@ -375,16 +375,14 @@ class IncentiveController extends Controller
 
         $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
 
-        // Log::debug("Net Client Growth Calculation", [
-        //     'actual' => $actual,
-        //     'min' => $min,
-        //     'max' => $max,
-        //     'clientPercentage' => $clientPercentage,
-        //     'maximumIncentive' => $maximumIncentive,
-        //     'amount' => $amount,
-        // ]);
-
-        // Log::debug("TOTAL AMOUNT FOR NET Clients for {$amount}");
+        Log::debug("Net Client Growth Calculation", [
+            'actual' => $actual,
+            'min' => $min,
+            'max' => $max,
+            'clientPercentage' => $clientPercentage,
+            'maximumIncentive' => $maximumIncentive,
+            'amount' => $amount,
+        ]);
         return ROUND($amount, 2);
     }
 
