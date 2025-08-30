@@ -56,7 +56,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         // $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
                         // $incentive['total_incentive_amount'] = ROUND(($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score']), 2);
@@ -65,7 +65,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
                         // $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'],2 );
@@ -73,7 +73,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
                         // $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
@@ -81,7 +81,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
                         // $incentive['total_incentive_amount'] = round($incentive['incentive_amount_PAR'] + $incentive['incentive_amount_Net_Portifolio_Growth'] + $incentive['incentive_amount_Net_Client_Growth'] + $incentive['incentive_retention_score'], 2);
@@ -98,7 +98,7 @@ class IncentiveController extends Controller
                     $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                     $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                     $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                    $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                    $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                     $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                     $incentive['total_incentive_amount'] = 0;
                 }
@@ -118,7 +118,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = $this->totalIncentiveAmount($incentive);
 
@@ -135,7 +135,7 @@ class IncentiveController extends Controller
                         $incentive['incentive_amount_PAR'] = $this->calculateIncentiveAmountPAR($incentive['records_for_PAR'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Portifolio_Growth'] = $this->calculateIncentiveAmountNetPortifolioGrowth($incentive['net_portifolio_growth'], $incentive['incentive_type']);
                         $incentive['incentive_amount_Net_Client_Growth'] = $this->calculateIncentiveAmountNetClientGrowth($incentive['net_client_growth'], $incentive['incentive_type']);
-                        $incentive['client_retention'] = $this->calculateClientRetention($staffId);
+                        $incentive['client_retention'] = $this->calculateClientRetention($staffId, $incentive['incentive_type']);
                         $incentive['incentive_retention_score'] = $this->calculateRetentionScore($incentive['incentive_type'], $incentive['client_retention']);
                         $incentive['total_incentive_amount'] = 0;
                     }
@@ -380,23 +380,27 @@ class IncentiveController extends Controller
         return ROUND($amount, 2);
     }
 
-    public function calculateClientRetention($staffId)
+    public function calculateClientRetention($staffId, $lendingType)
     {
         // Detect current month in format 'M-y' matching your DB date format like 'Aug-25'
         $currentMonth = now()->format('M-y');
+
+        $column = ($lendingType === 'Group') ? 'group_id' : 'customer_id';
 
         // A. CURRENT CLIENTS from arrears
         $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
-            ->count('staff_id');
+            ->distinct($column)
+            ->count($column);
         Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
-            ->count('staff_id');
+            ->distinct($column)
+            ->count($column);
         Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
@@ -405,7 +409,8 @@ class IncentiveController extends Controller
             ->whereNotNull('staff_id')
             ->where('cycle', '1')
             ->where('disbursement_date', 'like', "%-$currentMonth")
-            ->count('staff_id');
+            ->distinct($column)
+            ->count($column);
         Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
 
         // Avoid divide-by-zero
@@ -444,7 +449,7 @@ class IncentiveController extends Controller
         $actualRetention = ($actualRetention ?? 0) / 100;
 
         $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
-   
+
 
         Log::debug("calculateRetentionScore inputs:", [
             'lendingType' => $lendingType,
