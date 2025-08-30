@@ -375,14 +375,14 @@ class IncentiveController extends Controller
 
         $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
 
-        // Log::debug("Net Client Growth Calculation", [
-        //     'actual' => $actual,
-        //     'min' => $min,
-        //     'max' => $max,
-        //     'clientPercentage' => $clientPercentage,
-        //     'maximumIncentive' => $maximumIncentive,
-        //     'amount' => $amount,
-        // ]);
+        Log::debug("Net Client Growth Calculation", [
+            'actual' => $actual,
+            'min' => $min,
+            'max' => $max,
+            'clientPercentage' => $clientPercentage,
+            'maximumIncentive' => $maximumIncentive,
+            'amount' => $amount,
+        ]);
 
         return ROUND($amount, 2);
     }
@@ -435,16 +435,16 @@ class IncentiveController extends Controller
         $retentionRatio = round(($currentClients / $denominator), 2);
         // Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
 
-        Log::debug("Retention Calculation", [
-            'staff_id' => $staffId,
-            'currentClients' => $currentClients,
-            'previousClients' => $previousClients,
-            'newCycle1Clients' => $newCycle1Clients,
-            'denominator' => $denominator,
-            'retentionRatio' => ($denominator === 0 ? 0 : round(($currentClients / $denominator), 2)),
-            'month' => $currentMonth,
-            'lendingType' => $lendingType,
-        ]);
+        // Log::debug("Retention Calculation", [
+        //     'staff_id' => $staffId,
+        //     'currentClients' => $currentClients,
+        //     'previousClients' => $previousClients,
+        //     'newCycle1Clients' => $newCycle1Clients,
+        //     'denominator' => $denominator,
+        //     'retentionRatio' => ($denominator === 0 ? 0 : round(($currentClients / $denominator), 2)),
+        //     'month' => $currentMonth,
+        //     'lendingType' => $lendingType,
+        // ]);
         
 
         return $retentionRatio;
@@ -473,15 +473,15 @@ class IncentiveController extends Controller
         $retentionScore = round((($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive, 2);
 
 
-        Log::debug("calculateRetentionScore inputs:", [
-            'lendingType' => $lendingType,
-            'actualRetention' => $actualRetention,
-            'minThreshold' => $min,
-            'maxThreshold' => $max,
-            'weightPercent' => $weight,
-            'retentionScore' => $retentionScore,
-            'maxIncentive' => $maximumIncentive,
-        ]);
+        // Log::debug("calculateRetentionScore inputs:", [
+        //     'lendingType' => $lendingType,
+        //     'actualRetention' => $actualRetention,
+        //     'minThreshold' => $min,
+        //     'maxThreshold' => $max,
+        //     'weightPercent' => $weight,
+        //     'retentionScore' => $retentionScore,
+        //     'maxIncentive' => $maximumIncentive,
+        // ]);
 
         return round($retentionScore, 2);
     }
