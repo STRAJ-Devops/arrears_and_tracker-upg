@@ -375,14 +375,15 @@ class IncentiveController extends Controller
 
         $amount = (($actual - $min) / ($max - $min)) * ($clientPercentage / 100) * $maximumIncentive;
 
-        Log::debug("Net Client Growth Calculation", [
-            'actual' => $actual,
-            'min' => $min,
-            'max' => $max,
-            'clientPercentage' => $clientPercentage,
-            'maximumIncentive' => $maximumIncentive,
-            'amount' => $amount,
-        ]);
+        // Log::debug("Net Client Growth Calculation", [
+        //     'actual' => $actual,
+        //     'min' => $min,
+        //     'max' => $max,
+        //     'clientPercentage' => $clientPercentage,
+        //     'maximumIncentive' => $maximumIncentive,
+        //     'amount' => $amount,
+        // ]);
+
         return ROUND($amount, 2);
     }
 
@@ -396,6 +397,7 @@ class IncentiveController extends Controller
         // A. CURRENT CLIENTS from arrears
         $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
             ->where('staff_id', $staffId)
+            -> where('lending_type', $lendingType)
             ->whereNotNull('staff_id')
             ->distinct($column)
             ->count($column);
@@ -404,6 +406,7 @@ class IncentiveController extends Controller
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
+            -> where('lending_type', $lendingType)
             ->whereNotNull('staff_id')
             ->distinct($column)
             ->count($column);
@@ -412,6 +415,7 @@ class IncentiveController extends Controller
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
             ->where('staff_id', $staffId)
+            -> where('lending_type', $lendingType)
             ->whereNotNull('staff_id')
             ->where('cycle', '1')
             ->where('disbursement_date', 'like', "%-$currentMonth")
