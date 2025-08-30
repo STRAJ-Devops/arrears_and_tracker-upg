@@ -392,7 +392,7 @@ class IncentiveController extends Controller
         // Detect current month in format 'M-y' matching your DB date format like 'Aug-25'
         $currentMonth = now()->format('M-y');
 
-        $column = ($lendingType === 'Group') ? 'group_id' : 'customer_id';
+        $column = (strtolower($lendingType) === 'group') ? 'group_id' : 'customer_id';
 
         // A. CURRENT CLIENTS from arrears
         $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
