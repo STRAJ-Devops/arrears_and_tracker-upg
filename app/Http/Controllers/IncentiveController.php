@@ -180,13 +180,6 @@ class IncentiveController extends Controller
                 ->distinct()->get(['customer_id'])
                 ->count();
 
-                Log::debug("Customer Growth Debug", [
-                    'staff_id' => $staffId,
-                    'previousMonthUniqueCustomerCount' => $previousMonthUniqueCustomerCount,
-                    'unique_customer_id' => $record['unique_customer_id'],
-                ]);
-                
-
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
             $record['net_client_growth'] = $netClientGrowth;
@@ -278,7 +271,7 @@ class IncentiveController extends Controller
     public function calculateUniqueCustomerID($lendingType)
     {
         //group by staff_id by calculating the number of unique customer_id
-        $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(customer_id) as count'))
+        $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
             ->where('lending_type', $lendingType)
             ->groupBy('staff_id')
             ->get();
