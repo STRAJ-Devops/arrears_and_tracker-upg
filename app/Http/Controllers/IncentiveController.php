@@ -346,16 +346,6 @@ class IncentiveController extends Controller
 
         $amount = (($actual - $min) / ($max - $min)) * ($portifolioPercentage / 100) * $maximumIncentive;
 
-        Log::debug("Portfolio Growth Calculation", [
-            'actual' => $actual,
-            'min' => $min,
-            'max' => $max,
-            'portfolioPercentage' => $portifolioPercentage,
-            'maximumIncentive' => $maximumIncentive,
-            'amount' => $amount,
-        ]);
-
-
         return ROUND($amount, 2);
     }
 
@@ -400,14 +390,14 @@ class IncentiveController extends Controller
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        //Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
+        Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
         $previousClients = PreviousEndMonth::query()
             ->where('staff_id', $staffId)
             ->whereNotNull('staff_id')
             ->count('staff_id');
-        //Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
+        Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
         $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
@@ -416,11 +406,11 @@ class IncentiveController extends Controller
             ->where('cycle', '1')
             ->where('disbursement_date', 'like', "%-$currentMonth")
             ->count('staff_id');
-        //Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
+        Log::debug("New Cycle 1 Clients for staff_id {$staffId} and month {$currentMonth}: {$newCycle1Clients}");
 
         // Avoid divide-by-zero
         $denominator = $previousClients + $newCycle1Clients;
-        //Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
+        Log::debug("Denominator (Previous + New Cycle1) for staff_id {$staffId}: {$denominator}");
 
         if ($denominator === 0) {
             //Log::debug("Denominator is zero for staff_id {$staffId}, returning 0");
@@ -428,7 +418,7 @@ class IncentiveController extends Controller
         }
 
         $retentionRatio = round(($currentClients / $denominator) * 100, 2);
-        //Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
+        Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
 
         return $retentionRatio;
     }
@@ -438,10 +428,6 @@ class IncentiveController extends Controller
     {
         $settings = IncentiveSettings::first();
 
-        // Calculate actual retention
-        // $actualRetention = $this->calculateClientRetention($staffId);
-
-        // Get dynamic thresholds
         $minKey = "retention_min_" . strtolower($lendingType);
         $maxKey = "retention_max_" . strtolower($lendingType);
         $weightKey = "percentage_client_retention_" . strtolower($lendingType);
@@ -457,21 +443,18 @@ class IncentiveController extends Controller
 
         $actualRetention = ($actualRetention ?? 0) / 100;
 
-        // Calculate score
-        // $retentionScore = 0;
-        // if ($actualRetention >= $min) {
         $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
-        // }
+   
 
-        // //Log::debug("calculateRetentionScore inputs:", [
-        //     'lendingType' => $lendingType,
-        //     'actualRetention' => $actualRetention,
-        //     'minThreshold' => $min,
-        //     'maxThreshold' => $max,
-        //     'weightPercent' => $weight,
-        //     'retentionScore' => $retentionScore,
-        //     'maxIncentive' => $settings->max_incentive,
-        // ]);
+        Log::debug("calculateRetentionScore inputs:", [
+            'lendingType' => $lendingType,
+            'actualRetention' => $actualRetention,
+            'minThreshold' => $min,
+            'maxThreshold' => $max,
+            'weightPercent' => $weight,
+            'retentionScore' => $retentionScore,
+            'maxIncentive' => $settings->max_incentive,
+        ]);
 
         return round($retentionScore, 2);
     }
