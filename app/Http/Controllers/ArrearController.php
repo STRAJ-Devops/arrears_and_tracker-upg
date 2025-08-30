@@ -154,7 +154,7 @@ class ArrearController extends Controller
         }
 
 
-        \Log::info('Grouped Arrear Data:', $data);
+        // \Log::info('Grouped Arrear Data:', $data);
 
 
 
