@@ -692,6 +692,11 @@ class IncentiveController extends Controller
     public function calculateNetClientGrowth($previousMonthUniqueCustomerID, $currentMonthUniqueCustomerID)
     {
         $netClientGrowth = $currentMonthUniqueCustomerID - $previousMonthUniqueCustomerID;
+        Log::debug("Net Client Growth Calculation", [
+            'currentMonthUniqueCustomerID' => $currentMonthUniqueCustomerID,
+            'previousMonthUniqueCustomerID' => $previousMonthUniqueCustomerID,
+            'netClientGrowth' => $netClientGrowth,
+        ]);
         return $netClientGrowth;
     }
 
