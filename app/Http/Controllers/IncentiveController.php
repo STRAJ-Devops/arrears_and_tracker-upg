@@ -422,7 +422,7 @@ class IncentiveController extends Controller
             return 0;
         }
 
-        $retentionRatio = round(($currentClients / $denominator) * 100, 2);
+        $retentionRatio = round(($currentClients / $denominator), 2);
         // Log::debug("Retention ratio for staff_id {$staffId}: {$retentionRatio}");
 
         return $retentionRatio;
@@ -446,9 +446,9 @@ class IncentiveController extends Controller
 
         $weight = $settings->$weightKey ?? 0;
 
-        $actualRetention = round(($actualRetention ?? 0) / 100,2);
+        $actualRetention = round(($actualRetention ?? 0),2);
 
-        $retentionScore = (($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive;
+        $retentionScore = round((($actualRetention - $min) / ($max - $min)) * ($weight / 100) * $maximumIncentive, 2);
 
 
         Log::debug("calculateRetentionScore inputs:", [
