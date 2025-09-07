@@ -29,6 +29,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WrittenOffController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\MaturityLoanController;
+use App\Http\Controllers\PreviousIncentiveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,6 +118,8 @@ Route::middleware('revalidate', 'auth:officer')->group(function () {
     Route::get('incentives-settings', [IncentiveController::class, 'settings'])->name('incentives-settings');
     Route::patch('incentives-settings-update', [IncentiveController::class, 'update_incentive_settings'])->name('incentive-settings.store');
     Route::get('get-incentives', [IncentiveController::class, 'calculateIncentive']);
+    Route::get('get-previous-incentives', [PreviousIncentiveController::class, 'calculateIncentive']);
+    Route::get('previous-incentives', [PreviousIncentiveController::class, 'index'])->name('previous-incentives');
 
     Route::get('tracker', [SaleController::class, 'index'])->name('tracker');
 

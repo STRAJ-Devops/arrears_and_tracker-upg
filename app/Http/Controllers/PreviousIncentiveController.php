@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Arrear;
+use App\Models\PreviousArrear;
 use App\Models\IncentiveSettings;
 use App\Models\Officer;
-use App\Models\PreviousEndMonth;
-use App\Models\Scopes\ArrearScope;
+use App\Models\PreviousArrearEndMonth;
+use App\Models\Scopes\PreviousArrearScope;
 use Illuminate\Http\Request;
 //import ArrerScope
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
-class IncentiveController extends Controller
+class PreviousIncentiveController extends Controller
 {
     public function index()
     {
         $logged_user = auth()->user()->user_type;
 
-        return view('incentives', compact('logged_user'));
+        return view('previous-incentives', compact('logged_user'));
     }
 
 
@@ -167,14 +167,14 @@ class IncentiveController extends Controller
         foreach ($overallIndividualRecords as $staffId => $record) {
             /**
              * add net portifolio growth and net client growth to the record
-             * from PreviousEndMonth Model
+             * from PreviousArrearEndMonth Model
              */
-            $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
+            $previousMonthOutstandingPrincipal = PreviousArrearEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
-            $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
+            $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Individual')
                 ->distinct()->get(['customer_id'])
                 ->count();
@@ -192,9 +192,9 @@ class IncentiveController extends Controller
         foreach ($overallGroupRecords as $staffId => $record) {
             /**
              * add net portifolio growth and net client growth to the record
-             * from PreviousEndMonth Model
+             * from PreviousArrearEndMonth Model
              */
-            $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
+            $previousMonthOutstandingPrincipal = PreviousArrearEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
@@ -206,7 +206,7 @@ class IncentiveController extends Controller
             //     'staffId' => $staffId,
             // ]);
 
-            $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
+            $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
                 ->distinct()->get(['group_id'])
                 ->count();
@@ -226,13 +226,13 @@ class IncentiveController extends Controller
         }
 
         foreach ($overallFASTRecords as $staffId => $record) {
-            $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
+            $previousMonthOutstandingPrincipal = PreviousArrearEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
             // $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal'] ?? 0);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
-            $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
+            $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'fast')
                 ->distinct()->get(['customer_id'])
                 ->count();
@@ -250,12 +250,12 @@ class IncentiveController extends Controller
 
 
         foreach ($overallMSERecords as $staffId => $record) {
-            $previousMonthOutstandingPrincipal = PreviousEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
+            $previousMonthOutstandingPrincipal = PreviousArrearEndMonth::where('staff_id', $staffId)->sum('outsanding_principal');
             $record['previous_outstanding_principal'] = $previousMonthOutstandingPrincipal;
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
-            $previousMonthUniqueCustomerCount = PreviousEndMonth::where('staff_id', $staffId)
+            $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'mse')
                 ->distinct()->get(['customer_id'])
                 ->count();
@@ -276,7 +276,7 @@ class IncentiveController extends Controller
     // NEW IMPLEMENTATIONS FOR INCENTIVES
     public function calculateOutstandingPrincipal($lendingType)
     {
-        return Arrear::withoutGlobalScope(ArrearScope::class)
+        return PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
             ->select('staff_id', DB::raw('SUM(outsanding_principal) as count'))
             ->where('lending_type', $lendingType)
             ->groupBy('staff_id')
@@ -286,13 +286,13 @@ class IncentiveController extends Controller
     public function calculateUniqueCustomerID($lendingType)
     {
         //group by staff_id by calculating the number of unique customer_id
-        $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
+        $uniqueCustomerIDIndividual = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT customer_id) as count'))
             ->where('lending_type', $lendingType)
             ->groupBy('staff_id')
             ->get();
 
         if ($lendingType === 'Group') {
-            $uniqueCustomerIDIndividual = Arrear::withoutGlobalScope(ArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
+            $uniqueCustomerIDIndividual = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)->select('staff_id', DB::raw('COUNT(DISTINCT group_id) as count'))
                 ->where('lending_type', $lendingType)
                 ->groupBy('staff_id')
                 ->get();
@@ -304,7 +304,7 @@ class IncentiveController extends Controller
     public function recordsForPAR($lendingType)
     {
         // Retrieve staff_id and PAR percentage directly from raw SQL query, rounded to 1 decimal place
-        $recordsForPAR = Arrear::withoutGlobalScope(ArrearScope::class)
+        $recordsForPAR = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
             ->where('lending_type', $lendingType)
             ->selectRaw('staff_id, ROUND(SUM(par) / SUM(outsanding_principal) * 100, 2) as count')
             ->groupBy('staff_id')
@@ -316,7 +316,7 @@ class IncentiveController extends Controller
     public function recordsForMonthlyLoanLossRate($lendingType)
     {
         // Calculate the monthly loan loss rate for each staff
-        $monthlyLoanLossRate = Arrear::withoutGlobalScope(ArrearScope::class)
+        $monthlyLoanLossRate = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
             ->where('lending_type', $lendingType)
             ->selectRaw('staff_id, round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) / SUM(outsanding_principal)) * 100, 2) as count')
             ->groupBy('staff_id')
@@ -353,7 +353,7 @@ class IncentiveController extends Controller
 
     public function calculateIncentiveAmountNetPortifolioGrowth($outstandingPrincipal, $lendingType)
     {
-
+        
         $settings = IncentiveSettings::first();
         $maxConcat = 'max_net_portfolio_growth_' . strtolower($lendingType);
         $minConcat = 'min_net_portfolio_growth_' . strtolower($lendingType);
@@ -366,7 +366,14 @@ class IncentiveController extends Controller
         $maximumIncentive = $settings->$maxIncentiveConcat;
         $actual = $outstandingPrincipal;
 
-        
+        Log::debug("Portfolio Growth Calculation", [
+            'actual' => $actual,
+            'min' => $min,
+            'max' => $max,
+            'portfolioPercentage' => $portifolioPercentage,
+            'maximumIncentive' => $maximumIncentive,
+            // 'amount' => $amount,
+        ]);
 
         $amount = (($actual - $min) / ($max - $min)) * ($portifolioPercentage / 100) * $maximumIncentive;
 
@@ -421,7 +428,7 @@ class IncentiveController extends Controller
         $column = (strtolower($lendingType) === 'group') ? 'group_id' : 'customer_id';
 
         // A. CURRENT CLIENTS from arrears
-        $currentClients = Arrear::withoutGlobalScope(ArrearScope::class)
+        $currentClients = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
             ->where('staff_id', $staffId)
             ->where('lending_type', $lendingType)
             ->whereNotNull('staff_id')
@@ -430,7 +437,7 @@ class IncentiveController extends Controller
         // Log::debug("Current Clients for staff_id {$staffId}: {$currentClients}");
 
         // B. PREVIOUS MONTH CLIENTS from previous_end_month
-        $previousClients = PreviousEndMonth::query()
+        $previousClients = PreviousArrearEndMonth::query()
             ->where('staff_id', $staffId)
             ->where('lending_type', $lendingType)
             ->whereNotNull('staff_id')
@@ -439,7 +446,7 @@ class IncentiveController extends Controller
         // Log::debug("Previous Clients for staff_id {$staffId}: {$previousClients}");
 
         // C. NEW CLIENTS THIS MONTH (cycle 1, disbursed this month)
-        $newCycle1Clients = Arrear::withoutGlobalScope(ArrearScope::class)
+        $newCycle1Clients = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
             ->where('staff_id', $staffId)
             ->where('lending_type', $lendingType)
             ->whereNotNull('staff_id')

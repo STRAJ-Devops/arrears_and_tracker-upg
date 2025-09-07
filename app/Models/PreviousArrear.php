@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\CurrentIncentiveScope;
+use App\Models\Scopes\PreviousArrearScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sub_County;
 
-#[ScopedBy(CurrentIncentiveScope::class)]
-class CurrentIncentive extends Model
+#[ScopedBy(PreviousArrearScope::class)]
+class PreviousArrear extends Model
 {
     use HasFactory;
     protected $fillable = [
