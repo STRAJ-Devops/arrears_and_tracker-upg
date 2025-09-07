@@ -37,6 +37,14 @@ class PreviousIncentiveController extends Controller
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();
 
+                foreach ($incentives as $staffId => $incentive) {
+    $officer = Officer::where('staff_id', $staffId)->first();
+
+    if (!$officer) {
+        Log::error("PreviousIncentiveController → Missing officer for staff_id: {$staffId}");
+        continue;
+    }
+
                 //check if officer branch_id is 1000 and just continue. this is to eliminate head office staff
                 if ($officer->branch_id == 1000) {
                     continue;
@@ -365,15 +373,6 @@ class PreviousIncentiveController extends Controller
         $portifolioPercentage = $settings->$percentageConcat;
         $maximumIncentive = $settings->$maxIncentiveConcat;
         $actual = $outstandingPrincipal;
-
-        Log::debug("Portfolio Growth Calculation", [
-            'actual' => $actual,
-            'min' => $min,
-            'max' => $max,
-            'portfolioPercentage' => $portifolioPercentage,
-            'maximumIncentive' => $maximumIncentive,
-            // 'amount' => $amount,
-        ]);
 
         $amount = (($actual - $min) / ($max - $min)) * ($portifolioPercentage / 100) * $maximumIncentive;
 
