@@ -37,13 +37,10 @@ class PreviousIncentiveController extends Controller
                 // Get staff_id details from officers table
                 $officer = Officer::where('staff_id', $staffId)->first();
 
-                foreach ($incentives as $staffId => $incentive) {
-    $officer = Officer::where('staff_id', $staffId)->first();
-
-    if (!$officer) {
-        Log::error("PreviousIncentiveController → Missing officer for staff_id: {$staffId}");
-        continue;
-    }
+                if (!$officer) {
+                    Log::error("PreviousIncentiveController → Missing officer for staff_id: {$staffId}");
+                    continue;
+                }
 
                 //check if officer branch_id is 1000 and just continue. this is to eliminate head office staff
                 if ($officer->branch_id == 1000) {
@@ -361,7 +358,7 @@ class PreviousIncentiveController extends Controller
 
     public function calculateIncentiveAmountNetPortifolioGrowth($outstandingPrincipal, $lendingType)
     {
-        
+
         $settings = IncentiveSettings::first();
         $maxConcat = 'max_net_portfolio_growth_' . strtolower($lendingType);
         $minConcat = 'min_net_portfolio_growth_' . strtolower($lendingType);
