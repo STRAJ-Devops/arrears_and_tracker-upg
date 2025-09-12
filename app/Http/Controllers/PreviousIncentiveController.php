@@ -243,10 +243,10 @@ class PreviousIncentiveController extends Controller
                 ->count();
 
             $netClientGrowth = $this->calculateNetClientGrowth($previousMonthUniqueCustomerCount, $record['unique_customer_id']);
-            // $record['net_client_growth'] = $netClientGrowth;
+            $record['net_client_growth'] = $netClientGrowth;
 
             //FOR FAST GROUP - NET CLIENT GROWTH IS ACTUAL NO OF GROUPS IN CURRENT MONTH 
-            $record['net_client_growth'] = $record['unique_customer_id'];
+            // $record['net_client_growth'] = $record['unique_customer_id'];
             //add a flag that indicates the record is for fast
             $record['incentive_type'] = "fast";
             $incentives[$staffId] = $record;
