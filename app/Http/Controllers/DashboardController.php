@@ -34,7 +34,7 @@ class DashboardController extends Controller
         $number_of_children = Sale::sum('number_of_children');
 
         // Get the current month abbreviation like "Mar-24"
-        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date')??date('M-y');
+        $currentMonthYear = DB::table('upload_date')->latest()->value('upload_date') ?? date('M-y');
         $total_disbursements_this_month = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->sum('disbursement_amount');
         // $number_of_clients = Sale::distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
         // $number_of_clients = Sale::count();
@@ -61,6 +61,14 @@ class DashboardController extends Controller
             ->groupBy('customer_id')
             ->get()
             ->sum('number_of_group_members');
+        // get number of smes greater than 15 million
+        $number_of_smes_gt_15m = Arrear::where('amount_disbursed', '>=', 15000000)
+            ->groupBy('customer_id')
+            ->get()
+            ->sum('number_of_group_members');
+
+        $number_of_smes = $number_of_smes + $number_of_smes_gt_15m;
+
 
         $number_of_fasts = Arrear::where('lending_type', 'Fast')
             ->groupBy('customer_id')
@@ -88,13 +96,13 @@ class DashboardController extends Controller
 
         //get portifolio performance percentage
         //get officer target amount
-        $officer_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_amount')??0;
+        $officer_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_amount') ?? 0;
         $officer_actual = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->sum('disbursement_amount');
         $officer_performance = $officer_target == 0 ? 0 : (($officer_actual / $officer_target) * 100);
 
         //get client performance percentage
         //get number of clients target
-        $clients_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_numbers')??0;
+        $clients_target = OfficerTarget::where('officer_id', $staff_id)->latest()->value('target_numbers') ?? 0;
         $clients_actual = Sale::where('disbursement_date', 'LIKE', "%$currentMonthYear%")->where('staff_id', $staff_id)->distinct()->get(['group_id', 'number_of_group_members'])->sum('number_of_group_members');
         $clients_performance = $clients_target == 0 ? 0 : (($clients_actual / $clients_target) * 100);
         // Get product labels and targets
