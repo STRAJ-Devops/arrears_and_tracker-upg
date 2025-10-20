@@ -57,17 +57,18 @@ class DashboardController extends Controller
             ->get()
             ->sum('number_of_group_members');
 
-        $number_of_smes = Arrear::where('lending_type', 'mse')
-            ->groupBy('customer_id')
-            ->get()
-            ->sum('number_of_group_members');
+        // $number_of_smes = Arrear::where('lending_type', 'mse')
+        //     ->groupBy('customer_id')
+        //     ->get()
+        //     ->sum('number_of_group_members');
+
         // get number of smes greater than 15 million
-        $number_of_smes_gt_15m = Arrear::where('amount_disbursed', '>=', 15000000)
+        $number_of_smes = Arrear::where('amount_disbursed', '>=', 15000000)
             ->groupBy('customer_id')
             ->get()
             ->sum('number_of_group_members');
 
-        $number_of_smes = $number_of_smes + $number_of_smes_gt_15m;
+        // $number_of_smes = $number_of_smes + $number_of_smes_gt_15m;
 
 
         $number_of_fasts = Arrear::where('lending_type', 'Fast')
