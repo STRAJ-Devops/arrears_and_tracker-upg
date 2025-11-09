@@ -322,7 +322,7 @@ class PreviousIncentiveController extends Controller
     {
         // Calculate the monthly loan loss rate for each staff
         $monthlyLoanLossRate = PreviousArrear::withoutGlobalScope(PreviousArrearScope::class)
-            ->where('lending_type', $lendingType)
+            // ->where('lending_type', $lendingType)
             ->selectRaw('staff_id, round((SUM(CASE WHEN number_of_days_late > 180 THEN outsanding_principal ELSE 0 END) / SUM(outsanding_principal)) * 100, 2) as count')
             ->groupBy('staff_id')
             ->get();
