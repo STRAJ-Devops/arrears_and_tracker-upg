@@ -204,12 +204,12 @@ class PreviousIncentiveController extends Controller
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
-            // Log::debug("overallGroupRecords ===>>> ", [
-            //     'netPortifolioGrowth' => $netPortifolioGrowth,
-            //     'PREV OUTS PRIN' => $previousMonthOutstandingPrincipal,
-            //     '   CURRENT OUTS PRINCAL' => $record['outstanding_principal'],
-            //     'staffId' => $staffId,
-            // ]);
+            Log::debug("overallGroupRecords ===>>> ", [
+                'netPortifolioGrowth' => $netPortifolioGrowth,
+                'PREV OUTS PRIN' => $previousMonthOutstandingPrincipal,
+                '   CURRENT OUTS PRINCAL' => $record['outstanding_principal'],
+                'staffId' => $staffId,
+            ]);
 
             $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
@@ -603,6 +603,16 @@ class PreviousIncentiveController extends Controller
             }
             $overallGroupRecords[$staffId]['monthly_loan_loss_rate'] = $record->count;
         }
+
+        $overallGroupRecords = array_filter($overallGroupRecords, function ($record) {
+            return isset(
+                $record['outstanding_principal'],
+                $record['unique_customer_id'],
+                $record['records_for_PAR'],
+                $record['monthly_loan_loss_rate']
+            );
+        });
+
         return $overallGroupRecords;
     }
 
@@ -653,6 +663,15 @@ class PreviousIncentiveController extends Controller
         // $overallFASTRecords = array_filter($overallFASTRecords, function ($record) {
         //     return isset($record['recordsForNoOfGroupsPAR']) && isset($record['recordsForMonthlyLoanLossRateGroup']) && isset($record['recordsForNoOfGroupCustomer']);
         // });
+
+        $overallFASTRecords = array_filter($overallFASTRecords, function ($record) {
+            return isset(
+                $record['outstanding_principal'],
+                $record['unique_customer_id'],
+                $record['records_for_PAR'],
+                $record['monthly_loan_loss_rate']
+            );
+        });
 
         return $overallFASTRecords;
     }
