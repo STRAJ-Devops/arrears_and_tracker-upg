@@ -204,12 +204,12 @@ class PreviousIncentiveController extends Controller
             $netPortifolioGrowth = $this->calculateNetPortifolioGrowth($previousMonthOutstandingPrincipal, $record['outstanding_principal']);
             $record['net_portifolio_growth'] = $netPortifolioGrowth;
 
-            Log::debug("overallGroupRecords ===>>> ", [
-                'netPortifolioGrowth' => $netPortifolioGrowth,
-                'PREV OUTS PRIN' => $previousMonthOutstandingPrincipal,
-                '   CURRENT OUTS PRINCAL' => $record['outstanding_principal'],
-                'staffId' => $staffId,
-            ]);
+            // Log::debug("overallGroupRecords ===>>> ", [
+            //     'netPortifolioGrowth' => $netPortifolioGrowth,
+            //     'PREV OUTS PRIN' => $previousMonthOutstandingPrincipal,
+            //     '   CURRENT OUTS PRINCAL' => $record['outstanding_principal'],
+            //     'staffId' => $staffId,
+            // ]);
 
             $previousMonthUniqueCustomerCount = PreviousArrearEndMonth::where('staff_id', $staffId)
                 ->where('lending_type', 'Group')
